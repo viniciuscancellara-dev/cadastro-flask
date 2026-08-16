@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <title>CADASTRO</title>
+</head>
+<body class="cadastro">
+
+    <h1 id="titulo"> --------------------           SISTEMA DE CADASTRO          --------------------</h1>
+
+    <form action="/" method="post">
+        <h2 id="cadastro"> CADASTROS </h2>
+
+        <label for="nome" class="aluno">Aluno:</label>
+        <input id="nome" type="text" name="nome" placeholder="Digite o nome do aluno:" required>
+
+        <label for="idade" class="aluno">Idade:</label>
+        <input id="idade" type="number" name="idade" placeholder="Digite a idade do aluno:" required>
+
+        <label for="email" class="aluno">Email:</label>
+        <input id="email" type="email" name="email" placeholder="Digite o email do aluno:" required>
+
+        <label for ="senha" class="aluno">Senha:</label>
+        <input id="senha" type="password" name="senha" placeholder="Digite a senha do aluno:" required>
+
+        <label for="observacao" class="aluno">Observação:</label>
+        <textarea id="observacao" name="observacao" placeholder="Digite a observação do aluno (opcional):"></textarea>
+
+        <h2> LINGUAGENS CONHECIDAS: </h2>
+        <h3> | Selecione pelo menos uma: |</h3>
+
+        <input type="checkbox" id="python" name="linguagem" value="python">
+        <label for="python" class="linguagem">Python</label>
+
+        <input type="checkbox" id="html" name="linguagem" value="html">
+        <label for="html" class="linguagem">HTML</label>
+
+        <input type="checkbox" id="css" name="linguagem" value="css">
+        <label for="css" class="linguagem">CSS</label>
+
+        <h2> TURNO: </h2>
+        
+        <input type="radio" id="manha" name="turno" value="manha" required>
+        <label for="manha" class="turno">Manhã</label>
+
+        <input type="radio" id="tarde" name="turno" value="tarde" required>
+        <label for="tarde" class="turno">Tarde</label>
+
+        <input type="radio" id="noite" name="turno" value="noite" required>
+        <label for="noite" class="turno">Noite</label>
+
+        <h2> ESTADO: </h2>
+
+        <select id="estado" class="selecao" name="estado" required>
+            <option value="" selected disabled>Selecione um estado</option>
+            <option value="sp">São Paulo</option>
+            <option value="rj">Rio de Janeiro</option>
+            <option value="mg">Minas Gerais</option>
+            <option value="df">Brasília</option>
+            <option value="ba">Salvador</option>
+            <option value="ce">Fortaleza</option>
+            <option value="pr">Curitiba</option>
+            <option value="pe">Recife</option>
+        </select>
+
+        <button class="enviar_cadastro" type="submit">Enviar Cadastro</button>
+
+
+    </form>
+
+</body>
+</html>
+ <!-- todo button sem um type dentro de um form vira "type=submit" -->

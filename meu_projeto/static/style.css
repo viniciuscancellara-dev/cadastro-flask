@@ -1,0 +1,117 @@
+.cadastro{
+    font-family: "Bebas Neue", sans-serif;
+    background-color: #2F3640;
+    margin: 40px;
+}
+.inicio{
+    font-family: "Bebas Neue", sans-serif;
+    background-color: #2F3640;
+    margin: 40px;
+}
+
+.inicio #button{
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 40px;
+    color:#f5930a;
+    background-color: #2F3640;
+    border: 2px solid #f5930a;
+    padding: 35px 35px;
+    cursor: pointer;
+}
+
+
+.inicio #botao-voltar{
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 40px;
+    color:#f5930a;
+    background-color: #2F3640;
+    border: 2px solid #f5930a;
+    padding: 35px 35px;
+    cursor: pointer;
+}
+
+.inicio #mostrar_banco{
+      font-family: "Bebas Neue", sans-serif;
+    font-size: 40px;
+    color:#f5930a;
+    background-color: #2F3640;
+    border: 2px solid #f5930a;
+    padding: 35px 35px;
+    cursor: pointer;
+}
+
+.container-botoes {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 350px;
+}
+
+
+
+
+
+
+#titulo{
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: bold;
+    font-size: 75px;
+    color:#f50519;
+    text-align: center
+}
+
+.cadastro h2{
+    font-size: 45px;
+    color:#f2f2ed
+}
+#cadastro{
+    font-size: 45px;
+    color: #f2f2ed
+}
+
+.cadastro h3{
+    font-size: 35px;
+    color:#f5930a
+}
+
+.cadastro .aluno,
+.cadastro .linguagem,
+.cadastro .turno,
+.cadastro .senha,
+.cadastro .observacao{
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 25px;
+    padding: 20px;
+    color:#f5930a;
+}
+
+.cadastro #nome,
+.cadastro #idade,
+.cadastro #email,
+.cadastro #senha,
+.cadastro #observacao{
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 23px;
+    padding: 5px;
+    background-color:#82a2cf;
+}
+
+.selecao{
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 30px;
+    padding: 10px;
+    background-color: #82a2cf;
+}
+
+.enviar_cadastro{
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 35px;
+    color:#f5930a;
+    background-color: #2F3640;
+    border: 2px solid #f5930a;
+    padding: 10px;
+    cursor: pointer;
+    margin-bottom: auto;
+    margin-left: 550px;
+}
+
