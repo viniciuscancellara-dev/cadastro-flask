@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REGISTROS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="validacao-senha">
+
+    <div class="container-validacao">
+        <div class="input-validacao">
+            <form action="/enviar-validacao" method="post">
+
+                <label class="senha" for="password">Digite a senha de confirmacao</label>
+                <input name="password" type="password" id="password" placeholder="Digite sua senha">
+
+                <button class="enviar-validacao" type="submit" id="button-password"> Enviar Validacao </button>
+            </form>
+        </div>
+    </div>
+    
+
+</body>
+</html>
