@@ -2,6 +2,18 @@ import re
 import sqlite3
 from flask import Flask, render_template, request, redirect
 import os
+import socket
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+try:
+    # Não envia dados de verdade, apenas conecta a um IP externo fictício
+    s.connect(("8.8.8.8", 80))
+    ipv4_correto = s.getsockname()[0]
+finally:
+    s.close()
+
+print(f"IP Local Correto: {ipv4_correto}")
+
 
 PASTA_BASE = os.path.dirname(os.path.abspath(__file__))
 CAMINHO_BANCO = os.path.join(PASTA_BASE, "instance", "banco.db")
@@ -22,6 +34,23 @@ def start_db():
             estado TEXT NOT NULL
         )
     """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS config (
+            id INTEGER PRIMARY KEY,
+            password TEXT NOT NULL
+        )
+    """)
+
+    cursor.execute("SELECT id FROM config LIMIT 1")
+    config = cursor.fetchone()
+
+    if config is None:
+        cursor.execute("""
+            INSERT INTO config (id, password)
+            VALUES (?, ?)
+        """, (1, "senhamirabolante"))
+    
     conexao.commit()
     conexao.close()
 
@@ -66,7 +95,10 @@ def cadastro():
         #validar a senha
         if not re.match(SENHA_REGEX, senha):
             return f'A senha deve conter:\nPelo menos uma letra minuscula(a/z)\nPelo menos uma letra maiuscula(A-Z)\nPelo menos um digito\nPelo menos um simbolo(@,#,&...)\nPelo menos 8 caracteres'
-        
+        #validar obs
+        if not observacao.strip():
+            observacao = "Nenhuma observacao"
+
         #validar turno
         if not turno:
             return 'Voce precisa selecionar um turno!'
@@ -114,20 +146,8 @@ def cadastro():
         
     return render_template("index.html")
 
-@app.route("/inicio", methods = ["GET","POST"])
-def delete():
-    if request.method == "POST":
-        conexao = sqlite3.connect(CAMINHO_BANCO)
-        cursor = conexao.cursor()
-        cursor.execute("DELETE FROM usuarios")
-        conexao.commit()
-
-        cursor.execute("SELECT * FROM usuarios ")
-        resultados = cursor.fetchall()
-        print(resultados, flush=True)
-
-        conexao.close()
-        return redirect("/inicio")
+@app.route("/inicio")
+def inicio():
     return render_template("inicio.html")
 
 @app.route("/voltar", methods = ["GET","POST"])
@@ -135,16 +155,45 @@ def voltar():
     if request.method =="POST":
         return redirect("/")
 
-@app.route("/banco", methods = ["GET","POST"])
+@app.route("/banco")
 def mostrar_banco():
-    if request.method =="POST":
         conexao = sqlite3.connect(CAMINHO_BANCO)
         cursor = conexao.cursor()
-        cursor.execute("SELECT * FROM usuarios")
-        resultado_botao = cursor.fetchall()
-        conexao.close()
-        return(resultado_botao)
+
+        cursor.execute("SELECT * FROM usuarios ")
+        resultados = cursor.fetchall()
+        print(resultados)
+
+        return render_template("banco.html", tabela=resultados)
+
+@app.route("/enviar-validacao", methods =['GET','POST'])
+def validacao():
+    if request.method == "POST":
+        password = request.form.get("password")
+
+        conexao = sqlite3.connect(CAMINHO_BANCO)
+        cursor = conexao.cursor()
+
+        cursor.execute("SELECT password FROM config")
+        true_password = cursor.fetchone()[0]
+
+        if password == true_password:
+            cursor.execute("DELETE FROM usuarios")
+            conexao.commit()
+            conexao.close()
+
+            return redirect("/inicio")
         
+        else:
+            conexao.close()
+            return "Senha invalida!"
+        
+    return render_template("excluir-banco-validacao.html")
 
 
-app.run(debug=True)
+
+
+
+app.run(debug=True,
+        host='0.0.0.0', 
+        port=5000)
