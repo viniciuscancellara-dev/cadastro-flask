@@ -1,5 +1,6 @@
 import re
 import sqlite3
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect
 import os
 import socket
@@ -45,11 +46,13 @@ def start_db():
     cursor.execute("SELECT id FROM config LIMIT 1")
     config = cursor.fetchone()
 
+    senha_hash = generate_password_hash("senhamirabolante")
+
     if config is None:
         cursor.execute("""
             INSERT INTO config (id, password)
             VALUES (?, ?)
-        """, (1, "senhamirabolante"))
+        """, (1, senha_hash))
     
     conexao.commit()
     conexao.close()
@@ -59,7 +62,7 @@ start_db()
 app = Flask(__name__)
 
 EMAIL_REGEX = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-SENHA_REGEX = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!#%*?&_])[A-Za-z\d@$!#%*?&_]{8,}$'
+SENHA_REGEX = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\-_@!#$%^&*()=+])[A-Za-z\d\-_@!#$%^&*()=+]{8,}$'
 estados_permitidos = ['sp','rj','mg','df','ba','ce','pr','pe']
 linguagens_permitidas = ['python','html','css']
 turnos_permitidos = ['manha','tarde','noite']
@@ -125,10 +128,14 @@ def cadastro():
         conexao = sqlite3.connect(CAMINHO_BANCO)
         cursor = conexao.cursor()
 
+        #hash
+
+        senha_hash = generate_password_hash(senha)
+
         try:
             cursor.execute("""INSERT INTO usuarios(nome,idade,email,senha,observacao,linguagens_string,turno,estado)
             VALUES(?,?,?,?,?,?,?,?)""",(
-            nome,idade,email,senha,observacao,linguagens_string,turno,estado))
+            nome,idade,email,senha_hash,observacao,linguagens_string,turno,estado))
 
             conexao.commit()
 
@@ -155,29 +162,40 @@ def voltar():
     if request.method =="POST":
         return redirect("/")
 
-@app.route("/banco")
-def mostrar_banco():
-        conexao = sqlite3.connect(CAMINHO_BANCO)
-        cursor = conexao.cursor()
+@app.route("/voltar_ini", methods = ["GET","POST"])
+def voltar_ini():
+    if request.method =="POST":
+        return redirect("/inicio")
 
-        cursor.execute("SELECT * FROM usuarios ")
-        resultados = cursor.fetchall()
-        print(resultados)
+@app.route("/add", methods=['GET','POST'])
+def add():
+    if request.method =='POST':
+        return redirect("/")
 
-        return render_template("banco.html", tabela=resultados)
+@app.route("/banco", methods =['GET','POST'])
+def mostrar_banco():    
+    conexao = sqlite3.connect(CAMINHO_BANCO)
+    cursor = conexao.cursor()
+
+    cursor.execute("SELECT * FROM usuarios ")
+    resultados = cursor.fetchall()
+    print(resultados)
+
+    return render_template("banco.html", tabela=resultados)
 
 @app.route("/enviar-validacao", methods =['GET','POST'])
 def validacao():
     if request.method == "POST":
-        password = request.form.get("password")
 
         conexao = sqlite3.connect(CAMINHO_BANCO)
         cursor = conexao.cursor()
 
         cursor.execute("SELECT password FROM config")
-        true_password = cursor.fetchone()[0]
+        password_hash = cursor.fetchone()[0]
 
-        if password == true_password:
+        password = request.form.get("password")
+
+        if check_password_hash(password_hash, password): 
             cursor.execute("DELETE FROM usuarios")
             conexao.commit()
             conexao.close()
@@ -189,10 +207,6 @@ def validacao():
             return "Senha invalida!"
         
     return render_template("excluir-banco-validacao.html")
-
-
-
-
 
 app.run(debug=True,
         host='0.0.0.0', 
