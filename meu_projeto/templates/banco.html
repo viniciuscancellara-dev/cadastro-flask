@@ -32,7 +32,7 @@
                             <td>{{ aluno[1] }}</td>
                             <td>{{ aluno[2] }}</td>
                             <td>{{ aluno[3] }}</td>
-                            <td>{{ aluno[4] }}</td>
+                            <td>**************</td>
                             <td>{{ aluno[5] }}</td>
                             <td>{{ aluno[6] }}</td>
                             <td>{{ aluno[7] }}</td>
@@ -48,5 +48,19 @@
     {% else %}
         <h1>Nenhum registro encontrado.</h1>
     {% endif %}
+    <div class="container-editar">
+        <form action="/editar" method="POST">
+            <button name="acao" id="botao-editar" value="edit">Editar</button>
+        </form>
+        <form action="/voltar_ini" method="post">
+            <button id="botao-voltar">Voltar</button>
+        </form>
+        <form action="/add" method="post">
+            <button id="botao-voltar">Adicionar</button>
+        </form>
+        <form action="/enviar-validacao" method="get">
+            <button id="button">Excluir</button>
+        </form>
+    </div>
 </body>
 </html>

@@ -10,10 +10,10 @@
 </head>
 <body class="cadastro">
 
-    <h1 id="titulo"> --------------------           SISTEMA DE CADASTRO          --------------------</h1>
+    <h1 id="titulo">SISTEMA DE CADASTRO</h1>
 
     <form action="/" method="post">
-        <h2 id="cadastro"> CADASTROS </h2>
+        <h2 id="cadastro"> CADASTRAR </h2>
 
         <label for="nome" class="aluno">Aluno:</label>
         <input id="nome" type="text" name="nome" placeholder="Digite o nome do aluno:" required>
@@ -27,8 +27,10 @@
         <label for ="senha" class="aluno">Senha:</label>
         <input id="senha" type="password" name="senha" placeholder="Digite a senha do aluno:" required>
 
-        <label for="observacao" class="aluno">Observação:</label>
-        <textarea id="observacao" name="observacao" placeholder="Digite a observação do aluno (opcional):"></textarea>
+        <div class="campo-observacao">
+            <label for="observacao" class="aluno">Observação:</label>
+            <textarea id="observacao" name="observacao" placeholder="Digite a observação do aluno (opcional):"></textarea>
+        </div>
 
         <h2> LINGUAGENS CONHECIDAS: </h2>
         <h3> | Selecione pelo menos uma: |</h3>
