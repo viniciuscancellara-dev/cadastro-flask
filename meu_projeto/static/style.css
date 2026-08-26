@@ -82,9 +82,10 @@
 .cadastro #observacao {
     width: 100%;
     max-width: none;
-    height: 45px;
+    height: 40px;
     resize: none;
     box-sizing: content-box;
+    transform: translateY(5px)
 }
 
 .cadastro #nome:focus,
@@ -108,9 +109,9 @@
     display: inline-flex;
     flex-direction: row;
     vertical-align: top;
-    width: 300px;
+    width: 500px;
 
-    transform: translate(50px, -11px);
+    transform: translate(25px, -11px);
 }
 
 
@@ -381,11 +382,11 @@ tr:hover {
     /* ---------- PÁGINA INICIAL ---------- */
 
     .container-botoes {
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
 
-        gap: 20px;
-        margin-top: 150px;
+        gap: 40px;
+        margin-top: 330px;
     }
 
     .container-editar {
@@ -393,7 +394,7 @@ tr:hover {
         align-items: center;
 
         gap: 30px;
-        margin-top: 150px;
+        margin-top: 120px;
     }
 
 
@@ -407,6 +408,8 @@ tr:hover {
 
     .banco h1 {
         font-size: 40px;
+        margin-top: 50px auto;
+        padding: 10px;
     }
 
     .tabela {
