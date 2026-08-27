@@ -64,7 +64,7 @@ app = Flask(__name__)
 EMAIL_REGEX = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 SENHA_REGEX = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\-_@!#$%^&*()=+])[A-Za-z\d\-_@!#$%^&*()=+]{8,}$'
 estados_permitidos = ['sp','rj','mg','df','ba','ce','pr','pe']
-linguagens_permitidas = ['python','html','css']
+linguagens_permitidas = ['python','java','js','html','css']
 turnos_permitidos = ['manha','tarde','noite']
 
 @app.route("/", methods = ["GET","POST"])
