@@ -10,7 +10,7 @@
 
     <div class="container-validacao">
         <div class="input-validacao">
-            <form action="/enviar-validacao" method="post">
+            <form action="/enviar-validacao" method="post" class="form-validation">
 
                 <label class="senha" for="password">Digite a senha de confirmacao</label>
                 <input name="password" type="password" id="password" placeholder="Digite sua senha">
@@ -20,6 +20,9 @@
         </div>
     </div>
     
-
+    {% if erro %}
+        <div id="erro-validation" data-erro="{{ erro }}"></div>
+    {% endif %}
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </body>
 </html>

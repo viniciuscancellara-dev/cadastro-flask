@@ -20,13 +20,19 @@
 
         <div class="lado-direito">
             <div class="div-form">
-                <h1 id="title-login">Log in On my site</h1>
+                <h1 id="title-login">Log in To my site</h1>
                 <form action="/" method="POST" class="form-login">
 
                     <input id="login-usuario" name="usuario" placeholder="Username" autocomplete="off">
-                    <input id="login-senha" name="senha" type="password" placeholder="Password" autocomplete="off">
 
-                    <button type="submit" id="btn" class="login-btn">Log In</button>
+                    <div class="campo-senha">
+                        <input id="login-senha" name="senha" type="password" placeholder="Password" autocomplete="off">
+                        <button type="button" id="btn-showpass">
+                            <img id="png-showpass" src="{{ url_for('static', filename='png/showpassword.png') }}">
+                        </button>
+                    </div>
+
+                    <button type="submit" id="btn-login" class="login-btn">Log In</button>
                 </form>
             </div>
         </div>

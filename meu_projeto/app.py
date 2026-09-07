@@ -1,9 +1,13 @@
 import re
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 import os
+from dotenv import load_dotenv
+from functools import wraps
 import socket
+
+load_dotenv()
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 try:
@@ -54,7 +58,8 @@ def start_db():
             VALUES (?, ?)
         """, (1, senha_hash))
 
-    user = "vinicius_sofeforteabraco"
+    user = os.getenv("LOGIN_USER")
+    userPassword = os.getenv("LOGIN_PASSWORD")
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS login (
@@ -66,7 +71,7 @@ def start_db():
     cursor.execute("SELECT id FROM login LIMIT 1")
     login = cursor.fetchone()
 
-    login_hash = generate_password_hash("Senha123")
+    login_hash = generate_password_hash(userPassword)
 
     if login is None:
         cursor.execute("""
@@ -81,11 +86,21 @@ start_db()
 
 app = Flask(__name__)
 
+app.secret_key = os.getenv("SECRET_KEY")
+
 EMAIL_REGEX = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 SENHA_REGEX = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\-_@!#$%^&*()=+])[A-Za-z\d\-_@!#$%^&*()=+]{8,}$'
 estados_permitidos = ['sp','rj','mg','df','ba','ce','pr','pe']
 linguagens_permitidas = ['python','java','js','html','css']
 turnos_permitidos = ['manha','tarde','noite']
+
+def login_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if 'logado' not in session:
+            return redirect("/")
+        return func(*args, **kwargs)
+    return wrapper
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -111,11 +126,20 @@ def login():
         if not check_password_hash(hash_banco, senha_digitada):
             return render_template("login.html",erro="Usuário ou senha incorretos!")
 
+        session['logado'] = True
+
         return redirect("/cadastrar")
 
     return render_template("login.html")
 
+@app.route("/logout")
+@login_required
+def logout():
+    session.clear()
+    return redirect("/")
+
 @app.route("/cadastrar", methods = ["GET","POST"])
+@login_required
 def cadastro():
     if request.method =="POST":
         nome = request.form["nome"]
@@ -202,25 +226,30 @@ def cadastro():
     return render_template("index.html")
 
 @app.route("/inicio")
+@login_required
 def inicio():
     return render_template("inicio.html")
 
 @app.route("/voltar", methods = ["GET","POST"])
+@login_required
 def voltar():
     if request.method =="POST":
         return redirect("/cadastrar")
 
 @app.route("/voltar_ini", methods = ["GET","POST"])
+@login_required
 def voltar_ini():
     if request.method =="POST":
         return redirect("/inicio")
 
 @app.route("/add", methods=['GET','POST'])
+@login_required
 def add():
     if request.method =='POST':
-        return redirect("/")
+        return redirect("/cadastrar")
 
 @app.route("/banco", methods =['GET','POST'])
+@login_required
 def mostrar_banco():    
     conexao = sqlite3.connect(CAMINHO_BANCO)
     cursor = conexao.cursor()
@@ -234,6 +263,7 @@ def mostrar_banco():
     return render_template("banco.html", tabela=resultados)
 
 @app.route("/editar", methods=["POST"])
+@login_required
 def editar():
     id_usuario = request.form.get("id")
     nome = request.form.get("nome", "")
@@ -310,6 +340,7 @@ def editar():
     return redirect("/banco")
 
 @app.route("/enviar-validacao", methods =['GET','POST'])
+@login_required
 def validacao():
     if request.method == "POST":
 
@@ -330,7 +361,7 @@ def validacao():
         
         else:
             conexao.close()
-            return "Senha invalida!"
+            return render_template("excluir-banco-validacao.html", erro="Senha invalida.")
         
     return render_template("excluir-banco-validacao.html")
 

@@ -25,6 +25,8 @@ body {
         radial-gradient(circle at 20% 20%, #5b4aa8 0%, transparent 45%),
         radial-gradient(circle at 80% 65%, #405db5 0%, transparent 45%),
         #151625;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
 
@@ -45,8 +47,8 @@ body {
 
 .lado-esquerdo {
     background:
-        radial-gradient(circle at 20% 20%, #5b4aa8 0%, transparent 45%),
-        radial-gradient(circle at 80% 65%, #405db5 0%, transparent 45%),
+        linear-gradient(circle at 20% 20%, #5b4aa8 0%, transparent 45%),
+        linear-gradient(circle at 80% 65%, #405db5 0%, transparent 45%),
         #151625;
 }
 
@@ -91,7 +93,7 @@ body {
     border-bottom-color: #7165d8;
 }
 
-#btn {
+#btn-login {
     width: 100%;
     padding: 20px 30px;
     font-family: "Bebas Neue", sans-serif;
@@ -104,10 +106,38 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-#btn:hover {
+#btn-login:hover {
     background-color: rgba(125, 125, 128, 0.438);
     border-color: #333055;
     color: rgba(43, 24, 39, 0.774);
+}
+
+/*botao show pass */
+
+.campo-senha {
+    position: relative;
+}
+
+.campo-senha input {
+    width: 100%;
+}
+
+.campo-senha button {
+    position: absolute;
+    right: 1%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.campo-senha #btn-showpass {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 50px;
+}
+
+#btn-showpass:hover {
+    font-size: 55px;
 }
 
 
@@ -247,7 +277,7 @@ body {
 }
 
 .check:checked::after {
-    content: "✓";
+    content: ".✓";
     color: #eeeeee;
     font-size: 12px;
 }
@@ -259,6 +289,46 @@ body {
     background-color: #82a2cf;
 }
 
+.dash-container {
+    background: linear-gradient(
+        135deg,
+        rgba(35, 22, 74, 0.75),
+        rgba(15, 12, 38, 0.88)
+    );
+        
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    border: 1px solid #333;
+    border-radius: 15px;
+    justify-content: left;
+    align-items: center;
+    width: 15%;
+    margin: 2%;
+}
+
+#user {
+    color: rgb(98, 69, 131);
+    font-size: 25px;
+    padding: 20px;
+    font-family: "Red Hat Display", sans-serif;
+}
+
+.link {
+    margin: 20px;
+}
+    
+#sair,
+#pular {
+    font-size: 20px;
+    padding: 20px;
+    font-family: "Red Hat Display", sans-serif;  
+}
+
+#sair:hover,
+#pular:hover {
+    color: rgba(141, 93, 180, 0.514); 
+}
 
 /* =========================================================
    BOTOES
@@ -628,7 +698,7 @@ tr:hover {
         font-size: 23px;
     }
 
-    #btn {
+    #btn-login {
         padding: 16px 20px;
         font-size: 30px;
     }
@@ -818,7 +888,7 @@ tr:hover {
         font-size: 20px;
     }
 
-    #btn {
+    #btn-login {
         font-size: 27px;
     }
 

@@ -16,16 +16,16 @@
         <h2 id="cadastro"> CADASTRAR </h2>
 
         <label for="nome" class="aluno">Aluno:</label>
-        <input id="nome" type="text" name="nome" placeholder="Digite o nome do aluno:" required>
+        <input id="nome" type="text" name="nome" placeholder="Digite o nome do aluno:" >
 
         <label for="idade" class="aluno">Idade:</label>
-        <input id="idade" type="number" name="idade" placeholder="Digite a idade do aluno:" required>
+        <input id="idade" type="number" name="idade" placeholder="Digite a idade do aluno:" >
 
         <label for="email" class="aluno">Email:</label>
-        <input id="email" type="email" name="email" placeholder="Digite o email do aluno:" required>
+        <input id="email" type="email" name="email" placeholder="Digite o email do aluno:" >
 
         <label for ="senha" class="aluno">Senha:</label>
-        <input id="senha" type="password" name="senha" placeholder="Digite a senha do aluno:" required>
+        <input id="senha" type="password" name="senha" placeholder="Digite a senha do aluno:" >
 
         <div class="campo-observacao">
             <label for="observacao" class="aluno">Observação:</label>
@@ -52,18 +52,18 @@
 
         <h2> TURNO: </h2>
         
-        <input type="radio" id="manha" name="turno" value="manha" required>
+        <input type="radio" id="manha" name="turno" value="manha" >
         <label for="manha" class="turno">Manhã</label>
 
-        <input type="radio" id="tarde" name="turno" value="tarde" required>
+        <input type="radio" id="tarde" name="turno" value="tarde" >
         <label for="tarde" class="turno">Tarde</label>
 
-        <input type="radio" id="noite" name="turno" value="noite" required>
+        <input type="radio" id="noite" name="turno" value="noite" >
         <label for="noite" class="turno">Noite</label>
 
         <h2> ESTADO: </h2>
 
-        <select id="estado" class="selecao" name="estado" required>
+        <select id="estado" class="selecao" name="estado" >
             <option value="" selected disabled>Selecione um estado</option>
             <option value="sp">São Paulo</option>
             <option value="rj">Rio de Janeiro</option>
@@ -79,6 +79,14 @@
 
 
     </form>
+
+    <div class="dash-container">
+        <h3 id="user">Ola, Vinicius.</h3>
+        <div class="link">
+            <a href="{{url_for('logout')}}" id="sair">Sair</a>
+            <a href="{{url_for('inicio')}}" id="pular">Pular</a>
+        </div>
+    </div>
 
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </body>

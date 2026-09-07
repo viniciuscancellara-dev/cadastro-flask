@@ -210,6 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const formLogin = document.querySelector(".form-login");
+    const btnLogin = document.getElementById('btn-login')
 
     if (formLogin) {
         formLogin.addEventListener("submit", function (event) {
@@ -222,6 +223,53 @@ document.addEventListener("DOMContentLoaded", function () {
             if (usuario === "") {
                 erros.push("Digite seu usuário.");
             }
+
+            if (senha === "") {
+                erros.push("Digite sua senha.");
+            }
+
+            if (erros.length > 0) {
+                event.preventDefault();
+                mostrarToast(erros);
+                return;
+            }
+            
+            btnLogin.textContent = 'Entrando. . .';
+            btnLogin.disabled = true;
+
+        });
+    }
+
+    //vizualizar senha do login
+
+    const senha = document.getElementById('login-senha')
+    const showpass = document.getElementById('btn-showpass')
+    const img = document.getElementById('png-showpass')
+
+    showpass.addEventListener("click", function () {
+        if (senha.type === 'password') {
+            senha.type = 'text'
+            img.src = '/static/png/hidepassword.png'
+        } else {senha.type = 'password'
+                img.src = '/static/png/showpassword.png'
+        }
+    })
+
+    const erroValidacao = document.getElementById("erro-validation");
+
+    if (erroValidacao) {
+        mostrarToast([erroValidacao.dataset.erro]);
+    }
+
+
+    const senha_validacao = document.querySelector(".form-validation");
+
+    if (senha_validacao) {
+        senha_validacao.addEventListener("submit", function (event) {
+
+            const erros = [];
+
+            const senha = senha_validacao.querySelector('[name="password"]').value;
 
             if (senha === "") {
                 erros.push("Digite sua senha.");
