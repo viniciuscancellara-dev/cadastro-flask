@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>REGISTROS</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="style.css">
 </head>
 <body class="banco">
     {% if tabela %}
@@ -27,7 +26,7 @@
                     </tr>
 
                     {% for aluno in tabela %}
-                        <tr>
+                        <tr data-id="{{ aluno[0] }}" data-nome="{{ aluno[1] }}" data-idade="{{ aluno[2] }}" data-email="{{ aluno[3] }}" data-observacao="{{ aluno[5] }}" data-linguagens="{{ aluno[6] }}" data-turno="{{ aluno[7] }}" data-estado="{{ aluno[8] }}">
                             <td>{{ aluno[0] }}</td>
                             <td>{{ aluno[1] }}</td>
                             <td>{{ aluno[2] }}</td>
@@ -49,9 +48,7 @@
         <h1>Nenhum registro encontrado.</h1>
     {% endif %}
     <div class="container-editar">
-        <form action="/editar" method="POST">
-            <button name="acao" id="botao-editar" value="edit">Editar</button>
-        </form>
+        <button type="button" id="botao-editar">Editar</button>
         <form action="/voltar_ini" method="post">
             <button id="botao-voltar">Voltar</button>
         </form>
@@ -62,5 +59,85 @@
             <button id="button">Excluir</button>
         </form>
     </div>
+
+    <div class="painel-editar">
+        <h2 class="titulo-editar">EDITAR CADASTRO</h2>
+
+        <form id="form-editar" action="/editar" method="POST">
+
+            <label for="selecionar-usuario" class="aluno">Usuario:</label>
+            <select id="selecionar-usuario" class="selecao" name="id" required>
+                <option value="" selected disabled>Escolha um usuario cadastrado</option>
+                {% for aluno in tabela %}
+                    <option value="{{ aluno[0] }}">{{ aluno[1] }} ({{ aluno[3] }})</option>
+                {% endfor %}
+            </select>
+
+            <label for="edit-nome" class="aluno">Aluno:</label>
+            <input id="edit-nome" type="text" name="nome" placeholder="Digite o nome do aluno:" required>
+
+            <label for="edit-idade" class="aluno">Idade:</label>
+            <input id="edit-idade" type="number" name="idade" placeholder="Digite a idade do aluno:" required>
+
+            <label for="edit-email" class="aluno">Email:</label>
+            <input id="edit-email" type="email" name="email" placeholder="Digite o email do aluno:" required>
+
+            <div class="campo-observacao">
+                <label for="edit-observacao" class="aluno">Observação:</label>
+                <textarea id="edit-observacao" name="observacao" placeholder="Digite a observação do aluno (opcional):"></textarea>
+            </div>
+
+            <h2> LINGUAGENS CONHECIDAS: </h2>
+            <h3> | Selecione pelo menos uma: |</h3>
+
+            <input type="checkbox" class="check" id="edit-python" name="linguagem" value="python">
+            <label for="edit-python" class="linguagem">Python</label>
+
+            <input type="checkbox" class="check" id="edit-java" name="linguagem" value="java">
+            <label for="edit-java" class="linguagem">Java</label>
+
+            <input type="checkbox" class="check" id="edit-js" name="linguagem" value="js">
+            <label for="edit-js" class="linguagem">Java.Script</label>
+
+            <input type="checkbox" class="check" id="edit-html" name="linguagem" value="html">
+            <label for="edit-html" class="linguagem">HTML</label>
+
+            <input type="checkbox" class="check" id="edit-css" name="linguagem" value="css">
+            <label for="edit-css" class="linguagem">CSS</label>
+
+            <h2> TURNO: </h2>
+
+            <input type="radio" id="edit-manha" name="turno" value="manha" required>
+            <label for="edit-manha" class="turno">Manhã</label>
+
+            <input type="radio" id="edit-tarde" name="turno" value="tarde" required>
+            <label for="edit-tarde" class="turno">Tarde</label>
+
+            <input type="radio" id="edit-noite" name="turno" value="noite" required>
+            <label for="edit-noite" class="turno">Noite</label>
+
+            <h2> ESTADO: </h2>
+
+            <select id="edit-estado" class="selecao" name="estado" required>
+                <option value="" selected disabled>Selecione um estado</option>
+                <option value="sp">São Paulo</option>
+                <option value="rj">Rio de Janeiro</option>
+                <option value="mg">Minas Gerais</option>
+                <option value="df">Brasília</option>
+                <option value="ba">Salvador</option>
+                <option value="ce">Fortaleza</option>
+                <option value="pr">Curitiba</option>
+                <option value="pe">Recife</option>
+            </select>
+
+            <div class="botoes-editar">
+                <button type="submit" id="botao-salvar-edicao">Salvar</button>
+                <button type="button" id="botao-cancelar-edicao">Cancelar</button>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </body>
 </html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&amp;display=swap" rel="stylesheet">
+    <title>Login</title>
+</head>
+<body class="login">
+
+    <div class="container-login">
+
+        <div class="lado-esquerdo">
+
+
+
+        </div>
+
+        <div class="lado-direito">
+            <div class="div-form">
+                <h1 id="title-login">Log in On my site</h1>
+                <form action="/" method="POST" class="form-login">
+
+                    <input id="login-usuario" name="usuario" placeholder="Username" autocomplete="off">
+                    <input id="login-senha" name="senha" type="password" placeholder="Password" autocomplete="off">
+
+                    <button type="submit" id="btn" class="login-btn">Log In</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    {% if erro %}
+        <div id="erro-login" data-erro="{{ erro }}"></div>
+    {% endif %}
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</body>
+</html>
