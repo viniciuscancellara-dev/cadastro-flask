@@ -1,15 +1,25 @@
 /* =========================================================
-   ESTILO GERAL — TODAS AS PÁGINAS
+   ESTILO GERAL
    ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
 
 .cadastro,
 .inicio,
 .validacao-senha,
 .banco,
 .login {
-    font-family: "Bebas Neue", sans-serif;
-    margin: 0;
     min-height: 100vh;
+    margin: 0;
+    font-family: "Bebas Neue", sans-serif;
 
     background:
         radial-gradient(circle at 20% 20%, #5b4aa8 0%, transparent 45%),
@@ -17,76 +27,81 @@
         #151625;
 }
 
-/*==========================================================
-  LOGIN
-  ========================================================== */
 
-.container-login{
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+.container-login {
     display: flex;
+    min-height: 100vh;
+}
+
+.lado-esquerdo,
+.lado-direito {
+    width: 50%;
+    min-height: 100vh;
 }
 
 .lado-esquerdo {
-    background: radial-gradient(circle at 20% 20%, #5b4aa8 0%, transparent 45%),
+    background:
+        radial-gradient(circle at 20% 20%, #5b4aa8 0%, transparent 45%),
         radial-gradient(circle at 80% 65%, #405db5 0%, transparent 45%),
         #151625;
-
-    width: 50%;
-    height: 100vh;
 }
 
 .lado-direito {
-    background-color: white;
-    width: 50%;
-    height: 100vh;
-
     display: flex;
     align-items: center;
-    justify-content: left;
+    justify-content: center;
+    padding: 40px;
+    background-color: white;
+}
+
+.div-form {
+    width: min(100%, 520px);
 }
 
 #title-login {
-    font-size: 54px;
     width: 100%;
-    margin: 20%;
+    margin: 0 0 45px;
+    font-size: 54px;
 }
 
 .form-login {
     display: flex;
     flex-direction: column;
-    gap: 55px;
-    margin-top: 30%;
-    margin: 20%;
+    gap: 35px;
+    width: 100%;
 }
 
-#login-usuario,#login-senha {
-    font-family: "Red Hat Display";
+#login-usuario,
+#login-senha {
+    width: 100%;
+    padding: 12px;
+    font-family: "Red Hat Display", sans-serif;
     font-size: 30px;
-    padding: 10px;
-    width: 380%;
-    border: transparent;
+    border: none;
+    border-bottom: 2px solid #ccc;
 }
-.form-login #login-usuario,#login-senha:focus {
-    outline: rgb(0, 0, 0);
-    border: rgb(0, 0, 0);
+
+#login-usuario:focus,
+#login-senha:focus {
+    outline: none;
+    border-bottom-color: #7165d8;
 }
 
 #btn {
+    width: 100%;
+    padding: 20px 30px;
     font-family: "Bebas Neue", sans-serif;
     font-size: 40px;
-
     color: #b8adff;
     background-color: transparent;
-
     border: 2px solid #7165d8;
     border-radius: 10px;
-
-    padding: 30px 30px;
-
     cursor: pointer;
-
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
-    width: 120%;
 }
 
 #btn:hover {
@@ -96,13 +111,12 @@
 }
 
 
-
-
 /* =========================================================
-   TÍTULO
+   TITULO
    ========================================================= */
 
 #titulo {
+    margin: 0;
     font-family: "Bebas Neue", sans-serif;
     font-weight: bold;
     font-size: 75px;
@@ -112,11 +126,16 @@
 
 
 /* =========================================================
-   PÁGINA DE CADASTRO
+   CADASTRO
    ========================================================= */
 
 .cadastro {
-    margin: 40px;
+    padding: 40px;
+}
+
+.form-cadastro {
+    width: min(100%, 800px);
+    margin: 0 auto;
 }
 
 .cadastro h2,
@@ -140,9 +159,10 @@
 .painel-editar .linguagem,
 .painel-editar .turno,
 .painel-editar .observacao {
+    display: inline-block;
+    padding: 20px 10px;
     font-family: "Bebas Neue", sans-serif;
     font-size: 25px;
-    padding: 20px;
     color: #f5930a;
 }
 
@@ -156,27 +176,44 @@
 .painel-editar input[type="email"],
 .painel-editar textarea,
 .selecao {
+    max-width: 100%;
+    padding: 8px;
     font-family: "Bebas Neue", sans-serif;
     font-size: 23px;
-    padding: 8px;
-
     color: #f2f2ed;
     background: rgba(255, 255, 255, 0.08);
-
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
-
     outline: none;
 }
 
-.cadastro #observacao,
-.painel-editar textarea {
+.cadastro #nome,
+.cadastro #idade,
+.cadastro #email,
+.cadastro #senha {
+    display: block;
+    width: min(100%, 600px);
+}
+
+.cadastro #observacao {
     width: 100%;
-    max-width: none;
     height: 40px;
     resize: none;
-    box-sizing: content-box;
-    transform: translateY(5px)
+}
+
+.campo-observacao {
+    display: flex;
+    align-items: center;
+    width: min(100%, 600px);
+}
+
+.campo-observacao .aluno {
+    flex-shrink: 0;
+}
+
+.campo-observacao #observacao {
+    flex: 1;
+    min-width: 0;
 }
 
 .cadastro #nome:focus,
@@ -195,39 +232,36 @@
 
 .check {
     appearance: none;
-    color: #eeeeee;
     width: 20px;
     height: 20px;
+    margin: 0 5px 0 10px;
+    vertical-align: middle;
+    color: #eeeeee;
     border: 2px solid white;
     border-radius: 8px;
+    cursor: pointer;
 }
+
 .check:checked {
     background-color: #333;
 }
+
 .check:checked::after {
-    content: ".✓";
+    content: "✓";
     color: #eeeeee;
     font-size: 12px;
 }
+
 .selecao {
-    font-family: "Bebas Neue", sans-serif;
-    font-size: 30px;
+    width: min(100%, 400px);
     padding: 10px;
+    font-size: 30px;
     background-color: #82a2cf;
-}
-
-.campo-observacao {
-    display: inline-flex;
-    flex-direction: row;
-    vertical-align: top;
-    width: 500px;
-
-    transform: translate(25px, -11px);
 }
 
 
 /* =========================================================
-   BOTÕES — ESTILO GERAL
+   BOTOES
    ========================================================= */
 
 #botao-editar,
@@ -239,26 +273,15 @@
 #botao-salvar-edicao,
 #botao-cancelar-edicao,
 .enviar_cadastro {
+    padding: 25px 35px;
     font-family: "Bebas Neue", sans-serif;
     font-size: 40px;
-
     color: #b8adff;
     background-color: transparent;
-
     border: 2px solid #7165d8;
     border-radius: 10px;
-
-    padding: 35px 35px;
-
     cursor: pointer;
-
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-#button-password {
-    padding: 25px;
-    font-size: 26px;
-    margin-top: 5%;
 }
 
 #botao-editar:hover,
@@ -275,35 +298,37 @@
     color: white;
 }
 
-
-/* =========================================================
-   BOTÃO ENVIAR CADASTRO
-   ========================================================= */
+#button-password {
+    margin-top: 5%;
+    padding: 25px;
+    font-size: 26px;
+}
 
 .enviar_cadastro {
-    font-size: 35px;
+    margin-top: 30px;
     padding: 10px;
-    margin-bottom: auto;
-    margin-left: 550px;
+    font-size: 35px;
 }
 
 
 /* =========================================================
-   BOTÕES DA PÁGINA INICIAL
+   PAGINA INICIAL
    ========================================================= */
 
 .container-botoes {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 40px;
-    margin-top: 350px;
+    padding: 25vh 40px 40px;
 }
 
 .container-editar {
     display: flex;
     justify-content: center;
-    gap: 200px;
-    margin-top: 488px;
+    flex-wrap: wrap;
+    gap: 80px;
+    padding: 30vh 40px 40px;
 }
 
 
@@ -311,10 +336,11 @@
    TABELA / BANCO
    ========================================================= */
 
-.container-tabela {
-    width: 80%;
+.container-tabela,
+.painel-editar {
+    width: min(90%, 1400px);
     margin: 50px auto;
-    overflow-x: auto;
+    padding: 25px;
 
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(15px);
@@ -326,19 +352,24 @@
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.25),
         inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
 
-    padding: 25px;
+.container-tabela {
+    overflow-x: auto;
 }
 
 .banco h1 {
-    text-align: center;
+    margin: 50px 0 20px;
+    padding: 10px;
     color: rgba(255, 253, 254, 0.548);
     font-size: 55px;
+    text-align: center;
 }
 
 .tabela {
-    background: rgba(255, 255, 255, 0.05);
+    width: 100%;
     padding: 20px;
+    overflow-x: auto;
     border-radius: 10px;
 }
 
@@ -348,9 +379,9 @@ table {
 }
 
 th {
-    background: rgba(20, 20, 30, 0.75);
-    color: #ffffff;
     padding: 14px;
+    color: #ffffff;
+    background: rgba(20, 20, 30, 0.75);
     text-align: left;
 }
 
@@ -366,45 +397,30 @@ tr:hover {
 
 
 /* =========================================================
-   PAINEL DE EDIÇÃO (BANCO)
+   PAINEL DE EDICAO
    ========================================================= */
 
 .painel-editar {
     display: none;
-
-    width: 80%;
-    margin: 50px auto;
-
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 18px;
-
-    box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.25),
-        inset 0 1px 1px rgba(255, 255, 255, 0.15);
-
-    padding: 35px;
     text-align: center;
 }
 
 .painel-editar .titulo-editar {
-    text-align: center;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .botoes-editar {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 40px;
     margin-top: 30px;
 }
 
 
 /* =========================================================
-   POP-UP DE VALIDAÇÃO (TOAST)
+   TOAST
    ========================================================= */
 
 #toast-container {
@@ -417,13 +433,20 @@ tr:hover {
     flex-direction: column;
     gap: 12px;
 
-    max-width: 360px;
+    width: min(360px, calc(100vw - 40px));
 }
 
 .toast {
+    padding: 16px 22px;
     font-family: "Bebas Neue", sans-serif;
+    color: #f2f2ed;
 
-    background: linear-gradient(135deg, rgba(35, 22, 74, 0.75), rgba(15, 12, 38, 0.88));
+    background: linear-gradient(
+        135deg,
+        rgba(35, 22, 74, 0.75),
+        rgba(15, 12, 38, 0.88)
+    );
+
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
 
@@ -431,13 +454,9 @@ tr:hover {
     border-left: 5px solid #f5930a;
     border-radius: 16px;
 
-    padding: 16px 22px;
-
     box-shadow:
         0 10px 35px rgba(0, 0, 0, 0.45),
         inset 0 1px 1px rgba(255, 255, 255, 0.12);
-
-    color: #f2f2ed;
 
     animation: toast-entrada 0.35s ease-out;
 }
@@ -458,6 +477,7 @@ tr:hover {
         opacity: 0;
         transform: translateX(-30px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -469,6 +489,7 @@ tr:hover {
         opacity: 1;
         transform: translateX(0);
     }
+
     to {
         opacity: 0;
         transform: translateX(-30px);
@@ -477,26 +498,25 @@ tr:hover {
 
 
 /* =========================================================
-   VALIDAÇÃO DE SENHA
+   VALIDACAO DE SENHA
    ========================================================= */
 
 .container-validacao {
-    min-height: 100vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    padding: 20px;
 }
 
 .input-validacao {
-    width: 350px;
-    height: 250px;
+    width: min(350px, 100%);
+    min-height: 250px;
+    padding: 35px;
 
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-
-    padding: 35px;
 
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 18px;
@@ -509,58 +529,60 @@ tr:hover {
 }
 
 #password {
-    color:#eeeeee;
+    width: 100%;
+    padding: 20px;
+    color: #eeeeee;
     background-color: rgba(37, 34, 58, 0.479);
-    padding: 35px;
-    border-radius: 10px;
     border: 1px solid #333;
+    border-radius: 10px;
+    outline: none;
 
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.25),
         inset 0 1px 1px rgba(255, 255, 255, 0.15);
-
-
-    text-align: center;
 }
 
 .input-validacao #password:focus {
     border-color: #8b7ff0;
     box-shadow: 0 0 10px rgba(113, 101, 216, 0.3);
-    outline: none;
 }
 
 .senha {
     display: block;
-    font-size: 25px;
-    color: #fcfcfcc4;
     margin-bottom: 20px;
+    color: #fcfcfcc4;
+    font-size: 25px;
 }
 
 
 /* =========================================================
-    1024px
+   RESPONSIVIDADE — TABLET
    ========================================================= */
 
 @media (max-width: 1024px) {
 
+    #titulo {
+        font-size: 60px;
+    }
+
+    .cadastro {
+        padding: 30px;
+    }
+
+    .container-botoes,
     .container-editar {
-        gap: 80px;
-        margin-top: 250px;
+        padding-top: 18vh;
     }
 
-    .container-botoes {
-        margin-top: 200px;
-    }
-
-    .campo-observacao {
-        width: 100%;
-        transform: none;
+    .container-tabela,
+    .painel-editar {
+        width: 92%;
     }
 }
 
 
 /* =========================================================
-    768px
+   RESPONSIVIDADE — CELULAR
    ========================================================= */
 
 @media (max-width: 768px) {
@@ -572,14 +594,59 @@ tr:hover {
     }
 
 
+    /* ---------- LOGIN ---------- */
+
+    .container-login {
+        flex-direction: column;
+    }
+
+    .lado-esquerdo {
+        display: none;
+    }
+
+    .lado-direito {
+        width: 100%;
+        min-height: 100vh;
+        padding: 30px 20px;
+    }
+
+    .div-form {
+        width: 100%;
+    }
+
+    #title-login {
+        margin-bottom: 35px;
+        font-size: 42px;
+    }
+
+    .form-login {
+        gap: 25px;
+    }
+
+    #login-usuario,
+    #login-senha {
+        font-size: 23px;
+    }
+
+    #btn {
+        padding: 16px 20px;
+        font-size: 30px;
+    }
+
+
     /* ---------- CADASTRO ---------- */
 
     .cadastro {
-        margin: 20px;
+        padding: 20px;
+    }
+
+    .form-cadastro {
+        width: 100%;
     }
 
     .cadastro h2,
-    #cadastro {
+    #cadastro,
+    .painel-editar h2 {
         font-size: 35px;
     }
 
@@ -592,33 +659,41 @@ tr:hover {
     .cadastro .turno,
     .cadastro .senha,
     .cadastro .observacao {
+        padding: 10px 5px;
         font-size: 22px;
-        padding: 10px;
     }
 
     .cadastro #nome,
     .cadastro #idade,
     .cadastro #email,
-    .cadastro #senha,
-    .cadastro #observacao,
-    .cadastro .selecao {
-    width: 100%;
-    max-width: 400px;
-    box-sizing: border-box;
-}
-
-    #observacao {
-        margin-right: 20% ;
+    .cadastro #senha {
         width: 100%;
-        margin-bottom: 10%;
     }
 
     .campo-observacao {
         width: 100%;
-        transform: none;
-}
+        align-items: flex-start;
+    }
 
-    /* ---------- BOTÕES ---------- */
+    .campo-observacao .aluno {
+        padding-top: 10px;
+    }
+
+    .campo-observacao #observacao {
+        width: 100%;
+    }
+
+    .selecao {
+        width: 100%;
+        font-size: 24px;
+    }
+
+    .check {
+        margin-left: 0;
+    }
+
+
+    /* ---------- BOTOES ---------- */
 
     #botao-editar,
     #botao-delid,
@@ -627,91 +702,101 @@ tr:hover {
     #mostrar-banco,
     #button-password,
     #botao-salvar-edicao,
-    #botao-cancelar-edicao {
+    #botao-cancelar-edicao,
+    .enviar_cadastro {
+        width: 100%;
+        padding: 18px;
         font-size: 28px;
-        padding: 20px;
-    }
-
-    .painel-editar {
-        width: 90%;
-        padding: 20px;
     }
 
     .enviar_cadastro {
-        font-size: 28px;
-        padding: 10px;
-
-        margin-left: 0;
         margin-top: 20px;
     }
 
 
-    /* ---------- PÁGINA INICIAL ---------- */
+    /* ---------- PAGINA INICIAL ---------- */
 
-    .container-botoes {
-        flex-direction: row;
-        align-items: center;
-
-        gap: 40px;
-        margin-top: 180px;
-    }
-
+    .container-botoes,
     .container-editar {
         flex-direction: column;
         align-items: center;
+        gap: 25px;
+        padding: 100px 20px 30px;
+    }
 
-        gap: 30px;
-        margin-top: 120px;
+    .container-botoes > *,
+    .container-editar > * {
+        width: min(100%, 450px);
     }
 
 
     /* ---------- TABELA ---------- */
 
     .container-tabela {
-        width: 90%;
-        padding: 15px;
-        margin: 30px auto;
+        width: calc(100% - 30px);
+        margin: 25px auto;
+        padding: 12px;
     }
 
     .banco h1 {
+        margin-top: 25px;
         font-size: 40px;
-        margin-top: 50px auto;
-        padding: 10px;
     }
 
     .tabela {
-        padding: 10px;
+        padding: 5px;
     }
 
     th,
     td {
-        padding: 10px;
+        padding: 9px;
         font-size: 16px;
+        white-space: nowrap;
     }
 
 
-    /* ---------- VALIDAÇÃO ---------- */
+    /* ---------- PAINEL DE EDICAO ---------- */
+
+    .painel-editar {
+        width: calc(100% - 30px);
+        padding: 20px;
+    }
+
+    .botoes-editar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+
+    /* ---------- VALIDACAO ---------- */
 
     .input-validacao {
-        width: 80%;
-        height: auto;
+        width: 100%;
         padding: 25px;
     }
 
     #password {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 20px;
+        padding: 18px;
     }
 
     .senha {
         font-size: 22px;
     }
+
+
+    /* ---------- TOAST ---------- */
+
+    #toast-container {
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        width: auto;
+    }
 }
 
 
 /* =========================================================
-    420px
+   RESPONSIVIDADE — CELULARES PEQUENOS
    ========================================================= */
 
 @media (max-width: 420px) {
@@ -720,25 +805,64 @@ tr:hover {
         font-size: 32px;
     }
 
-    .enviar_cadastro {
-        margin-left: 0;
-        width: 100%;
+    #title-login {
+        font-size: 36px;
     }
 
-    #botao-editar,
-    #botao-delid,
-    #button,
-    #botao-voltar,
-    #mostrar-banco,
-    #botao-salvar-edicao,
-    #botao-cancelar-edicao {
+    .lado-direito {
+        padding: 25px 15px;
+    }
+
+    #login-usuario,
+    #login-senha {
+        font-size: 20px;
+    }
+
+    #btn {
+        font-size: 27px;
+    }
+
+    .cadastro {
+        padding: 15px;
+    }
+
+    .cadastro h2,
+    #cadastro,
+    .painel-editar h2 {
+        font-size: 30px;
+    }
+
+    .cadastro h3 {
+        font-size: 24px;
+    }
+
+    .cadastro .aluno,
+    .cadastro .linguagem,
+    .cadastro .turno,
+    .cadastro .observacao {
+        font-size: 19px;
+    }
+
+    .cadastro .senha {
+        font-size: 19px;
+    }
+
+    .campo-observacao {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .campo-observacao .aluno {
+        padding-left: 0;
+    }
+
+    .campo-observacao #observacao {
         width: 100%;
-        box-sizing: border-box;
     }
 
     .container-botoes,
     .container-editar {
-        margin-top: 100px;
+        padding-top: 70px;
     }
 
     th,
@@ -747,9 +871,11 @@ tr:hover {
         font-size: 13px;
     }
 
-    #toast-container {
-        left: 12px;
-        right: 12px;
-        max-width: none;
+    .toast {
+        padding: 13px 16px;
+    }
+
+    .toast ul {
+        font-size: 17px;
     }
 }
