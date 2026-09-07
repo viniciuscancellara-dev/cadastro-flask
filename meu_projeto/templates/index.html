@@ -12,7 +12,7 @@
 
     <h1 id="titulo">SISTEMA DE CADASTRO</h1>
 
-    <form action="/" method="post">
+    <form action="/cadastrar" method="post" class="form-cadastro">
         <h2 id="cadastro"> CADASTRAR </h2>
 
         <label for="nome" class="aluno">Aluno:</label>
@@ -35,19 +35,19 @@
         <h2> LINGUAGENS CONHECIDAS: </h2>
         <h3> | Selecione pelo menos uma: |</h3>
 
-        <input type="checkbox" id="python" name="linguagem" value="python">
+        <input type="checkbox" class="check" id="python" name="linguagem" value="python">
         <label for="python" class="linguagem">Python</label>
 
-        <input type="checkbox" id="java" name="linguagem" value="java">
+        <input type="checkbox" class="check" id="java" name="linguagem" value="java">
         <label for="java" class="linguagem">Java</label>
 
-        <input type="checkbox" id="js" name="linguagem" value="js">
+        <input type="checkbox" class="check" id="js" name="linguagem" value="js">
         <label for="js" class="linguagem">Java.Script</label>
 
-        <input type="checkbox" id="html" name="linguagem" value="html">
+        <input type="checkbox" class="check" id="html" name="linguagem" value="html">
         <label for="html" class="linguagem">HTML</label>
 
-        <input type="checkbox" id="css" name="linguagem" value="css">
+        <input type="checkbox" class="check" id="css" name="linguagem" value="css">
         <label for="css" class="linguagem">CSS</label>
 
         <h2> TURNO: </h2>
@@ -80,6 +80,7 @@
 
     </form>
 
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </body>
 </html>
  <!-- todo button sem um type dentro de um form vira "type=submit" -->

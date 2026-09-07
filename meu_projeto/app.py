@@ -53,6 +53,26 @@ def start_db():
             INSERT INTO config (id, password)
             VALUES (?, ?)
         """, (1, senha_hash))
+
+    user = "vinicius_sofeforteabraco"
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS login (
+        id INTEGER PRIMARY KEY,
+        usuario TEXT NOT NULL,
+        senha TEXT NOT NULL)
+    """)
+
+    cursor.execute("SELECT id FROM login LIMIT 1")
+    login = cursor.fetchone()
+
+    login_hash = generate_password_hash("Senha123")
+
+    if login is None:
+        cursor.execute("""
+            INSERT INTO login (id, usuario, senha)
+            VALUES (?, ?, ?)       
+        """, (1, user, login_hash ))
     
     conexao.commit()
     conexao.close()
@@ -67,7 +87,35 @@ estados_permitidos = ['sp','rj','mg','df','ba','ce','pr','pe']
 linguagens_permitidas = ['python','java','js','html','css']
 turnos_permitidos = ['manha','tarde','noite']
 
-@app.route("/", methods = ["GET","POST"])
+@app.route("/", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+
+        usuario_digitado = request.form["usuario"]
+        senha_digitada = request.form["senha"]
+
+        conexao = sqlite3.connect(CAMINHO_BANCO)
+        cursor = conexao.cursor()
+
+        cursor.execute("SELECT usuario, senha FROM login WHERE id = 1")
+        resultado = cursor.fetchone()
+
+        user_banco = resultado[0]
+        hash_banco = resultado[1]
+
+        conexao.close()
+
+        if usuario_digitado != user_banco:
+            return render_template("login.html",erro="Usuário ou senha incorretos!")
+
+        if not check_password_hash(hash_banco, senha_digitada):
+            return render_template("login.html",erro="Usuário ou senha incorretos!")
+
+        return redirect("/cadastrar")
+
+    return render_template("login.html")
+
+@app.route("/cadastrar", methods = ["GET","POST"])
 def cadastro():
     if request.method =="POST":
         nome = request.form["nome"]
@@ -160,7 +208,7 @@ def inicio():
 @app.route("/voltar", methods = ["GET","POST"])
 def voltar():
     if request.method =="POST":
-        return redirect("/")
+        return redirect("/cadastrar")
 
 @app.route("/voltar_ini", methods = ["GET","POST"])
 def voltar_ini():
@@ -181,7 +229,85 @@ def mostrar_banco():
     resultados = cursor.fetchall()
     print(resultados)
 
+    conexao.close()
+
     return render_template("banco.html", tabela=resultados)
+
+@app.route("/editar", methods=["POST"])
+def editar():
+    id_usuario = request.form.get("id")
+    nome = request.form.get("nome", "")
+    observacao = request.form.get("observacao", "")
+    turno = request.form.get("turno")
+    linguagens = request.form.getlist("linguagem")
+    estado = request.form.get("estado")
+
+    #validacao id
+    if not id_usuario:
+        return "usuario invalido!"
+
+    #validacao nome
+    if nome.strip() == "":
+        return "nome invalido!"
+
+    #validacao idade
+    try:
+        idade = int(request.form["idade"])
+    except ValueError:
+        return "idade invalida!"
+    if idade <= 0 or idade > 120:
+        return "idade invalida!"
+
+    #validacao email
+    email = request.form.get("email", "")
+    if not re.match(EMAIL_REGEX, email):
+        return 'email invalido!'
+
+    #validar obs
+    if not observacao.strip():
+        observacao = "Nenhuma observacao"
+
+    #validar turno
+    if not turno:
+        return 'Voce precisa selecionar um turno!'
+    if turno not in turnos_permitidos:
+        return 'Turno invalido! (Turnos permitidos: Manha,Tarde,Noite)'
+
+    #validar linguagens
+    if not linguagens:
+        return 'voce deve escolher uma linguagem!'
+    for linguagem in linguagens:
+        if linguagem not in linguagens_permitidas:
+            return 'Voce deve escolher "Python" , "HTML" ou "CSS"'
+
+    #validar estado
+    if estado == '':
+        return 'selecione uma opcao!'
+    if estado not in estados_permitidos:
+        return 'selecione uma opcao na lista de selecao!'
+
+    #Atualizacao no banco (senha NAO e alterada)
+
+    linguagens_string = ",".join(linguagens)
+
+    conexao = sqlite3.connect(CAMINHO_BANCO)
+    cursor = conexao.cursor()
+
+    try:
+        cursor.execute("""UPDATE usuarios
+            SET nome = ?, idade = ?, email = ?, observacao = ?, linguagens_string = ?, turno = ?, estado = ?
+            WHERE id = ?""",(
+            nome, idade, email, observacao, linguagens_string, turno, estado, id_usuario))
+
+        conexao.commit()
+
+    except sqlite3.IntegrityError:
+        conexao.close()
+        return 'Esse email ja esta sendo usado!'
+
+    conexao.close()
+
+    return redirect("/banco")
 
 @app.route("/enviar-validacao", methods =['GET','POST'])
 def validacao():
