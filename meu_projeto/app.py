@@ -5,20 +5,8 @@ from flask import Flask, render_template, request, redirect, session
 import os
 from dotenv import load_dotenv
 from functools import wraps
-import socket
 
 load_dotenv()
-
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-try:
-    # Não envia dados de verdade, apenas conecta a um IP externo fictício
-    s.connect(("8.8.8.8", 80))
-    ipv4_correto = s.getsockname()[0]
-finally:
-    s.close()
-
-print(f"IP Local Correto: {ipv4_correto}")
-
 
 PASTA_BASE = os.path.dirname(os.path.abspath(__file__))
 CAMINHO_BANCO = os.path.join(PASTA_BASE, "instance", "banco.db")
@@ -50,9 +38,12 @@ def start_db():
     cursor.execute("SELECT id FROM config LIMIT 1")
     config = cursor.fetchone()
 
-    senha_hash = generate_password_hash("senhamirabolante")
-
     if config is None:
+        hash = os.getenv("SENHA_HASH")
+        if not hash:
+            raise ValueError('erro: a variavel hash (env) nao foi carregada corretamente!')
+        senha_hash = generate_password_hash(hash)
+
         cursor.execute("""
             INSERT INTO config (id, password)
             VALUES (?, ?)
@@ -87,6 +78,9 @@ start_db()
 app = Flask(__name__)
 
 app.secret_key = os.getenv("SECRET_KEY")
+
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 EMAIL_REGEX = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 SENHA_REGEX = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\-_@!#$%^&*()=+])[A-Za-z\d\-_@!#$%^&*()=+]{8,}$'
@@ -348,7 +342,13 @@ def validacao():
         cursor = conexao.cursor()
 
         cursor.execute("SELECT password FROM config")
-        password_hash = cursor.fetchone()[0]
+        result = cursor.fetchone()
+
+        if not result:
+            conexao.close()
+            return 'ERRO: senha nao gerada!'
+
+        password_hash = result[0]
 
         password = request.form.get("password")
 
@@ -357,7 +357,7 @@ def validacao():
             conexao.commit()
             conexao.close()
 
-            return redirect("/inicio")
+            return redirect("/banco")
         
         else:
             conexao.close()
@@ -365,6 +365,8 @@ def validacao():
         
     return render_template("excluir-banco-validacao.html")
 
-app.run(debug=True,
-        host='0.0.0.0', 
-        port=5000)
+if __name__ == '__main__':
+    debug = os.getenv('DEBUG_MODE','False').lower() == 'true'
+    app.run(debug=debug,
+            host='0.0.0.0', 
+            port=5000)

@@ -5,9 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const EMAIL_REGEX = /^[\w.-]+@[\w.-]+\.\w+$/;
     const SENHA_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\-_@!#$%^&*()=+])[A-Za-z\d\-_@!#$%^&*()=+]{8,}$/;
 
-    // =========================================================
-    // POP-UP DE VALIDACAO (TOAST)
-    // =========================================================
+    //TOAST
 
     //essa funcao recebe um array de strings mensagens e desenha o pop-up
     //se nao existe (!container) cria uma do zero com document.createElement e joga ela no body com appendChild ta bom lembra disso
@@ -27,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         toast.className = "toast";
 
         const lista = document.createElement("ul");
-        mensagens.forEach(function (mensagem) {
+        mensagens.forEach(mensagem => {
             const item = document.createElement("li");
             item.textContent = mensagem;
             lista.appendChild(item);
@@ -38,17 +36,16 @@ document.addEventListener("DOMContentLoaded", function () {
         //setTimeout agenda algo pra rodar depois de x milissegundos  depois de 4.5s adiciono a classe toast-saindo 
         // (que no CSS tem uma animation de fade e slide pra fora) so que se eu chamasse toast.remove() na mesma hora
         //  o elemento sumiria instantaneamente e a animação nem apareceria
-        setTimeout(function () {
+        setTimeout( () => {
             toast.classList.add("toast-saindo");
-            setTimeout(function () {
+            setTimeout( () => {
                 toast.remove();
             }, 300);
-        }, 2500);
+        }, 4500);
     }
 
-    // =========================================================
-    // VALIDACAO DE CAMPOS (usada no cadastro e na edicao)
-    // =========================================================
+    //validar campos comuns
+
     function validarCamposComuns(form) {
         const erros = [];
 
@@ -65,10 +62,15 @@ document.addEventListener("DOMContentLoaded", function () {
         //no form.querySelector('[name="nome"]') em vez de usar getElementById eu busco pelo atributo name fiz assim porque 
         // id="nome" existe no form de cadastro mas no form de edicao o id e id="edit-nome"
 
-        const idade = parseInt(form.querySelector('[name="idade"]').value, 10);
-        if (isNaN(idade) || idade <= 0 || idade > 120) {
-            erros.push("Informe uma idade válida (entre 1 e 120).");
-        }
+        const campoIdade =form.querySelector('[name="idade"]');
+        if (campoIdade === "") {
+            erros.push('A idade nao pode estar vazia.')
+        } else {
+            const idade =parseInt(campoIdade, 10);
+            if (isNaN(idade) || idade <= 0 || idade > 120) {
+                erros.push("Informe uma idade válida (entre 1 e 120).");
+        }}
+        
 
         const email = form.querySelector('[name="email"]').value;
         if (!EMAIL_REGEX.test(email)) {
@@ -93,12 +95,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return erros;
     }
 
-    // =========================================================
-    // FORMULARIO DE CADASTRO (index.html)
-    // =========================================================
+    //cadastro
+
     const formCadastro = document.querySelector(".form-cadastro");
     if (formCadastro) {
-        formCadastro.addEventListener("submit", function (event) {
+        formCadastro.addEventListener("submit", event => {
             const erros = validarCamposComuns(formCadastro);
 
             const senha = formCadastro.querySelector('[name="senha"]').value;
@@ -128,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //  chamando document.getElementById toda hora
 
     if (botaoEditar && painelEditar) {
-        botaoEditar.addEventListener("click", function () {
+        botaoEditar.addEventListener("click", () => {
             if (containerTabela) containerTabela.style.display = "none";
             if (containerEditar) containerEditar.style.display = "none";
             painelEditar.style.display = "block";
@@ -136,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (botaoCancelar && painelEditar) {
-        botaoCancelar.addEventListener("click", function () {
+        botaoCancelar.addEventListener("click", () => {
             painelEditar.style.display = "none";
             if (containerTabela) containerTabela.style.display = "";
             if (containerEditar) containerEditar.style.display = "";
@@ -151,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // que ja estao guardados nos data da linha correspondente da tabela
 
     if (seletorUsuario && formEditar) {
-        seletorUsuario.addEventListener("change", function () {
+        seletorUsuario.addEventListener("change", () => {
             const idSelecionado = seletorUsuario.value;
             if (!idSelecionado) return;
 
@@ -168,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
             formEditar.querySelector('[name="observacao"]').value = linha.dataset.observacao;
 
             const turnoAtual = linha.dataset.turno;
-            formEditar.querySelectorAll('[name="turno"]').forEach(function (radio) {
+            formEditar.querySelectorAll('[name="turno"]').forEach(radio => {
                 radio.checked = (radio.value === turnoAtual);
             });
 
@@ -176,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
             //pra cada um marcar checked = true so se o value dele bater com o turno salvo e false nos outros
 
             const linguagensAtuais = linha.dataset.linguagens ? linha.dataset.linguagens.split(",") : [];
-            formEditar.querySelectorAll('[name="linguagem"]').forEach(function (checkbox) {
+            formEditar.querySelectorAll('[name="linguagem"]').forEach(checkbox => {
                 checkbox.checked = linguagensAtuais.includes(checkbox.value);
             });
             //mesma logica pros checkbox mas eles vem em string ent eu facao um .split(",")
@@ -187,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // validacao antes de salvar a edicao senha nao entra aqui
     if (formEditar) {
-        formEditar.addEventListener("submit", function (evento) {
+        formEditar.addEventListener("submit", event => {
             const erros = validarCamposComuns(formEditar);
 
             if (!seletorUsuario.value) {
@@ -195,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (erros.length > 0) {
-                evento.preventDefault();
+                event.preventDefault();
                 mostrarToast(erros);
             }
         });
@@ -213,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnLogin = document.getElementById('btn-login')
 
     if (formLogin) {
-        formLogin.addEventListener("submit", function (event) {
+        formLogin.addEventListener("submit", event => {
 
             const erros = [];
 
@@ -245,27 +246,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const senha = document.getElementById('login-senha')
     const showpass = document.getElementById('btn-showpass')
     const img = document.getElementById('png-showpass')
-
-    showpass.addEventListener("click", function () {
-        if (senha.type === 'password') {
-            senha.type = 'text'
-            img.src = '/static/png/hidepassword.png'
-        } else {senha.type = 'password'
-                img.src = '/static/png/showpassword.png'
-        }
-    })
+    if (showpass) {
+        showpass.addEventListener("click", () => {
+            if (senha.type === 'password') {
+                senha.type = 'text'
+                img.src = '/static/png/hidepassword.png'
+            } else {senha.type = 'password'
+                    img.src = '/static/png/showpassword.png'
+            }
+        });
+    }
 
     const erroValidacao = document.getElementById("erro-validation");
 
     if (erroValidacao) {
+        console.log("erro funcionou kkkkk:", erroValidacao.dataset.erro);
         mostrarToast([erroValidacao.dataset.erro]);
     }
-
 
     const senha_validacao = document.querySelector(".form-validation");
 
     if (senha_validacao) {
-        senha_validacao.addEventListener("submit", function (event) {
+        senha_validacao.addEventListener("submit", event => {
 
             const erros = [];
 
