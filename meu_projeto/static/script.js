@@ -63,13 +63,15 @@ document.addEventListener("DOMContentLoaded", function () {
         // id="nome" existe no form de cadastro mas no form de edicao o id e id="edit-nome"
 
         const campoIdade =form.querySelector('[name="idade"]');
+        const valorIdade = campoIdade.value.trim();
         if (campoIdade === "") {
             erros.push('A idade nao pode estar vazia.')
         } else {
-            const idade =parseInt(campoIdade, 10);
+            const idade =parseInt(valorIdade, 10);
             if (isNaN(idade) || idade <= 0 || idade > 120) {
                 erros.push("Informe uma idade válida (entre 1 e 120).");
-        }}
+            }
+        }
         
 
         const email = form.querySelector('[name="email"]').value;
