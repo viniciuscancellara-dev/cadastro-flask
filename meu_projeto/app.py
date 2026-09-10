@@ -122,6 +122,8 @@ def login():
 
         session['logado'] = True
 
+        session.permanent = False
+
         return redirect("/cadastrar")
 
     return render_template("login.html")
@@ -151,7 +153,7 @@ def cadastro():
         
         #validacao idade
         try:
-            idade = int(request.form["idade"])
+            idade = int(request.form.get("idade"))
         except ValueError:
             return "idade invalida!"
         if idade <= 0 or idade > 120:
