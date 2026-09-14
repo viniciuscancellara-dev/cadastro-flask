@@ -16,9 +16,38 @@
                 <input name="password" type="password" id="password" placeholder="Digite sua senha">
 
                 <button class="enviar-validacao" type="submit" id="button-password"> Enviar Validacao </button>
+                <form action="{{ url_for('editar') }}" method="POST">
+                    <a href="{{ url_for('mostrar_banco') }}">
+                        <button type="button" id="btn-cancelar">Voltar</button>
+                    </a>
+                </form>
             </form>
         </div>
     </div>
+
+    <div class="painel-excluir">
+        <h2 class="titulo-excluir">EXCLUIR CADASTRO</h2>
+
+        <form id="form-Excluir" action="/enviar-validacao" method="POST">
+
+            <label for="select-excluir" class="aluno">Usuario:</label>
+            <select id="select-excluir" class="selecao-excluir" name="id-excluir" required>
+                <option value="" selected disabled>Escolha um usuario cadastrado</option>
+                {% for aluno in tabela %}
+                    <option value="{{ aluno[0] }}">{{ aluno[1] }} ({{ aluno[3] }})</option>
+                {% endfor %}
+            </select>
+            
+            <div class="botoes-excluirId">
+                <button type="submit" id="botao-salvar-excluir">Excluir</button>
+                <button type="button" id="botao-cancelar-excluir">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    {% if sucesso %}
+        <div id="senha-validada"></div>
+    {% endif %}
     
     {% if erro %}
         <div id="erro-validation" data-erro="{{ erro }}"></div>

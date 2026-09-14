@@ -1,7 +1,7 @@
 import re
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 import os
 from dotenv import load_dotenv
 from functools import wraps
@@ -39,9 +39,10 @@ def start_db():
     config = cursor.fetchone()
 
     if config is None:
-        hash = os.getenv("SENHA_HASH")
+        hash = os.getenv("DELETE_HASH")
         if not hash:
-            raise ValueError('erro: a variavel hash (env) nao foi carregada corretamente!')
+            raise ValueError('erro: a variavel hash (env) nao foi carregada corretamente!') 
+           
         senha_hash = generate_password_hash(hash)
 
         cursor.execute("""
@@ -209,11 +210,11 @@ def cadastro():
 
         except sqlite3.IntegrityError:
             conexao.close()
-            return 'Esse email ja esta sendo usado!'
+            return render_template("index.html", emailError=True)
         cursor.execute("SELECT * FROM usuarios")
                
         resultados = cursor.fetchall()
-        print(resultados)
+        print(resultados, flush=True)
         conexao.close()
         
 
@@ -333,38 +334,65 @@ def editar():
 
     conexao.close()
 
-    return redirect("/banco")
+    return redirect(url_for("mostrar_banco"))
 
 @app.route("/enviar-validacao", methods =['GET','POST'])
 @login_required
 def validacao():
+    if request.method == "GET":
+        conexao = sqlite3.connect(CAMINHO_BANCO)
+        cursor = conexao.cursor()
+
+        cursor.execute("SELECT * FROM usuarios ")
+        resultados = cursor.fetchall()
+        print(resultados)
+        
+        conexao.close()
+
+        return render_template("excluir-banco-validacao.html", tabela = resultados,sucesso = session.pop("mostrar_sucesso", False))
+    
     if request.method == "POST":
 
         conexao = sqlite3.connect(CAMINHO_BANCO)
         cursor = conexao.cursor()
 
-        cursor.execute("SELECT password FROM config")
-        result = cursor.fetchone()
+        if "password" in request.form:
+            cursor.execute("SELECT password FROM config")
+            result = cursor.fetchone()
 
-        if not result:
-            conexao.close()
-            return 'ERRO: senha nao gerada!'
+            if not result:
+                conexao.close()
+                return 'ERRO: senha nao gerada!'
 
-        password_hash = result[0]
+       
+            password_hash = result[0]
 
-        password = request.form.get("password")
+            password = request.form.get("password")
 
-        if check_password_hash(password_hash, password): 
-            cursor.execute("DELETE FROM usuarios")
-            conexao.commit()
-            conexao.close()
-
-            return redirect("/banco")
+            if check_password_hash(password_hash, password):
+                session["pode_excluir_usuario"] = True
+                session["mostrar_sucesso"] = True
+            
+                return redirect("/enviar-validacao")
+            else:
+                conexao.close()
+                return render_template("excluir-banco-validacao.html", erro="Senha invalida.")
         
-        else:
-            conexao.close()
-            return render_template("excluir-banco-validacao.html", erro="Senha invalida.")
-        
+        if "id-excluir" in request.form:
+            idExcluir = request.form.get("id-excluir")
+
+            if "pode_excluir_usuario" in session:
+                cursor.execute("DELETE FROM usuarios WHERE id = ?",(idExcluir,))
+                conexao.commit()
+                conexao.close()
+
+                session.pop("pode_excluir_usuario", None)
+
+                return redirect("/banco")
+            else:
+                conexao.close()
+                return render_template("excluir-banco-validacao.html")
+            
     return render_template("excluir-banco-validacao.html")
 
 if __name__ == '__main__':
