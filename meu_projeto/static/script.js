@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 //so executa dps q o html inteiro carregar
 
     // Precisam bater com as regex do lado do Python app.py
@@ -72,7 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 erros.push("Informe uma idade válida (entre 1 e 120).");
             }
         }
-        
 
         const email = form.querySelector('[name="email"]').value;
         if (!EMAIL_REGEX.test(email)) {
@@ -108,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!SENHA_REGEX.test(senha)) {
                 erros.push("A senha precisa ter 8+ caracteres, com maiúscula, minúscula, número e símbolo.");
             }
-
+    
             if (erros.length > 0) {
                 event.preventDefault();
                 mostrarToast(erros);
@@ -116,9 +115,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // =========================================================
     // PAGINA BANCO: ABRIR/FECHAR PAINEL DE EDICAO
-    // =========================================================
+    
     const botaoEditar = document.getElementById("botao-editar");
     const containerTabela = document.querySelector(".container-tabela");
     const containerEditar = document.querySelector(".container-editar");
@@ -204,7 +202,45 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    //painel-excluir
 
+    const senhaValidada = document.getElementById("senha-validada");
+    const containerValidacao = document.querySelector(".input-validacao");
+    const containerExcluir = document.querySelector(".painel-excluir");
+    const botaoCancelarExcluir = document.getElementById("botao-cancelar-excluir")
+    const formExcluir = document.getElementById("form-Excluir")
+    const selectExcluir = document.getElementById("select-excluir")
+
+    console.log(containerValidacao)
+    console.log(containerExcluir);
+
+    if(senhaValidada) {
+        console.log("Validou")
+        containerValidacao.style.display = "none";
+        containerExcluir.style.display = "block";
+    }
+
+    if (selectExcluir && formExcluir) {
+        formExcluir.addEventListener("submit", (event) => {
+            if (!idSelecionado)return;
+
+            const idSelecionado = selectExcluir.value
+            
+        })
+    }
+
+    if (botaoCancelarExcluir && formExcluir) {
+        botaoCancelarExcluir.addEventListener("click", (event) =>{
+            console.log("clicou")
+            console.log(formExcluir)
+            console.log(containerExcluir)
+            console.log(containerValidacao)
+            formExcluir.reset()
+            containerExcluir.style.display = "none"
+            containerValidacao.style.display = "block"
+        })
+    }
+    //login
 
     const erroLogin = document.getElementById("erro-login");
 
