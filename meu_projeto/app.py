@@ -99,7 +99,12 @@ def login_required(func):
 
 @app.errorhandler(404)
 def Page404(erro):
-    return render_template('404.html'),404
+    if 'logado' in session:
+        return render_template('404.html',
+                               logado=True),404
+    else:
+        return render_template('404.html',
+                               logado=False),404
 
 @app.route("/", methods=["GET", "POST"])
 def login():

@@ -10,8 +10,11 @@
     <h1 class="paginaError">404</h1>
     <h2 class="paginaError">Página não encontrada</h2>
     <p class="paginaError">A pagina que voce tentou acessar nao existe!</p>
-
-    <a href="{{ url_for('login') }}" id="btn-voltar-404">Voltar</a>
+    {% if logado %}
+        <a href="{{ url_for('inicio') }}" id="btn-voltar-404">Voltar</a>
+    {% else %}
+        <a href="{{ url_for('login') }}" id="btn-voltar-404">Voltar</a>
+    {% endif %}
 
 </body>
 </html>
