@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.appendChild(container);
         }
 
-        //aqui monta o cartaozinho: cria uma div class="toast" dentro dela uma ul
+        //aqui monta o cartaozinho cria uma div class="toast" dentro dela uma ul
         //e pra cada mensagem do array cria um li
 
         const toast = document.createElement("div");
@@ -279,7 +279,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    //vizualizar senha do login
+    //vizualiza a senha do login
 
     const senha = document.getElementById('login-senha')
     const showpass = document.getElementById('btn-showpass')
