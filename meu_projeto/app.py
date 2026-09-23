@@ -97,6 +97,10 @@ def login_required(func):
         return func(*args, **kwargs)
     return wrapper
 
+@app.errorhandler(404)
+def Page404(erro):
+    return render_template('404.html'),404
+
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":

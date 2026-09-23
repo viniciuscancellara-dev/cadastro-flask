@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página não encontrada</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css')}}"
+</head>
+<body class="error-page">
+    <h1 class="paginaError">404</h1>
+    <h2 class="paginaError">Página não encontrada</h2>
+    <p class="paginaError">A pagina que voce tentou acessar nao existe!</p>
+
+    <a href="{{ url_for('login') }}" id="btn-voltar-404">Voltar</a>
+
+</body>
+</html>

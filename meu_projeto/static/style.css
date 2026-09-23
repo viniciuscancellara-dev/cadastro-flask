@@ -1,7 +1,3 @@
-/* =========================================================
-   ESTILO GERAL
-   ========================================================= */
-
 * {
     box-sizing: border-box;
 }
@@ -11,7 +7,7 @@ body {
     margin: 0;
     min-height: 100%;
 }
-
+.error-page,
 .cadastro,
 .inicio,
 .validacao-senha,
@@ -29,9 +25,7 @@ body {
 }
 
 
-/* =========================================================
-   LOGIN
-   ========================================================= */
+
 
 .container-login {
     display: flex;
@@ -93,25 +87,34 @@ body {
 }
 
 #btn-login {
-    width: 100%;
-    padding: 20px 30px;
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 190px;
+    margin-top: 24px;
+    padding: 16px 35px;
     font-family: "Bebas Neue", sans-serif;
-    font-size: 40px;
+    font-size: 34px;
     color: #b8adff;
+    text-decoration: none;
     background-color: transparent;
     border: 2px solid #7165d8;
     border-radius: 10px;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: 0.2s ease
 }
 
 #btn-login:hover {
     background-color: rgba(125, 125, 128, 0.438);
     border-color: #333055;
     color: rgba(43, 24, 39, 0.774);
+    transform: translateY(-2px);
 }
 
-/*botao show pass */
+
 
 .campo-senha {
     position: relative;
@@ -140,9 +143,7 @@ body {
 }
 
 
-/* =========================================================
-   TITULO
-   ========================================================= */
+
 
 #titulo {
     margin: 0;
@@ -154,9 +155,7 @@ body {
 }
 
 
-/* =========================================================
-   CADASTRO
-   ========================================================= */
+
 
 .cadastro {
     padding: 40px;
@@ -340,9 +339,7 @@ body {
     color: rgba(141, 93, 180, 0.514); 
 }
 
-/* =========================================================
-   BOTOES
-   ========================================================= */
+
 
 #botao-editar,
 #botao-delid,
@@ -356,15 +353,24 @@ body {
 #botao-salvar-excluir,
 #botao-cancelar-excluir,
 .enviar_cadastro {
-    padding: 25px 35px;
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 190px;
+    margin-top: 24px;
+    padding: 16px 35px;
     font-family: "Bebas Neue", sans-serif;
-    font-size: 40px;
+    font-size: 34px;
     color: #b8adff;
+    text-decoration: none;
     background-color: transparent;
     border: 2px solid #7165d8;
     border-radius: 10px;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: 0.2s ease
 }
 
 #botao-editar:hover,
@@ -382,6 +388,7 @@ body {
     background-color: rgba(113, 101, 216, 0.18);
     border-color: #9b91ff;
     color: white;
+    transform: translateY(-2px);
 }
 
 #button-password,
@@ -399,9 +406,7 @@ body {
 }
 
 
-/* =========================================================
-   PAGINA INICIAL
-   ========================================================= */
+
 
 .container-botoes {
     display: flex;
@@ -420,9 +425,7 @@ body {
 }
 
 
-/* =========================================================
-   TABELA / BANCO
-   ========================================================= */
+
 
 .container-tabela,
 .painel-editar {
@@ -484,9 +487,7 @@ tr:hover {
 }
 
 
-/* =========================================================
-   PAINEL DE EDICAO
-   ========================================================= */
+
 
 .painel-editar {
     display: none;
@@ -506,12 +507,6 @@ tr:hover {
     margin-top: 30px;
 }
 
-/* =========================================================
-    PAINEL EXCLUIR
-    ======================================================== */
-
-/* Mantidos os estilos existentes do painel de exclusão.
-   Apenas adicionando o visual glassmorphism. */
 .painel-excluir {
     display: none;
     text-align: center;
@@ -548,9 +543,7 @@ tr:hover {
     margin-top: 30px;
 }
 
-/* =========================================================
-   TOAST
-   ========================================================= */
+
 
 #toast-container {
     position: fixed;
@@ -626,9 +619,7 @@ tr:hover {
 }
 
 
-/* =========================================================
-   VALIDACAO DE SENHA
-   ========================================================= */
+
 
 .container-validacao {
     display: flex;
@@ -684,9 +675,7 @@ tr:hover {
 }
 
 
-/* =========================================================
-   RESPONSIVIDADE — TABLET
-   ========================================================= */
+
 
 @media (max-width: 1024px) {
 
@@ -710,20 +699,18 @@ tr:hover {
 }
 
 
-/* =========================================================
-   RESPONSIVIDADE — CELULAR
-   ========================================================= */
+
 
 @media (max-width: 768px) {
 
-    /* ---------- GERAL ---------- */
+    
 
     #titulo {
         font-size: 45px;
     }
 
 
-    /* ---------- LOGIN ---------- */
+    
 
     .container-login {
         flex-direction: column;
@@ -763,7 +750,7 @@ tr:hover {
     }
 
 
-    /* ---------- CADASTRO ---------- */
+    
 
     .cadastro {
         padding: 20px;
@@ -822,7 +809,7 @@ tr:hover {
     }
 
 
-    /* ---------- BOTOES ---------- */
+    
 
     #botao-editar,
     #botao-delid,
@@ -843,7 +830,7 @@ tr:hover {
     }
 
 
-    /* ---------- PAGINA INICIAL ---------- */
+    
 
     .container-botoes,
     .container-editar {
@@ -859,7 +846,7 @@ tr:hover {
     }
 
 
-    /* ---------- TABELA ---------- */
+    
 
     .container-tabela {
         width: calc(100% - 30px);
@@ -884,7 +871,7 @@ tr:hover {
     }
 
 
-    /* ---------- PAINEL DE EDICAO ---------- */
+    
 
     .painel-editar {
         width: calc(100% - 30px);
@@ -896,7 +883,7 @@ tr:hover {
         gap: 15px;
     }
 
-    /* ---------- PAINEL EXCLUIR ---------- */
+    
 
     .painel-excluir {
         width: calc(100% - 30px);
@@ -909,7 +896,7 @@ tr:hover {
     }
 
 
-    /* ---------- VALIDACAO ---------- */
+    
 
     .input-validacao {
         width: 100%;
@@ -925,7 +912,7 @@ tr:hover {
     }
 
 
-    /* ---------- TOAST ---------- */
+    
 
     #toast-container {
         top: 12px;
@@ -936,9 +923,7 @@ tr:hover {
 }
 
 
-/* =========================================================
-   RESPONSIVIDADE — CELULARES PEQUENOS
-   ========================================================= */
+
 
 @media (max-width: 420px) {
 
@@ -1018,5 +1003,159 @@ tr:hover {
 
     .toast ul {
         font-size: 17px;
+    }
+}
+
+
+.error-page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px 20px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.error-page::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(700px, calc(100% - 40px));
+    height: min(370px, calc(100vh - 60px));
+    transform: translate(-50%, -50%);
+    background: linear-gradient(
+        135deg,
+        rgba(113, 91, 170, 0.34),
+        rgba(65, 88, 155, 0.36)
+    );
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 18px;
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.16);
+}
+
+.paginaError {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-family: "Bebas Neue", sans-serif;
+    color: #9a87c7dc;
+}
+
+h1.paginaError {
+    margin-bottom: 0;
+    font-size: clamp(90px, 11vw, 150px);
+    line-height: 0.9;
+}
+
+h2.paginaError {
+    margin-top: 10px;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1;
+}
+
+p.paginaError {
+    max-width: 560px;
+    margin-top: 10px;
+    color: #9a87c7dc;
+    font-family: "Red Hat Display", sans-serif;
+    font-size: clamp(16px, 2vw, 21px);
+}
+
+#btn-voltar-404 {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 190px;
+    margin-top: 24px;
+    padding: 16px 35px;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 34px;
+    color: #b8adff;
+    text-decoration: none;
+    background-color: transparent;
+    border: 2px solid #7165d8;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: 0.2s ease;
+}
+
+#btn-voltar-404:hover {
+    background-color: rgba(113, 101, 216, 0.18);
+    border-color: #9b91ff;
+    color: white;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .error-page {
+        padding: 25px 15px;
+    }
+
+    .error-page::before {
+        width: calc(100% - 30px);
+        height: min(380px, calc(100vh - 40px));
+    }
+
+    h1.paginaError {
+        font-size: clamp(75px, 22vw, 115px);
+    }
+
+    h2.paginaError {
+        font-size: clamp(29px, 8vw, 42px);
+    }
+
+    p.paginaError {
+        max-width: 85%;
+        font-size: 17px;
+    }
+
+    #btn-voltar-404 {
+        width: min(100%, 300px);
+        margin-top: 20px;
+        padding: 15px 25px;
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 420px) {
+    .error-page {
+        padding: 20px 10px;
+    }
+
+    .error-page::before {
+        width: calc(100% - 20px);
+        height: min(350px, calc(100vh - 30px));
+    }
+
+    h1.paginaError {
+        font-size: 82px;
+    }
+
+    h2.paginaError {
+        font-size: 29px;
+    }
+
+    p.paginaError {
+        max-width: 90%;
+        font-size: 15px;
+    }
+
+    #btn-voltar-404 {
+        min-width: 160px;
+        padding: 13px 22px;
+        font-size: 27px;
     }
 }
