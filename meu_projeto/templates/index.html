@@ -33,35 +33,38 @@
             <textarea id="observacao" name="observacao" placeholder="Digite a observação do aluno (opcional):"></textarea>
         </div>
 
-        <h2> LINGUAGENS CONHECIDAS: </h2>
-        <h3> | Selecione pelo menos uma: |</h3>
-
-        <input type="checkbox" class="check" id="python" name="linguagem" value="python">
-        <label for="python" class="linguagem">Python</label>
-
-        <input type="checkbox" class="check" id="java" name="linguagem" value="java">
-        <label for="java" class="linguagem">Java</label>
-
-        <input type="checkbox" class="check" id="js" name="linguagem" value="js">
-        <label for="js" class="linguagem">Java.Script</label>
-
-        <input type="checkbox" class="check" id="html" name="linguagem" value="html">
-        <label for="html" class="linguagem">HTML</label>
-
-        <input type="checkbox" class="check" id="css" name="linguagem" value="css">
-        <label for="css" class="linguagem">CSS</label>
-
-        <h2> TURNO: </h2>
+        <h2> LINGUAGENS: </h2>
         
-        <input type="radio" id="manha" name="turno" value="manha" >
-        <label for="manha" class="turno">Manhã</label>
+        <fieldset style="width: fit-content;">
+            <legend style="font-size: 35px; color:orange">| Selecione pelo menos uma: |</legend>
 
-        <input type="radio" id="tarde" name="turno" value="tarde" >
-        <label for="tarde" class="turno">Tarde</label>
+            <input type="checkbox" class="check" id="python" name="linguagem" value="python">
+            <label for="python" class="linguagem">Python</label>
 
-        <input type="radio" id="noite" name="turno" value="noite" >
-        <label for="noite" class="turno">Noite</label>
+            <input type="checkbox" class="check" id="java" name="linguagem" value="java">
+            <label for="java" class="linguagem">Java</label>
 
+            <input type="checkbox" class="check" id="js" name="linguagem" value="js">
+            <label for="js" class="linguagem">JS</label>
+
+            <input type="checkbox" class="check" id="html" name="linguagem" value="html">
+            <label for="html" class="linguagem">HTML</label>
+
+            <input type="checkbox" class="check" id="css" name="linguagem" value="css">
+            <label for="css" class="linguagem">CSS</label>
+
+            <h2> TURNO: </h2>
+            
+            <input type="radio" id="manha" name="turno" value="manha" >
+            <label for="manha" class="turno" style="display: block;">Manhã</label>
+
+            <input type="radio" id="tarde" name="turno" value="tarde" >
+            <label for="tarde" class="turno" style="display: block;">Tarde</label>
+
+            <input type="radio" id="noite" name="turno" value="noite" >
+            <label for="noite" class="turno" style="display: block;">Noite</label>
+
+        </fieldset>
         <h2> ESTADO: </h2>
 
         <select id="estado" class="selecao" name="estado" >
