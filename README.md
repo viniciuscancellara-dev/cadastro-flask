@@ -77,7 +77,7 @@ O projeto foi desenvolvido como prática de desenvolvimento web, reunindo concei
 * Manipulação de `input`, `change`, `click` e `submit`.
 * Feedback visual durante o preenchimento e envio dos formulários.
 * Controle da exibição dos painéis de validação, edição e exclusão.
-
+* Post via `fetch`().
 ---
 
 ## 🛠️ Tecnologias utilizadas
@@ -310,7 +310,8 @@ Durante o desenvolvimento deste projeto foram praticados diversos conceitos de d
 * Manipulação de elementos HTML
 * Eventos `click`, `change` e `submit`
 * Controle de interfaces através do DOM
-
+* `fetch()`
+* `ASYNC`, `AWAIT`.
 ---
 
 ## 🎯 Objetivo do projeto
@@ -342,53 +343,11 @@ Além disso, o projeto permitiu compreender na prática o funcionamento de um si
 Algumas funcionalidades e melhorias que podem ser adicionadas futuramente:
 
 * Sistema de usuários com diferentes níveis de permissão.
-* Paginação dos registros.
 * Pesquisa e filtros de alunos.
 * Separação do projeto em diferentes módulos Python.
-* Melhorias na API e comunicação assíncrona.
-* Substituição gradual do envio tradicional de formulários HTML por **Fetch API**.
-* Utilização de `async/await` para requisições assíncronas com JavaScript.
 * Atualização de partes da página sem necessidade de recarregar completamente o navegador.
-* Melhor tratamento das respostas do Flask no JavaScript.
 * Testes automatizados.
-* Melhorias adicionais de segurança.
 * Proteção contra CSRF.
-* Melhor organização e reutilização do código JavaScript.
-* Deploy em um servidor.
-
-### 📡 Futuras melhorias na comunicação Front-end / Back-end
-
-Uma evolução planejada do projeto é substituir alguns envios tradicionais de formulários:
-
-```text
-HTML Form
-   ↓
-POST
-   ↓
-Flask
-   ↓
-Nova página
-```
-
-por uma comunicação assíncrona utilizando **Fetch API** e `async/await`:
-
-```text
-JavaScript
-   ↓
-fetch()
-   ↓
-Flask
-   ↓
-Resposta
-   ↓
-JavaScript
-   ↓
-Atualização do DOM
-```
-
-Isso permitirá realizar operações como cadastro, edição e exclusão sem necessariamente recarregar a página inteira, tornando a interface mais dinâmica.
-
----
 
 ## 👤 Autor
 

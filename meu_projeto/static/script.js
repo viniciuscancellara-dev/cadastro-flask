@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Precisam bater com as regex do lado do Python app.py
     const EMAIL_REGEX = /^[\w.-]+@[\w.-]+\.\w+$/;
     const SENHA_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\-_@!#$%^&*()=+])[A-Za-z\d\-_@!#$%^&*()=+]{8,}$/;
+    const NOME_REGEX = /^[A-Za-zÀ-ÿ\s]+$/;
 
     //TOAST
 
@@ -55,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //  com os mesmos name  enteo a mesma funcao serve pros dois
 
         const nome = form.querySelector('[name="nome"]').value;
-        if (nome.trim() === "") {
+        if (nome.trim() === "" || !NOME_REGEX.test(nome)) {
             erros.push("O nome não pode estar vazio.");
         }
 
@@ -100,7 +101,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const formCadastro = document.querySelector(".form-cadastro");
     if (formCadastro) {
-        formCadastro.addEventListener("submit", event => {
+        formCadastro.addEventListener("submit",async event => {
+            event.preventDefault()
+            
+           
+
             const erros = validarCamposComuns(formCadastro);
 
             const senha = formCadastro.querySelector('[name="senha"]').value;
@@ -111,6 +116,16 @@ document.addEventListener("DOMContentLoaded", () => {
             if (erros.length > 0) {
                 event.preventDefault();
                 mostrarToast(erros);
+                return;
+            }
+
+            const dados = await enviarForm(formCadastro);
+            if(!dados.sucesso){
+                mostrarToast([dados.mensagem])
+            }
+
+            if (dados.sucesso) {
+                window.location.href = dados.redirect
             }
         });
     }
@@ -187,8 +202,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // validacao antes de salvar a edicao senha nao entra aqui
+    //salvando via fetch
+
     if (formEditar) {
-        formEditar.addEventListener("submit", event => {
+        formEditar.addEventListener("submit",async event => {
+            event.preventDefault()
+            
             const erros = validarCamposComuns(formEditar);
 
             if (!seletorUsuario.value) {
@@ -198,6 +217,17 @@ document.addEventListener("DOMContentLoaded", () => {
             if (erros.length > 0) {
                 event.preventDefault();
                 mostrarToast(erros);
+                return;
+            }
+            const dados = await enviarForm(formEditar);
+            if(!dados) {
+                mostrarToast([dados.mensagem])
+            }
+            if(dados) {
+                if (containerTabela) containerTabela.style.display = "block";
+                if (containerEditar) containerEditar.style.display = "flex";
+                painelEditar.style.display = "none";
+                mostrarToast([dados.mensagem])
             }
         });
     }
@@ -210,9 +240,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const botaoCancelarExcluir = document.getElementById("botao-cancelar-excluir")
     const formExcluir = document.getElementById("form-Excluir")
     const selectExcluir = document.getElementById("select-excluir")
-
-    console.log(containerValidacao)
-    console.log(containerExcluir);
 
     if(senhaValidada) {
         console.log("Validou")
@@ -242,17 +269,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     //login
 
-    const erroLogin = document.getElementById("erro-login");
-
-    if (erroLogin) {
-        mostrarToast([erroLogin.dataset.erro]);
-    }
+    
 
     const formLogin = document.querySelector(".form-login");
     const btnLogin = document.getElementById('btn-login')
 
     if (formLogin) {
-        formLogin.addEventListener("submit", event => {
+        formLogin.addEventListener("submit", async event => {
+            event.preventDefault()
+            console.log("SUBMIT LOLGIN")
+
+            const dados = await enviarForm(formLogin)
 
             const erros = [];
 
@@ -272,10 +299,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 mostrarToast(erros);
                 return;
             }
-            
+
             btnLogin.textContent = 'Entrando. . .';
             btnLogin.disabled = true;
+            
+            
 
+            if(!dados.sucesso) {
+                mostrarToast([dados.mensagem])
+                btnLogin.textContent = 'log in';
+                btnLogin.disabled = false;
+                return;
+            }
+
+            if(dados.sucesso) {
+                console.log("Login certo")
+                window.location.href = dados.redirect;
+            
+            }
         });
     }
 
@@ -318,10 +359,37 @@ document.addEventListener("DOMContentLoaded", () => {
             if (erros.length > 0) {
                 event.preventDefault();
                 mostrarToast(erros);
+                return;
             }
+
+            if (!dados){
+                mostrarToast([dados.mensagem])
+            }
+            if(dados){
+                window.location.href = dados.redirect
+                mostrarToast([dados.mensagem])
+            } 
         });
     }
-});
+
+    //fetch 
+
+
+    const form = document.querySelectorAll("form")
+    async function enviarForm(form) {      
+
+            const resposta = await fetch(form.action, {
+                
+            method: "POST",
+            body: new FormData(form)
+            
+            });
+            const dados = await resposta.json();
+            
+
+        return dados;
+        }
+});  
 
 // domcontentloaded
 // espera o html carregar antes de executar o javascript
