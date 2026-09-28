@@ -13,7 +13,7 @@
 
     <h1 id="titulo">SISTEMA DE CADASTRO</h1>
 
-    <form action="/cadastrar" method="post" class="form-cadastro">
+    <form action="/cadastrar" class="form-cadastro">
         <h2 id="cadastro"> CADASTRAR </h2>
 
         <label for="nome" class="aluno">Aluno:</label>
@@ -91,10 +91,6 @@
             <a href="{{url_for('inicio')}}" id="pular">Pular</a>
         </div>
     </div>
-
-    {% if emailError %}
-        <div id="emailError"></div>
-    {% endif %}
 
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </body>

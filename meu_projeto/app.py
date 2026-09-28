@@ -1,7 +1,7 @@
 import re
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, jsonify
 import os
 from dotenv import load_dotenv
 from functools import wraps
@@ -85,6 +85,7 @@ app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 EMAIL_REGEX = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 SENHA_REGEX = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\-_@!#$%^&*()=+])[A-Za-z\d\-_@!#$%^&*()=+]{8,}$'
+NOME_REGEX = r"^[A-Za-zÀ-ÿ\s]+$"
 estados_permitidos = ['sp','rj','mg','df','ba','ce','pr','pe']
 linguagens_permitidas = ['python','java','js','html','css']
 turnos_permitidos = ['manha','tarde','noite']
@@ -109,10 +110,10 @@ def Page404(erro):
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-
+        
         usuario_digitado = request.form["usuario"]
         senha_digitada = request.form["senha"]
-
+        print(request.form)
         conexao = sqlite3.connect(CAMINHO_BANCO)
         cursor = conexao.cursor()
 
@@ -125,16 +126,26 @@ def login():
         conexao.close()
 
         if usuario_digitado != user_banco:
-            return render_template("login.html",erro="Usuário ou senha incorretos!")
+            return jsonify ({
+                "sucesso": False,
+                "mensagem": "Usuário ou senha incorretos!"
+            })
 
         if not check_password_hash(hash_banco, senha_digitada):
-            return render_template("login.html",erro="Usuário ou senha incorretos!")
+            return jsonify ({
+                "sucesso": False,
+                "mensagem": "Usuário ou senha incorretos!"
+            })
 
         session['logado'] = True
 
         session.permanent = False
 
-        return redirect("/cadastrar")
+        return jsonify({
+            "sucesso":True,
+            "mensagem":"Login bem sucedido",
+            "redirect":"/inicio"
+        })
 
     return render_template("login.html")
 
@@ -148,7 +159,7 @@ def logout():
 @login_required
 def cadastro():
     if request.method =="POST":
-        nome = request.form["nome"]
+        nome = request.form.get("nome"," ").strip()
         email = request.form["email"]
         senha = request.form["senha"]
         observacao = request.form["observacao"]
@@ -158,46 +169,79 @@ def cadastro():
         
 
         #validacao njome
-        if nome.strip() =="":
-            return "nome invalido!"
+        if not re.fullmatch(r"^[A-Za-zÀ-ÿ -]+", nome):
+            return jsonify({
+                "sucesso":False,
+                "mensagem":"Nome invalido!"
+            })
         
         #validacao idade
         try:
             idade = int(request.form.get("idade"))
         except ValueError:
-            return "idade invalida!"
+            return jsonify({
+                "sucesso":False,
+                "mensagem":"Idade invalida"
+            })
         if idade <= 0 or idade > 120:
-            return "idade invalida!"
+            return jsonify({
+                "sucesso":False,
+                "mensagem":"Idade invalida"
+            })
         
         #validacao email
         if not re.match(EMAIL_REGEX,email):
-            return 'email invalido!'
+            return jsonify({
+                "sucesso":False,
+                "mensagem":"Email invalido!"
+            })
         
         #validar a senha
         if not re.match(SENHA_REGEX, senha):
-            return f'A senha deve conter:\nPelo menos uma letra minuscula(a/z)\nPelo menos uma letra maiuscula(A-Z)\nPelo menos um digito\nPelo menos um simbolo(@,#,&...)\nPelo menos 8 caracteres'
+            return ({
+                "sucesso":False,
+                "mensagem":"Senha invalida!"
+            })
         #validar obs
         if not observacao.strip():
             observacao = "Nenhuma observacao"
 
         #validar turno
         if not turno:
-            return 'Voce precisa selecionar um turno!'
+            return jsonify({
+                "sucesso":False,
+                "mensagem":"Insira um turno!"
+            })
         if turno not in turnos_permitidos:
-            return 'Turno invalido! (Turnos permitidos: Manha,Tarde,Noite)'
+            return jsonify({
+                "sucesso":False,
+                "mensagem":"Turno invalido!"
+            })
         
         #validar linguagens
         if not linguagens:
-            return 'voce deve escolher uma linguagem!'
+            return jsonify({
+                "sucesso":False,
+                "mensagem":"Escolha uma linguagem!"
+            })
         for linguagem in linguagens:
             if linguagem not in linguagens_permitidas:
-                return 'Voce deve escolher "Python" , "HTML" ou "CSS"'
+                return jsonify({
+                    "sucesso":False,
+                    "mensagem":"Escolha uma linguagem!"
+                })
 
         #validar estado
         if estado =='':
-            return 'selecione uma opcao!'
+            return jsonify({
+                "sucesso":False,
+                "mensagem":"Escolha um estado da lista"
+            })
         if estado not in estados_permitidos:
-            return 'selecione uma opcao na lista de selecao!'
+            return jsonify({
+                "sucesso":False,
+                "mensagem":"Escolha um estado da lista"
+            })
 
         #Integracao banco de dados 
 
@@ -219,7 +263,10 @@ def cadastro():
 
         except sqlite3.IntegrityError:
             conexao.close()
-            return render_template("index.html", emailError=True)
+            return jsonify({
+                "sucesso":False,
+                "mensagem": "Email ja cadastrado!"
+            })
         cursor.execute("SELECT * FROM usuarios")
                
         resultados = cursor.fetchall()
@@ -227,7 +274,10 @@ def cadastro():
         conexao.close()
         
 
-        return redirect("/inicio")
+        return jsonify({
+            "sucesso":True,
+            "redirect":"/inicio"
+        })
         
     return render_template("index.html")
 
@@ -297,7 +347,10 @@ def editar():
     #validacao email
     email = request.form.get("email", "")
     if not re.match(EMAIL_REGEX, email):
-        return 'email invalido!'
+        return jsonify({
+            "sucesso":False,
+            "mensagem":"Email invalido"
+        })
 
     #validar obs
     if not observacao.strip():
@@ -343,7 +396,10 @@ def editar():
 
     conexao.close()
 
-    return redirect(url_for("mostrar_banco"))
+    return jsonify({
+            "sucesso":True,
+            "mensagem":"Usuario editado com sucesso!",
+        })
 
 @app.route("/enviar-validacao", methods =['GET','POST'])
 @login_required
