@@ -32,7 +32,7 @@
         <form id="form-Excluir" action="/enviar-validacao" method="POST">
 
             <label for="select-excluir" class="aluno">Usuario:</label>
-            <select id="select-excluir" class="selecao-excluir" name="id-excluir" required>
+            <select id="select-excluir" class="selecao-excluir" name="id-excluir" required multiple>
                 <option value="" selected disabled>Escolha um usuario cadastrado</option>
                 {% for aluno in tabela %}
                     <option value="{{ aluno[0] }}">{{ aluno[1] }} ({{ aluno[3] }})</option>

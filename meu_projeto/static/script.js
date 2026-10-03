@@ -125,11 +125,26 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             if (dados.sucesso) {
+                console.log("1 - sucesso:", dados);
+    
+                sessionStorage.setItem("mensagem", dados.mensagem);
+                
+                console.log("2 - depois do set:", sessionStorage.getItem("mensagem"));
+                console.log("3 - redirect:", dados.redirect);
                 window.location.href = dados.redirect
             }
         });
     }
 
+    //mostrar mensagem guardada no session storage
+    console.log("antes do get")
+    const mensagem = sessionStorage.getItem("mensagem")
+    console.log("mensagem: ",mensagem)
+    if (mensagem){
+        console.log("VOU MOSTRAR TOAST")
+        mostrarToast([mensagem])
+        sessionStorage.removeItem("mensagem")
+    }
     // PAGINA BANCO: ABRIR/FECHAR PAINEL DE EDICAO
     
     const botaoEditar = document.getElementById("botao-editar");

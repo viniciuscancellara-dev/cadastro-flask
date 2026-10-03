@@ -276,7 +276,8 @@ def cadastro():
 
         return jsonify({
             "sucesso":True,
-            "redirect":"/inicio"
+            "mensagem":"Usuario cadastrado!",
+            "redirect":"/inicio",
         })
         
     return render_template("index.html")
