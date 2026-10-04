@@ -26,26 +26,16 @@
         </div>
     </div>
 
-    <div class="painel-excluir">
-        <h2 class="titulo-excluir">EXCLUIR CADASTRO</h2>
+    {% for aluno in tabela %}
+        <div class="card-aluno">
+            <p> {{ aluno[1] }} </p>
+            <div class="card-email"> {{ aluno[3] }} </div>
+        </div>
 
-        <form id="form-Excluir" action="/enviar-validacao" method="POST">
-
-            <label for="select-excluir" class="aluno">Usuario:</label>
-            <select id="select-excluir" class="selecao-excluir" name="id-excluir" required multiple>
-                <option value="" selected disabled>Escolha um usuario cadastrado</option>
-                {% for aluno in tabela %}
-                    <option value="{{ aluno[0] }}">{{ aluno[1] }} ({{ aluno[3] }})</option>
-                {% endfor %}
-            </select>
-            
-            <div class="botoes-excluirId">
-                <button type="submit" id="botao-salvar-excluir">Excluir</button>
-                <button type="button" id="botao-cancelar-excluir">Cancelar</button>
-            </div>
-        </form>
-    </div>
-
+        <button class="btn-excluir" data-id=" {{aluno[0]}}">
+            ❌
+        </button>
+    {% endfor %}
     {% if sucesso %}
         <div id="senha-validada"></div>
     {% endif %}

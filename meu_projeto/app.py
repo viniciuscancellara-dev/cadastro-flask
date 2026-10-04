@@ -428,7 +428,10 @@ def validacao():
 
             if not result:
                 conexao.close()
-                return 'ERRO: senha nao gerada!'
+                return jsonify ({
+                    "sucesso": False,
+                    "mensagem":"ERRO! Senha nao gerada!"
+                })
 
        
             password_hash = result[0]
@@ -438,7 +441,7 @@ def validacao():
             if check_password_hash(password_hash, password):
                 session["pode_excluir_usuario"] = True
                 session["mostrar_sucesso"] = True
-            
+    
                 return redirect("/enviar-validacao")
             else:
                 conexao.close()
@@ -446,13 +449,24 @@ def validacao():
         
         if "id-excluir" in request.form:
             idExcluir = request.form.get("id-excluir")
+         
+            print("Pode excluir:", "pode_excluir_usuario" in session)
 
             if "pode_excluir_usuario" in session:
-                cursor.execute("DELETE FROM usuarios WHERE id = ?",(idExcluir,))
+                try:
+                    cursor.execute(
+                        "DELETE FROM usuarios WHERE id = ?",
+                        (idExcluir,)
+                    )
+        
+                    print("Linhas deletadas:", cursor.rowcount)
+
+                except Exception as e:
+
+                    print("ERRO DELETE: ",e)
+
                 conexao.commit()
                 conexao.close()
-
-                session.pop("pode_excluir_usuario", None)
 
                 return redirect("/banco")
             else:

@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const senhaValidada = document.getElementById("senha-validada");
     const containerValidacao = document.querySelector(".input-validacao");
-    const containerExcluir = document.querySelector(".painel-excluir");
+    const containerExcluir = document.querySelector(".card-aluno");
     const botaoCancelarExcluir = document.getElementById("botao-cancelar-excluir")
     const formExcluir = document.getElementById("form-Excluir")
     const selectExcluir = document.getElementById("select-excluir")
@@ -387,10 +387,32 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    //excluir id
+
+    const botoesExcluir = document.querySelectorAll(".btn-excluir");
+
+    botoesExcluir.forEach(botao => {
+        botao.addEventListener("click", async () => {
+            const id = botao.dataset.id
+            console.log(id);
+            console.log("ENVIANDO ID:", id)
+
+            const formData = new FormData()
+            formData.append("id-excluir", id)
+
+            console.log("FORMDATA:", formData.get("id-excluir"))
+
+            const resposta = await fetch("/enviar-validacao", {
+                method: "POST",
+                body: formData
+            })
+
+            console.log("RESPOSTA:", resposta)
+        })
+    });
+
     //fetch 
 
-
-    const form = document.querySelectorAll("form")
     async function enviarForm(form) {      
 
             const resposta = await fetch(form.action, {
