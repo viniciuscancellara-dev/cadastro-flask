@@ -618,7 +618,11 @@ tr:hover {
     }
 }
 
-
+#card-aluno,
+#card-email,
+#btn-excluir {
+    display:none;
+}
 
 
 .container-validacao {
