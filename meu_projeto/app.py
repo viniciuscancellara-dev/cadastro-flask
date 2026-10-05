@@ -113,7 +113,7 @@ def login():
         
         usuario_digitado = request.form["usuario"]
         senha_digitada = request.form["senha"]
-        print(request.form)
+        
         conexao = sqlite3.connect(CAMINHO_BANCO)
         cursor = conexao.cursor()
 
@@ -138,6 +138,7 @@ def login():
             })
 
         session['logado'] = True
+        session["usuario"] = usuario_digitado
 
         session.permanent = False
 
@@ -402,78 +403,99 @@ def editar():
             "mensagem":"Usuario editado com sucesso!",
         })
 
-@app.route("/enviar-validacao", methods =['GET','POST'])
+@app.route("/enviar-validacao", methods=["GET", "POST"])
 @login_required
 def validacao():
     if request.method == "GET":
         conexao = sqlite3.connect(CAMINHO_BANCO)
         cursor = conexao.cursor()
 
-        cursor.execute("SELECT * FROM usuarios ")
+        cursor.execute("SELECT * FROM usuarios")
         resultados = cursor.fetchall()
-        print(resultados)
-        
+
         conexao.close()
 
-        return render_template("excluir-banco-validacao.html", tabela = resultados,sucesso = session.pop("mostrar_sucesso", False))
-    
+        return render_template("excluir-banco-validacao.html",tabela=resultados)
+
+    conexao = sqlite3.connect(CAMINHO_BANCO)
+    cursor = conexao.cursor()
     if request.method == "POST":
+        try:
+            if "password" in request.form:
+                cursor.execute("SELECT password FROM config")
+                result = cursor.fetchone()
 
-        conexao = sqlite3.connect(CAMINHO_BANCO)
-        cursor = conexao.cursor()
+                if not result:
+                    return jsonify({
+                        "sucesso": False,
+                        "mensagem": "ERRO! Senha nao gerada!"
+                    })
 
-        if "password" in request.form:
-            cursor.execute("SELECT password FROM config")
-            result = cursor.fetchone()
+                password_hash = result[0]
+                password = request.form.get("password")
 
-            if not result:
-                conexao.close()
-                return jsonify ({
+                if check_password_hash(password_hash, password):
+                    session["pode_excluir_usuario"] = True
+
+                    return jsonify({
+                        "sucesso": True
+                    })
+
+                return jsonify({
                     "sucesso": False,
-                    "mensagem":"ERRO! Senha nao gerada!"
+                    "mensagem": "Senha invalida."
                 })
 
-       
-            password_hash = result[0]
+            if "id-excluir" in request.form:
+                id_excluir = request.form.get("id-excluir", "").strip()
 
-            password = request.form.get("password")
+                if "pode_excluir_usuario" not in session:
+                    return jsonify({
+                        "sucesso": False,
+                        "mensagem": "Validacao necessaria."
+                    }), 403
 
-            if check_password_hash(password_hash, password):
-                session["pode_excluir_usuario"] = True
-                session["mostrar_sucesso"] = True
-    
-                return redirect("/enviar-validacao")
-            else:
-                conexao.close()
-                return render_template("excluir-banco-validacao.html", erro="Senha invalida.")
-        
-        if "id-excluir" in request.form:
-            idExcluir = request.form.get("id-excluir")
-         
-            print("Pode excluir:", "pode_excluir_usuario" in session)
+                if not id_excluir:
+                    return jsonify({
+                        "sucesso": False,
+                        "mensagem": "ID do usuario nao informado."
+                    }), 400
 
-            if "pode_excluir_usuario" in session:
-                try:
-                    cursor.execute(
-                        "DELETE FROM usuarios WHERE id = ?",
-                        (idExcluir,)
-                    )
-        
-                    print("Linhas deletadas:", cursor.rowcount)
+                cursor.execute(
+                    "DELETE FROM usuarios WHERE id = ?",
+                    (id_excluir,)
+                )
 
-                except Exception as e:
-
-                    print("ERRO DELETE: ",e)
+                if cursor.rowcount == 0:
+                    return jsonify({
+                        "sucesso": False,
+                        "mensagem": "Usuario nao encontrado."
+                    }), 404
 
                 conexao.commit()
-                conexao.close()
 
-                return redirect("/banco")
-            else:
-                conexao.close()
-                return render_template("excluir-banco-validacao.html")
-            
-    return render_template("excluir-banco-validacao.html")
+                return jsonify({
+                    "sucesso": True,
+                    "id": id_excluir
+                })
+
+            return jsonify({
+                "sucesso": False,
+                "mensagem": "Requisicao invalida."
+            }), 400
+
+        except sqlite3.Error as e:
+            conexao.rollback()
+
+            print("ERRO:", e)
+
+            return jsonify({
+                "sucesso": False,
+                "mensagem": "Erro ao acessar o banco de dados."
+            }), 500
+
+        finally:
+            conexao.close()
 
 if __name__ == '__main__':
     debug = os.getenv('DEBUG_MODE','False').lower() == 'true'

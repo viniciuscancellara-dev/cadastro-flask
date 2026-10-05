@@ -14,35 +14,62 @@
             <form action="/enviar-validacao" method="post" class="form-validation">
 
                 <label class="senha" for="password">Digite a senha de confirmacao</label>
+
                 <input name="password" type="password" id="password" placeholder="Digite sua senha">
 
-                <button class="enviar-validacao" type="submit" id="button-password"> Enviar Validacao </button>
-                <form action="{{ url_for('editar') }}" method="POST">
-                    <a href="{{ url_for('mostrar_banco') }}">
-                        <button type="button" id="btn-cancelar">Voltar</button>
-                    </a>
-                </form>
+                <button class="enviar-validacao" type="submit" id="button-password">Enviar Validacao</button>
+
+                <a href="{{ url_for('mostrar_banco') }}" class="btn-voltar">Voltar</a>
+
             </form>
+
         </div>
     </div>
 
-    {% for aluno in tabela %}
-        <div id="card-aluno">
-            <p> {{ aluno[1] }} </p>
-            <div id="card-email"> {{ aluno[3] }} </div>
+    <div id="area-exclusao" hidden>
+
+        <div id="lista-alunos">
+
+            {% for aluno in tabela %}
+
+                <div class="aluno-item">
+
+                    <div class="card-aluno">
+                        <p class="nome-aluno">{{ aluno[1] }}</p>
+
+                        <div class="card-email">
+                            {{ aluno[3] }}
+                        </div>
+                    </div>
+
+                    <div class="info-extra">
+                        <span>Idade: {{ aluno[2] }}</span>
+                        <span>Observacao: {{ aluno[5] }}</span>
+                        <span>Linguagens: {{ aluno[6] }}</span>
+                        <span>Turno: {{ aluno[7] }}</span>
+                        <span>Estado: {{ aluno[8] }}</span>
+                    </div>
+
+                    <button
+                        class="btn-excluir"
+                        data-id="{{ aluno[0] }}"
+                        type="button"
+                    >
+                        ❌
+                    </button>
+
+                </div>
+
+            {% endfor %}
+
+            <div class="container-btn-exlcusao">
+                <button id="btn-voltar-exclusao">
+                    Voltar
+                </button>
+            </div>
         </div>
 
-        <button id="btn-excluir" data-id=" {{aluno[0]}}">
-            ❌
-        </button>
-    {% endfor %}
-    {% if sucesso %}
-        <div id="senha-validada"></div>
-    {% endif %}
-    
-    {% if erro %}
-        <div id="erro-validation" data-erro="{{ erro }}"></div>
-    {% endif %}
+    </div>
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </body>
 </html>
