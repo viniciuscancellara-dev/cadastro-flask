@@ -351,6 +351,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    //validacao-banco
+
     const erroValidacao = document.getElementById("erro-validation");
 
     if (erroValidacao) {
@@ -358,6 +360,9 @@ document.addEventListener("DOMContentLoaded", () => {
         mostrarToast([erroValidacao.dataset.erro]);
     }
 
+    const botoesExcluir = document.querySelectorAll(".btn-excluir");
+    const cardAluno = document.getElementById("card-aluno")
+    const cardEmail = document.getElementById("card-email")
     const senha_validacao = document.querySelector(".form-validation");
 
     if (senha_validacao) {
@@ -388,8 +393,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     //excluir id
-
-    const botoesExcluir = document.querySelectorAll(".btn-excluir");
 
     botoesExcluir.forEach(botao => {
         botao.addEventListener("click", async () => {

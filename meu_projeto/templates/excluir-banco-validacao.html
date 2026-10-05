@@ -27,12 +27,12 @@
     </div>
 
     {% for aluno in tabela %}
-        <div class="card-aluno">
+        <div id="card-aluno">
             <p> {{ aluno[1] }} </p>
-            <div class="card-email"> {{ aluno[3] }} </div>
+            <div id="card-email"> {{ aluno[3] }} </div>
         </div>
 
-        <button class="btn-excluir" data-id=" {{aluno[0]}}">
+        <button id="btn-excluir" data-id=" {{aluno[0]}}">
             ❌
         </button>
     {% endfor %}
