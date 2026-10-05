@@ -85,7 +85,7 @@
     </form>
 
     <div class="dash-container">
-        <h3 id="user">Ola, Vinicius.</h3>
+        <h3 id="user">Ola, {{ session["usuario"] }}.</h3>
         <div class="link">
             <a href="{{url_for('logout')}}" id="sair">Sair</a>
             <a href="{{url_for('inicio')}}" id="pular">Pular</a>

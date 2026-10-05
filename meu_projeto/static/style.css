@@ -618,11 +618,210 @@ tr:hover {
     }
 }
 
-#card-aluno,
-#card-email,
-#btn-excluir {
-    display:none;
+.container-validacao.escondido {
+    display:none !important;
 }
+
+.validacao-senha {
+    margin: 0;
+    min-height: 100vh;
+    color: #202124;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.btn-voltar {
+    display: block;
+    width: fit-content;
+    margin: 15px auto 0;
+
+    color: #7d7cff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+
+    transition: 
+        color 0.1s ease,
+        transform 0.2s ease;
+    
+}
+
+.btn-voltar:hover {
+    color: #a8a5ff;
+    transform: translateY(-0.5px);
+}
+
+
+.container-btn-exlcusao {
+    margin-top: 40px;
+    margin-left: 30px;
+}
+
+#btn-voltar-exclusao {
+    padding: 10px 20px;
+
+    border: 1px solid #d5d5cf;
+    border-radius: 9px;
+
+    background: #fafaf7;
+    color: #555750;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+#btn-voltar-exclusao:hover {
+    background: #e9e9e3;
+    transform: translateY(-1px);
+}
+
+#btn-voltar-exclusao:active {
+    transform: translateY(1px);
+}
+
+
+/* ===== PAGINA DE EXCLUSAO ===== */
+
+#area-exclusao {
+    min-height: 100vh;
+    box-sizing:  border-box;
+    background: #f1f1ed;
+    padding: 50px 30px;
+}
+
+#lista-alunos {
+    width: min(850px, 100%);
+    margin-left: 15px;
+}
+
+#area-exclusao .aluno-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px;
+}
+
+#area-exclusao .card-aluno {
+    min-height: 75px;
+    padding: 17px 21px;
+    box-sizing: border-box;
+
+    background: #fafaf7;
+    border: 1px solid #d9d9d3;
+    border-radius: 15px;
+
+    cursor: pointer;
+
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#area-exclusao .card-aluno:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 9px 22px rgba(0, 0, 0, 0.08);
+}
+
+#area-exclusao .nome-aluno {
+    margin: 0 0 5px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+#area-exclusao .card-email {
+    font-size: 13px;
+    color: #70736d;
+}
+
+
+/* informações extras */
+
+#area-exclusao .info-extra {
+    grid-column: 1;
+
+    display: flex;
+    gap: 8px;
+
+    margin-left: 25px;
+
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+
+    transform: translateY(-6px);
+
+    transition:
+        max-height 0.25s ease,
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+#area-exclusao .aluno-item.aberto .info-extra {
+    max-height: 45px;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#area-exclusao .info-extra span {
+    padding: 6px 10px;
+
+    background: #e5e5df;
+    border-radius: 8px;
+
+    color: #656860;
+    font-size: 12px;
+
+    height: auto;
+}
+
+
+/* botão excluir */
+
+#area-exclusao .btn-excluir {
+    width: 46px;
+    height: 46px;
+
+    margin-top: -65px ;
+
+    border: 1px solid #d9d9d3;
+    border-radius: 11px;
+
+    background: #fafaf7;
+
+    cursor: pointer;
+    font-size: 16px;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+#area-exclusao .btn-excluir:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+#area-exclusao .btn-excluir.clicando {
+    transform: translateY(3px) scale(0.96);
+}
+
+
+/* animação ao excluir */
+
+#area-exclusao .aluno-item.removendo {
+    opacity: 0;
+    transform: translateX(15px);
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
 
 
 .container-validacao {

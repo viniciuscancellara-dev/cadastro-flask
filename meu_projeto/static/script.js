@@ -351,84 +351,158 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    //validacao-banco
+    // validacao-banco
 
-    const erroValidacao = document.getElementById("erro-validation");
+    const senhaValidacao = document.querySelector(".form-validation");
+    const painelSenha = document.querySelector(".container-validacao");
+    const areaExclusao = document.querySelector("#area-exclusao");
 
-    if (erroValidacao) {
-        console.log("erro funcionou kkkkk:", erroValidacao.dataset.erro);
-        mostrarToast([erroValidacao.dataset.erro]);
-    }
 
-    const botoesExcluir = document.querySelectorAll(".btn-excluir");
-    const cardAluno = document.getElementById("card-aluno")
-    const cardEmail = document.getElementById("card-email")
-    const senha_validacao = document.querySelector(".form-validation");
+    // confirmar senha
 
-    if (senha_validacao) {
-        senha_validacao.addEventListener("submit", event => {
+    if (senhaValidacao) {
+        console.log("FORM ENCONTRADO:", senhaValidacao);
+        senhaValidacao.addEventListener("submit", async event => {
 
-            const erros = [];
+            event.preventDefault();
 
-            const senha = senha_validacao.querySelector('[name="password"]').value;
+            const senha = senhaValidacao.querySelector('[name="password"]').value;
 
             if (senha === "") {
-                erros.push("Digite sua senha.");
-            }
-
-            if (erros.length > 0) {
-                event.preventDefault();
-                mostrarToast(erros);
+                mostrarToast(["Digite sua senha."]);
                 return;
             }
 
-            if (!dados){
-                mostrarToast([dados.mensagem])
+            try {
+
+                const resposta = await fetch(senhaValidacao.action, {
+                    method: "POST",
+                    body: new FormData(senhaValidacao)
+                });
+
+                const dados = await resposta.json();
+
+                if (!dados.sucesso) {
+                    mostrarToast([dados.mensagem]);
+                    return;
+                }
+
+                painelSenha.classList.add("escondido");
+                areaExclusao.hidden = false
+
+            } catch (erro) {
+
+                console.error("Erro na validacao:", erro);
+                mostrarToast(["Erro ao confirmar a senha."]);
+
             }
-            if(dados){
-                window.location.href = dados.redirect
-                mostrarToast([dados.mensagem])
-            } 
+
         });
+
     }
 
-    //excluir id
+
+    // abrir informacoes do aluno
+
+    const cardsAluno = document.querySelectorAll(".card-aluno");
+
+    cardsAluno.forEach(card => {
+        card.addEventListener("click", () => {
+
+            const alunoItem = card.closest(".aluno-item");
+
+            alunoItem.classList.toggle("aberto");
+
+        });
+
+    });
+
+
+    // excluir usuario
+
+    const botoesExcluir = document.querySelectorAll(".btn-excluir");
 
     botoesExcluir.forEach(botao => {
-        botao.addEventListener("click", async () => {
-            const id = botao.dataset.id
-            console.log(id);
-            console.log("ENVIANDO ID:", id)
+        botao.addEventListener("click", async event => {
 
-            const formData = new FormData()
-            formData.append("id-excluir", id)
+            event.stopPropagation();
 
-            console.log("FORMDATA:", formData.get("id-excluir"))
+            const id = botao.dataset.id;
 
-            const resposta = await fetch("/enviar-validacao", {
-                method: "POST",
-                body: formData
-            })
+            botao.classList.add("clicando");
 
-            console.log("RESPOSTA:", resposta)
-        })
+            setTimeout(() => {
+                botao.classList.remove("clicando");
+            }, 130);
+
+
+            const formData = new FormData();
+
+            formData.append("id-excluir", id);
+
+
+            try {
+
+                const resposta = await fetch("/enviar-validacao", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const dados = await resposta.json();
+
+
+                if (!dados.sucesso) {
+                    mostrarToast([dados.mensagem]);
+                    return;
+                }
+
+
+                const alunoItem = botao.closest(".aluno-item");
+
+                alunoItem.classList.add("removendo");
+
+                setTimeout(() => {
+                    alunoItem.remove();
+                }, 250);
+
+
+            } catch (erro) {
+
+                console.error("Erro ao excluir:", erro);
+
+                mostrarToast(["Erro ao excluir o usuario."]);
+
+            }
+            mostrarToast(["Usuario excluido!"])
+
+        });
+
     });
+
+    //botao voltar 
+
+    const btnVoltarExclusao = document.getElementById("btn-voltar-exclusao")
+    
+    btnVoltarExclusao.addEventListener("click",() => {
+        painelSenha.classList.remove("escondido");
+        areaExclusao.hidden = true
+    })
 
     //fetch 
 
     async function enviarForm(form) {      
 
-            const resposta = await fetch(form.action, {
-                
-            method: "POST",
-            body: new FormData(form)
+        const resposta = await fetch(form.action, {
             
-            });
-            const dados = await resposta.json();
-            
+        method: "POST",
+        body: new FormData(form)
+        
+        });
+        const dados = await resposta.json();
+        
 
-        return dados;
-        }
+    return dados;
+    }
 });  
 
 // domcontentloaded
