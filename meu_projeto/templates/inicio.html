@@ -20,6 +20,12 @@
             <button id="botao-voltar">Adicionar</button>
         </form>
     </div>
+    <div class="dash-container">
+        <h3 id="user">Ola, {{ session["usuario"] }}.</h3>
+        <div class="link">
+            <a href="{{url_for('logout')}}" id="sair">Sair</a>
+        </div>
+    </div>
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </body>
 </html>
