@@ -21,22 +21,24 @@
 
         <div class="lado-direito">
             <div class="div-form">
-                <h1 id="title-login">Log in To my site</h1>
-                <form action="/" class="form-login">
+                <h1 id="title-login">Sign in To my site</h1>
+                <form action="/sign" method="post" id="form-sign">
 
-                    <input id="login-usuario" name="usuario" placeholder="Username" autocomplete="off">
+                    <input id="sign-usuario" name="user" placeholder="Username" autocomplete="off">
 
                     <div class="campo-senha">
-                        <input id="login-senha" name="senha" type="password" placeholder="Password" autocomplete="off">
+                        <input id="sign-senha" name="userPassword" type="password" placeholder="Password" autocomplete="off">
                         <button type="button" id="btn-showpass">
                             <img id="png-showpass" src="{{ url_for('static', filename='png/showpassword.png') }}">
                         </button>
                     </div>
+                    
+                        <button type="submit" id="btn-sign">Sign In</button>
 
-                    <button type="submit" id="btn-login" class="login-btn">Log In</button>
                     <div class="conteiner-a">
-                        <a href="/sign" style="color:rgba(124, 11, 119, 0.76);">Sign in</a>
+                        <a href="/" style="color:rgba(124, 11, 119, 0.76);">Log in</a>
                     </div>
+                    
                 </form>
             </div>
         </div>

@@ -14,6 +14,7 @@ CAMINHO_BANCO = os.path.join(PASTA_BASE, "instance", "banco.db")
 def start_db():
     conexao = sqlite3.connect(CAMINHO_BANCO)
     cursor = conexao.cursor()
+    #usuarios cadastrados
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,7 +28,7 @@ def start_db():
             estado TEXT NOT NULL
         )
     """)
-
+    #deletar id
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS config (
             id INTEGER PRIMARY KEY,
@@ -50,8 +51,7 @@ def start_db():
             VALUES (?, ?)
         """, (1, senha_hash))
 
-    user = os.getenv("LOGIN_USER")
-    userPassword = os.getenv("LOGIN_PASSWORD")
+    #login
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS login (
@@ -60,17 +60,6 @@ def start_db():
         senha TEXT NOT NULL)
     """)
 
-    cursor.execute("SELECT id FROM login LIMIT 1")
-    login = cursor.fetchone()
-
-    login_hash = generate_password_hash(userPassword)
-
-    if login is None:
-        cursor.execute("""
-            INSERT INTO login (id, usuario, senha)
-            VALUES (?, ?, ?)       
-        """, (1, user, login_hash ))
-    
     conexao.commit()
     conexao.close()
 
@@ -111,25 +100,35 @@ def Page404(erro):
 def login():
     if request.method == "POST":
         
-        usuario_digitado = request.form["usuario"]
-        senha_digitada = request.form["senha"]
+        usuario_digitado = request.form.get("usuario")
+        senha_digitada = request.form.get("senha")
         
         conexao = sqlite3.connect(CAMINHO_BANCO)
         cursor = conexao.cursor()
 
-        cursor.execute("SELECT usuario, senha FROM login WHERE id = 1")
+        cursor.execute("SELECT id, usuario, senha FROM login WHERE usuario = ?", (usuario_digitado,))
         resultado = cursor.fetchone()
 
-        user_banco = resultado[0]
-        hash_banco = resultado[1]
+        cursor.execute("SELECT usuario FROM login")
+        print("USUARIOS NO BANCO:", cursor.fetchall())
 
-        conexao.close()
+        print("USUARIO:", usuario_digitado)
+        print("SENHA:", senha_digitada)
+        print("RESULTADO:", resultado)
 
-        if usuario_digitado != user_banco:
-            return jsonify ({
+        if resultado is None:
+            conexao.close()
+
+            return jsonify({
                 "sucesso": False,
                 "mensagem": "Usuário ou senha incorretos!"
             })
+
+
+        id_banco = resultado[0]
+        hash_banco = resultado[2]
+
+        conexao.close()
 
         if not check_password_hash(hash_banco, senha_digitada):
             return jsonify ({
@@ -137,8 +136,9 @@ def login():
                 "mensagem": "Usuário ou senha incorretos!"
             })
 
-        session['logado'] = True
+        session["logado"] = True
         session["usuario"] = usuario_digitado
+        session["usuario_id"] = id_banco
 
         session.permanent = False
 
@@ -149,6 +149,68 @@ def login():
         })
 
     return render_template("login.html")
+
+@app.route("/sign", methods=["GET", "POST"])
+def sign():
+  
+    if request.method =="POST":
+    
+        conexao = sqlite3.connect(CAMINHO_BANCO)
+   
+        cursor = conexao.cursor()
+
+        user = request.form.get("user")
+        userPassword = request.form.get("userPassword")
+
+        #validando inputs
+        if not user or user.strip() == "":
+            return jsonify({
+                "sucesso":False,
+                "mensagem": "O nome de usuario e obrigatorio!"
+            })
+        
+        if user:
+            user = user.strip()
+
+        if not re.match(SENHA_REGEX, userPassword):
+            return jsonify({
+                "sucesso":False,
+                "mensagem":"Senha invalida!"
+            })
+
+        #criando hash pra senha
+        
+        login_hash = generate_password_hash(userPassword)
+      
+        #insert no banco
+        cursor.execute("SELECT id FROM login WHERE usuario=?", (user,))
+        login = cursor.fetchone()
+       
+        if login is None:
+
+            cursor.execute("""
+                INSERT INTO login (usuario, senha)
+                VALUES (?, ?)       
+            """, (user, login_hash ))
+
+            conexao.commit()
+            conexao.close()
+
+            return jsonify({
+                "sucesso": True,
+                "mensagem": "Usuario criado com sucesso!",
+                "redirect":"/"
+            })
+            
+
+        else:
+            conexao.close()
+
+            return jsonify({
+                "sucesso":False,
+                "mensagem": "Usuario ja cadastrado!"
+            })
+    return render_template("sign.html")
 
 @app.route("/logout")
 @login_required
