@@ -292,7 +292,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (formLogin) {
         formLogin.addEventListener("submit", async event => {
             event.preventDefault()
-            console.log("SUBMIT LOLGIN")
 
             const dados = await enviarForm(formLogin)
 
@@ -335,8 +334,58 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    //vizualiza a senha do login
+    //sign in 
+    
+    const formSign = document.getElementById("form-sign")
+    if (formSign){
+        const btnSign = document.getElementById("btn-sign")
+        formSign.addEventListener("submit", async (event) => {
+            event.preventDefault()
 
+            const dados = await enviarForm(formSign)
+
+            const erros = [];
+
+                const user = document.getElementById("sign-usuario");
+                const userPassword = document.getElementById("sign-senha");
+
+                if (user === "") {
+                    erros.push("Digite seu usuário.");
+                }
+
+                if (userPassword === "") {
+                    erros.push("Digite sua senha.");
+                }
+
+                if (erros.length > 0) {
+                    event.preventDefault();
+                    mostrarToast(erros);
+                    return;
+                }
+
+                btnSign.textContent = 'Criando . . .';
+                btnSign.disabled = true;
+                
+                
+
+                if(!dados.sucesso) {
+                    mostrarToast([dados.mensagem])
+                    
+                    btnSign.textContent = 'Sign in';
+                    btnSign.disabled = false;
+                    return;
+                }
+
+                if(dados.sucesso) {
+                    console.log("Login certo")
+                    window.location.href = dados.redirect;
+                
+                }
+        }
+    )}
+
+    //vizualiza a senha do login
+    if (formLogin){
     const senha = document.getElementById('login-senha')
     const showpass = document.getElementById('btn-showpass')
     const img = document.getElementById('png-showpass')
@@ -350,6 +399,25 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+}
+
+    //vizualiza a senha do sign in
+    if (formSign){
+        const senhaSign = document.getElementById('sign-senha')
+        const showpass = document.getElementById('btn-showpass')
+        const img = document.getElementById('png-showpass')
+        if (showpass) {
+            console.log("entra no if")
+            showpass.addEventListener("click", () => {
+                if (senhaSign.type === 'password') {
+                    senhaSign.type = 'text'
+                    img.src = '/static/png/hidepassword.png'
+                } else {senhaSign.type = 'password'
+                        img.src = '/static/png/showpassword.png'
+                }
+            });
+        }
+}
 
     // validacao-banco
 

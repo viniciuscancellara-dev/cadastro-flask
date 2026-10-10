@@ -148,7 +148,8 @@ body {
     line-height: 1;
 }
 
-.form-login {
+.form-login,
+#form-sign {
     display: flex;
     flex-direction: column;
     gap: 35px;
@@ -156,10 +157,12 @@ body {
 }
 
 #login-usuario,
+#sign-usuario,
+#sign-senha,
 #login-senha {
     width: 100%;
     padding: 12px;
-    color: #202020;
+    color: #302f2fd8;
     font-family: "Red Hat Display", sans-serif;
     font-size: 30px;
     background: transparent;
@@ -168,6 +171,8 @@ body {
 }
 
 #login-usuario:focus,
+#sign-usuario:focus,
+#sign-senha:focus,
 #login-senha:focus {
     outline: none;
     border-bottom-color: #40385d;
@@ -206,7 +211,8 @@ body {
     height: 42px;
 }
 
-#btn-login {
+#btn-login,
+#btn-sign {
     position: relative;
     z-index: 1;
     display: inline-flex;
@@ -228,13 +234,29 @@ body {
     transition: 0.2s ease;
 }
 
-#btn-login:hover {
+#btn-login:hover,
+#btn-sign:hover {
     color: #302a3e;
     background: rgba(65, 57, 88, 0.1);
     border-color: #40385d;
     transform: translateY(-2px);
 }
 
+a {
+    text-decoration: none;
+}
+
+.conteiner-a {
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+    transition: transform 0.1s ;
+    animation: ease;
+}
+
+a:active {
+    transform: translateY(-3px);
+}
 
 /* ==================== TÍTULOS E CADASTRO ==================== */
 
