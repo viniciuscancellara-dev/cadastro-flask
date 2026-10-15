@@ -113,7 +113,6 @@ def login():
         print("USUARIOS NO BANCO:", cursor.fetchall())
 
         print("USUARIO:", usuario_digitado)
-        print("SENHA:", senha_digitada)
         print("RESULTADO:", resultado)
 
         if resultado is None:
@@ -220,7 +219,7 @@ def logout():
 
 @app.route("/cadastrar", methods = ["GET","POST"])
 @login_required
-def cadastro():
+def cadastrar():
     if request.method =="POST":
         nome = request.form.get("nome"," ").strip()
         email = request.form["email"]
@@ -349,24 +348,6 @@ def cadastro():
 @login_required
 def inicio():
     return render_template("inicio.html")
-
-@app.route("/voltar", methods = ["GET","POST"])
-@login_required
-def voltar():
-    if request.method =="POST":
-        return redirect("/cadastrar")
-
-@app.route("/voltar_ini", methods = ["GET","POST"])
-@login_required
-def voltar_ini():
-    if request.method =="POST":
-        return redirect("/inicio")
-
-@app.route("/add", methods=['GET','POST'])
-@login_required
-def add():
-    if request.method =='POST':
-        return redirect("/cadastrar")
 
 @app.route("/banco", methods =['GET','POST'])
 @login_required
