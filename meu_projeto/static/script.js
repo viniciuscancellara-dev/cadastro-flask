@@ -1,10 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
-//so executa dps q o html inteiro carregar
+document.addEventListener('DOMContentLoaded', () => {
+    //so executa dps q o html inteiro carregar
 
     // Precisam bater com as regex do lado do Python app.py
-    const EMAIL_REGEX = /^[\w.-]+@[\w.-]+\.\w+$/;
-    const SENHA_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\-_@!#$%^&*()=+])[A-Za-z\d\-_@!#$%^&*()=+]{8,}$/;
-    const NOME_REGEX = /^[A-Za-zÀ-ÿ\s]+$/;
+    const EMAIL_REGEX = /^[\w.-]+@[\w.-]+\.\w+$/
+    const SENHA_REGEX =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\-_@!#$%^&*()=+])[A-Za-z\d\-_@!#$%^&*()=+]{8,}$/
+    const NOME_REGEX = /^[A-Za-zÀ-ÿ\s]+$/
 
     //TOAST
 
@@ -12,167 +13,167 @@ document.addEventListener("DOMContentLoaded", () => {
     //se nao existe (!container) cria uma do zero com document.createElement e joga ela no body com appendChild ta bom lembra disso
 
     function mostrarToast(mensagens) {
-        let container = document.getElementById("toast-container");
+        let container = document.getElementById('toast-container')
         if (!container) {
-            container = document.createElement("div");
-            container.id = "toast-container";
-            document.body.appendChild(container);
+            container = document.createElement('div')
+            container.id = 'toast-container'
+            document.body.appendChild(container)
         }
 
         //aqui monta o cartaozinho cria uma div class="toast" dentro dela uma ul
         //e pra cada mensagem do array cria um li
 
-        const toast = document.createElement("div");
-        toast.className = "toast";
+        const toast = document.createElement('div')
+        toast.className = 'toast'
 
-        const lista = document.createElement("ul");
-        mensagens.forEach(mensagem => {
-            const item = document.createElement("li");
-            item.textContent = mensagem;
-            lista.appendChild(item);
-        });
-        toast.appendChild(lista);
+        const lista = document.createElement('ul')
+        mensagens.forEach((mensagem) => {
+            const item = document.createElement('li')
+            item.textContent = mensagem
+            lista.appendChild(item)
+        })
+        toast.appendChild(lista)
 
-        container.appendChild(toast);
-        //setTimeout agenda algo pra rodar depois de x milissegundos  depois de 4.5s adiciono a classe toast-saindo 
+        container.appendChild(toast)
+        //setTimeout agenda algo pra rodar depois de x milissegundos  depois de 4.5s adiciono a classe toast-saindo
         // (que no CSS tem uma animation de fade e slide pra fora) so que se eu chamasse toast.remove() na mesma hora
         //  o elemento sumiria instantaneamente e a animação nem apareceria
-        setTimeout( () => {
-            toast.classList.add("toast-saindo");
-            setTimeout( () => {
-                toast.remove();
-            }, 300);
-        }, 4500);
+        setTimeout(() => {
+            toast.classList.add('toast-saindo')
+            setTimeout(() => {
+                toast.remove()
+            }, 300)
+        }, 4500)
     }
 
     //validar campos comuns
 
     function validarCamposComuns(form) {
-        const erros = [];
+        const erros = []
 
         //essa funcao recebe um form e devolve um array com as mensagens de erro encontradas
-        // se nao achar nada errado devolve um array vazio ela e generica de proposito: 
+        // se nao achar nada errado devolve um array vazio ela e generica de proposito:
         // tanto o form de cadastro quanto o form de edicao tem campos nome, idade, email, turno, linguagem e estado
         //  com os mesmos name  enteo a mesma funcao serve pros dois
 
-        const nome = form.querySelector('[name="nome"]').value;
-        if (nome.trim() === "" || !NOME_REGEX.test(nome)) {
-            erros.push("O nome não pode estar vazio.");
+        const nome = form.querySelector('[name="nome"]').value
+        if (nome.trim() === '' || !NOME_REGEX.test(nome)) {
+            erros.push('O nome não pode estar vazio.')
         }
 
-        //no form.querySelector('[name="nome"]') em vez de usar getElementById eu busco pelo atributo name fiz assim porque 
+        //no form.querySelector('[name="nome"]') em vez de usar getElementById eu busco pelo atributo name fiz assim porque
         // id="nome" existe no form de cadastro mas no form de edicao o id e id="edit-nome"
 
-        const campoIdade =form.querySelector('[name="idade"]');
-        const valorIdade = campoIdade.value.trim();
-        if (campoIdade === "") {
+        const campoIdade = form.querySelector('[name="idade"]')
+        const valorIdade = campoIdade.value.trim()
+        if (campoIdade === '') {
             erros.push('A idade nao pode estar vazia.')
         } else {
-            const idade =parseInt(valorIdade, 10);
+            const idade = parseInt(valorIdade, 10)
             if (isNaN(idade) || idade <= 0 || idade > 120) {
-                erros.push("Informe uma idade válida (entre 1 e 120).");
+                erros.push('Informe uma idade válida (entre 1 e 120).')
             }
         }
 
-        const email = form.querySelector('[name="email"]').value;
+        const email = form.querySelector('[name="email"]').value
         if (!EMAIL_REGEX.test(email)) {
-            erros.push("Informe um email válido.");
+            erros.push('Informe um email válido.')
         }
 
-        const turnoSelecionado = form.querySelector('[name="turno"]:checked');
+        const turnoSelecionado = form.querySelector('[name="turno"]')
         if (!turnoSelecionado) {
-            erros.push("Selecione um turno.");
+            erros.push('Selecione um turno.')
         }
 
-        const linguagensSelecionadas = form.querySelectorAll('[name="linguagem"]:checked');
+        const linguagensSelecionadas = form.querySelectorAll('[name="linguagem"]:checked')
         if (linguagensSelecionadas.length === 0) {
-            erros.push("Selecione pelo menos uma linguagem.");
+            erros.push('Selecione pelo menos uma linguagem.')
         }
 
-        const estado = form.querySelector('[name="estado"]').value;
+        const estado = form.querySelector('[name="estado"]').value
         if (!estado) {
-            erros.push("Selecione um estado.");
+            erros.push('Selecione um estado.')
         }
 
-        return erros;
+        return erros
     }
 
     //cadastro
 
-    const formCadastro = document.querySelector(".form-cadastro");
+    const formCadastro = document.querySelector('.form-cadastro')
     if (formCadastro) {
-        formCadastro.addEventListener("submit",async event => {
+        formCadastro.addEventListener('submit', async (event) => {
             event.preventDefault()
-            
-           
 
-            const erros = validarCamposComuns(formCadastro);
+            const erros = validarCamposComuns(formCadastro)
 
-            const senha = formCadastro.querySelector('[name="senha"]').value;
+            const senha = formCadastro.querySelector('[name="senha"]').value
             if (!SENHA_REGEX.test(senha)) {
-                erros.push("A senha precisa ter 8+ caracteres, com maiúscula, minúscula, número e símbolo.");
-            }
-    
-            if (erros.length > 0) {
-                event.preventDefault();
-                mostrarToast(erros);
-                return;
+                erros.push(
+                    'A senha precisa ter 8+ caracteres, com maiúscula, minúscula, número e símbolo.'
+                )
             }
 
-            const dados = await enviarForm(formCadastro);
-            if(!dados.sucesso){
+            if (erros.length > 0) {
+                event.preventDefault()
+                mostrarToast(erros)
+                return
+            }
+
+            const dados = await enviarForm(formCadastro)
+            if (!dados.sucesso) {
                 mostrarToast([dados.mensagem])
             }
 
             if (dados.sucesso) {
-                console.log("1 - sucesso:", dados);
-    
-                sessionStorage.setItem("mensagem", dados.mensagem);
-                
-                console.log("2 - depois do set:", sessionStorage.getItem("mensagem"));
-                console.log("3 - redirect:", dados.redirect);
+                console.log('1 - sucesso:', dados)
+
+                sessionStorage.setItem('mensagem', dados.mensagem)
+
+                console.log('2 - depois do set:', sessionStorage.getItem('mensagem'))
+                console.log('3 - redirect:', dados.redirect)
                 window.location.href = dados.redirect
             }
-        });
+        })
     }
 
     //mostrar mensagem guardada no session storage
-    console.log("antes do get")
-    const mensagem = sessionStorage.getItem("mensagem")
-    console.log("mensagem: ",mensagem)
-    if (mensagem){
-        console.log("VOU MOSTRAR TOAST")
+    console.log('antes do get')
+    const mensagem = sessionStorage.getItem('mensagem')
+    console.log('mensagem: ', mensagem)
+    if (mensagem) {
+        console.log('VOU MOSTRAR TOAST')
         mostrarToast([mensagem])
-        sessionStorage.removeItem("mensagem")
+        sessionStorage.removeItem('mensagem')
     }
     // PAGINA BANCO: ABRIR/FECHAR PAINEL DE EDICAO
-    
-    const botaoEditar = document.getElementById("botao-editar");
-    const containerTabela = document.querySelector(".container-tabela");
-    const containerEditar = document.querySelector(".container-editar");
-    const painelEditar = document.querySelector(".painel-editar");
-    const seletorUsuario = document.getElementById("selecionar-usuario");
-    const botaoCancelar = document.getElementById("botao-cancelar-edicao");
-    const formEditar = document.getElementById("form-editar");
+
+    const botaoEditar = document.getElementById('botao-editar')
+    const containerTabela = document.querySelector('.container-tabela')
+    const containerEditar = document.querySelector('.container-editar')
+    const painelEditar = document.querySelector('.painel-editar')
+    const seletorUsuario = document.getElementById('selecionar-usuario')
+    const botaoCancelar = document.getElementById('botao-cancelar-edicao')
+    const formEditar = document.getElementById('form-editar')
 
     //so pego referencia de todos que vou precisar mexer uma vez so e guardo em constantes isso evita ficar
     //  chamando document.getElementById toda hora
 
     if (botaoEditar && painelEditar) {
-        botaoEditar.addEventListener("click", () => {
-            if (containerTabela) containerTabela.style.display = "none";
-            if (containerEditar) containerEditar.style.display = "none";
-            painelEditar.style.display = "block";
-        });
+        botaoEditar.addEventListener('click', () => {
+            if (containerTabela) containerTabela.style.display = 'none'
+            if (containerEditar) containerEditar.style.display = 'none'
+            painelEditar.style.display = 'block'
+        })
     }
 
     if (botaoCancelar && painelEditar) {
-        botaoCancelar.addEventListener("click", () => {
-            painelEditar.style.display = "none";
-            if (containerTabela) containerTabela.style.display = "";
-            if (containerEditar) containerEditar.style.display = "";
-            if (formEditar) formEditar.reset();
-        });
+        botaoCancelar.addEventListener('click', () => {
+            painelEditar.style.display = 'none'
+            if (containerTabela) containerTabela.style.display = ''
+            if (containerEditar) containerEditar.style.display = ''
+            if (formEditar) formEditar.reset()
+        })
     }
 
     //quando clica no botao "Editar" escondo a div da tabela e a div dos botoes (display = "none")
@@ -182,396 +183,358 @@ document.addEventListener("DOMContentLoaded", () => {
     // que ja estao guardados nos data da linha correspondente da tabela
 
     if (seletorUsuario && formEditar) {
-        seletorUsuario.addEventListener("change", () => {
-            const idSelecionado = seletorUsuario.value;
-            if (!idSelecionado) return;
+        seletorUsuario.addEventListener('change', () => {
+            const idSelecionado = seletorUsuario.value
+            if (!idSelecionado) return
 
-            const linha = document.querySelector('tr[data-id="' + idSelecionado + '"]');
-            if (!linha) return;
+            const linha = document.querySelector('tr[data-id="' + idSelecionado + '"]')
+            if (!linha) return
 
             //change acontece toda vez que o valor do select muda pego o value da opcao escolhida
-            //(que é o id do usuario porque no banco.html eu defini option value="{{ aluno[0] }}" Se estiver vazio 
+            //(que é o id do usuario porque no banco.html eu defini option value="{{ aluno[0] }}" Se estiver vazio
             // usuario ainda nao escolheu nada idSelecionado seria "" dou um return e nao faz nada
 
-            formEditar.querySelector('[name="nome"]').value = linha.dataset.nome;
-            formEditar.querySelector('[name="idade"]').value = linha.dataset.idade;
-            formEditar.querySelector('[name="email"]').value = linha.dataset.email;
-            formEditar.querySelector('[name="observacao"]').value = linha.dataset.observacao;
-
-            const turnoAtual = linha.dataset.turno;
-            formEditar.querySelectorAll('[name="turno"]').forEach(radio => {
-                radio.checked = (radio.value === turnoAtual);
-            });
+            formEditar.querySelector('[name="nome"]').value = linha.dataset.nome
+            formEditar.querySelector('[name="idade"]').value = linha.dataset.idade
+            formEditar.querySelector('[name="email"]').value = linha.dataset.email
+            formEditar.querySelector('[name="observacao"]').value = linha.dataset.observacao
+            formEditar.querySelector('[name="turno"]').value = linha.dataset.turno
 
             //radio e diferente de input de texto nao da pra so setar .value preciso pegar todos os radios do grupo turno e
             //pra cada um marcar checked = true so se o value dele bater com o turno salvo e false nos outros
 
-            const linguagensAtuais = linha.dataset.linguagens ? linha.dataset.linguagens.split(",") : [];
-            formEditar.querySelectorAll('[name="linguagem"]').forEach(checkbox => {
-                checkbox.checked = linguagensAtuais.includes(checkbox.value);
-            });
+            const linguagensAtuais = linha.dataset.linguagens
+                ? linha.dataset.linguagens.split(',')
+                : []
+            formEditar.querySelectorAll('[name="linguagem"]').forEach((checkbox) => {
+                checkbox.checked = linguagensAtuais.includes(checkbox.value)
+            })
             //mesma logica pros checkbox mas eles vem em string ent eu facao um .split(",")
             //  e o linha.dataset.linguagens.split(",") : []; fala que se nao tiver nada pra splita vira um array vazio
-            formEditar.querySelector('[name="estado"]').value = linha.dataset.estado;
-        });
+            formEditar.querySelector('[name="estado"]').value = linha.dataset.estado
+        })
     }
 
     // validacao antes de salvar a edicao senha nao entra aqui
     //salvando via fetch
 
     if (formEditar) {
-        formEditar.addEventListener("submit",async event => {
+        formEditar.addEventListener('submit', async (event) => {
             event.preventDefault()
-            
-            const erros = validarCamposComuns(formEditar);
+
+            const erros = validarCamposComuns(formEditar)
 
             if (!seletorUsuario.value) {
-                erros.push("Selecione um usuário para editar.");
+                erros.push('Selecione um usuário para editar.')
             }
 
             if (erros.length > 0) {
-                event.preventDefault();
-                mostrarToast(erros);
-                return;
+                event.preventDefault()
+                mostrarToast(erros)
+                return
             }
-            const dados = await enviarForm(formEditar);
-            if(!dados) {
+            const dados = await enviarForm(formEditar)
+            if (!dados) {
                 mostrarToast([dados.mensagem])
             }
-            if(dados) {
-                if (containerTabela) containerTabela.style.display = "block";
-                if (containerEditar) containerEditar.style.display = "flex";
-                painelEditar.style.display = "none";
+            if (dados) {
+                if (containerTabela) containerTabela.style.display = 'block'
+                if (containerEditar) containerEditar.style.display = 'flex'
+                painelEditar.style.display = 'none'
                 mostrarToast([dados.mensagem])
             }
-        });
+        })
     }
 
     //painel-excluir
 
-    const senhaValidada = document.getElementById("senha-validada");
-    const containerValidacao = document.querySelector(".input-validacao");
-    const containerExcluir = document.querySelector(".card-aluno");
-    const botaoCancelarExcluir = document.getElementById("botao-cancelar-excluir")
-    const formExcluir = document.getElementById("form-Excluir")
-    const selectExcluir = document.getElementById("select-excluir")
+    const senhaValidada = document.getElementById('senha-validada')
+    const containerValidacao = document.querySelector('.input-validacao')
+    const containerExcluir = document.querySelector('.card-aluno')
+    const botaoCancelarExcluir = document.getElementById('botao-cancelar-excluir')
+    const formExcluir = document.getElementById('form-Excluir')
+    const selectExcluir = document.getElementById('select-excluir')
 
-    if(senhaValidada) {
-        console.log("Validou")
-        containerValidacao.style.display = "none";
-        containerExcluir.style.display = "block";
+    if (senhaValidada) {
+        console.log('Validou')
+        containerValidacao.style.display = 'none'
+        containerExcluir.style.display = 'block'
     }
 
     if (selectExcluir && formExcluir) {
-        formExcluir.addEventListener("submit", (event) => {
-            if (!idSelecionado)return;
+        formExcluir.addEventListener('submit', (event) => {
+            if (!idSelecionado) return
 
             const idSelecionado = selectExcluir.value
-            
         })
     }
 
     if (botaoCancelarExcluir && formExcluir) {
-        botaoCancelarExcluir.addEventListener("click", (event) =>{
-            console.log("clicou")
+        botaoCancelarExcluir.addEventListener('click', (event) => {
+            console.log('clicou')
             console.log(formExcluir)
             console.log(containerExcluir)
             console.log(containerValidacao)
             formExcluir.reset()
-            containerExcluir.style.display = "none"
-            containerValidacao.style.display = "block"
+            containerExcluir.style.display = 'none'
+            containerValidacao.style.display = 'block'
         })
     }
     //login
 
-    
-
-    const formLogin = document.querySelector(".form-login");
+    const formLogin = document.querySelector('.form-login')
     const btnLogin = document.getElementById('btn-login')
 
     if (formLogin) {
-        formLogin.addEventListener("submit", async event => {
+        formLogin.addEventListener('submit', async (event) => {
             event.preventDefault()
 
             const dados = await enviarForm(formLogin)
 
-            const erros = [];
+            const erros = []
 
-            const usuario = formLogin.querySelector('[name="usuario"]').value.trim();
-            const senha = formLogin.querySelector('[name="senha"]').value;
+            const usuario = formLogin.querySelector('[name="usuario"]').value.trim()
+            const senha = formLogin.querySelector('[name="senha"]').value
 
-            if (usuario === "") {
-                erros.push("Digite seu usuário.");
+            if (usuario === '') {
+                erros.push('Digite seu usuário.')
             }
 
-            if (senha === "") {
-                erros.push("Digite sua senha.");
+            if (senha === '') {
+                erros.push('Digite sua senha.')
             }
 
             if (erros.length > 0) {
-                event.preventDefault();
-                mostrarToast(erros);
-                return;
+                event.preventDefault()
+                mostrarToast(erros)
+                return
             }
 
-            btnLogin.textContent = 'Entrando. . .';
-            btnLogin.disabled = true;
-            
-            
+            btnLogin.textContent = 'Entrando. . .'
+            btnLogin.disabled = true
 
-            if(!dados.sucesso) {
+            if (!dados.sucesso) {
                 mostrarToast([dados.mensagem])
-                btnLogin.textContent = 'log in';
-                btnLogin.disabled = false;
-                return;
+                btnLogin.textContent = 'log in'
+                btnLogin.disabled = false
+                return
             }
 
-            if(dados.sucesso) {
-                console.log("Login certo")
-                window.location.href = dados.redirect;
-            
+            if (dados.sucesso) {
+                console.log('Login certo')
+                window.location.href = dados.redirect
             }
-        });
+        })
     }
 
-    //sign in 
-    
-    const formSign = document.getElementById("form-sign")
-    if (formSign){
-        const btnSign = document.getElementById("btn-sign")
-        formSign.addEventListener("submit", async (event) => {
+    //sign in
+
+    const formSign = document.getElementById('form-sign')
+    if (formSign) {
+        const btnSign = document.getElementById('btn-sign')
+        formSign.addEventListener('submit', async (event) => {
             event.preventDefault()
 
             const dados = await enviarForm(formSign)
 
-            const erros = [];
+            const erros = []
 
-                const user = document.getElementById("sign-usuario");
-                const userPassword = document.getElementById("sign-senha");
+            const user = document.getElementById('sign-usuario')
+            const userPassword = document.getElementById('sign-senha')
 
-                if (user === "") {
-                    erros.push("Digite seu usuário.");
-                }
+            if (user === '') {
+                erros.push('Digite seu usuário.')
+            }
 
-                if (userPassword === "") {
-                    erros.push("Digite sua senha.");
-                }
+            if (userPassword === '') {
+                erros.push('Digite sua senha.')
+            }
 
-                if (erros.length > 0) {
-                    event.preventDefault();
-                    mostrarToast(erros);
-                    return;
-                }
+            if (erros.length > 0) {
+                event.preventDefault()
+                mostrarToast(erros)
+                return
+            }
 
-                btnSign.textContent = 'Criando . . .';
-                btnSign.disabled = true;
-                
-                
+            btnSign.textContent = 'Criando . . .'
+            btnSign.disabled = true
 
-                if(!dados.sucesso) {
-                    mostrarToast([dados.mensagem])
-                    
-                    btnSign.textContent = 'Sign in';
-                    btnSign.disabled = false;
-                    return;
-                }
+            if (!dados.sucesso) {
+                mostrarToast([dados.mensagem])
 
-                if(dados.sucesso) {
-                    console.log("Login certo")
-                    window.location.href = dados.redirect;
-                
-                }
-        }
-    )}
+                btnSign.textContent = 'Sign in'
+                btnSign.disabled = false
+                return
+            }
+
+            if (dados.sucesso) {
+                console.log('Login certo')
+                window.location.href = dados.redirect
+            }
+        })
+    }
 
     //vizualiza a senha do login
-    if (formLogin){
-    const senha = document.getElementById('login-senha')
-    const showpass = document.getElementById('btn-showpass')
-    const img = document.getElementById('png-showpass')
-    if (showpass) {
-        showpass.addEventListener("click", () => {
-            if (senha.type === 'password') {
-                senha.type = 'text'
-                img.src = '/static/png/hidepassword.png'
-            } else {senha.type = 'password'
+    if (formLogin) {
+        const senha = document.getElementById('login-senha')
+        const showpass = document.getElementById('btn-showpass')
+        const img = document.getElementById('png-showpass')
+        if (showpass) {
+            showpass.addEventListener('click', () => {
+                if (senha.type === 'password') {
+                    senha.type = 'text'
+                    img.src = '/static/png/hidepassword.png'
+                } else {
+                    senha.type = 'password'
                     img.src = '/static/png/showpassword.png'
-            }
-        });
+                }
+            })
+        }
     }
-}
 
     //vizualiza a senha do sign in
-    if (formSign){
+    if (formSign) {
         const senhaSign = document.getElementById('sign-senha')
         const showpass = document.getElementById('btn-showpass')
         const img = document.getElementById('png-showpass')
         if (showpass) {
-            console.log("entra no if")
-            showpass.addEventListener("click", () => {
+            console.log('entra no if')
+            showpass.addEventListener('click', () => {
                 if (senhaSign.type === 'password') {
                     senhaSign.type = 'text'
                     img.src = '/static/png/hidepassword.png'
-                } else {senhaSign.type = 'password'
-                        img.src = '/static/png/showpassword.png'
+                } else {
+                    senhaSign.type = 'password'
+                    img.src = '/static/png/showpassword.png'
                 }
-            });
+            })
         }
-}
+    }
 
     // validacao-banco
 
-    const senhaValidacao = document.querySelector(".form-validation");
-    const painelSenha = document.querySelector(".container-validacao");
-    const areaExclusao = document.querySelector("#area-exclusao");
-
+    const senhaValidacao = document.querySelector('.form-validation')
+    const painelSenha = document.querySelector('.container-validacao')
+    const areaExclusao = document.querySelector('#area-exclusao')
 
     // confirmar senha
 
     if (senhaValidacao) {
-        console.log("FORM ENCONTRADO:", senhaValidacao);
-        senhaValidacao.addEventListener("submit", async event => {
+        console.log('FORM ENCONTRADO:', senhaValidacao)
+        senhaValidacao.addEventListener('submit', async (event) => {
+            event.preventDefault()
 
-            event.preventDefault();
+            const senha = senhaValidacao.querySelector('[name="password"]').value
 
-            const senha = senhaValidacao.querySelector('[name="password"]').value;
-
-            if (senha === "") {
-                mostrarToast(["Digite sua senha."]);
-                return;
+            if (senha === '') {
+                mostrarToast(['Digite sua senha.'])
+                return
             }
 
             try {
-
                 const resposta = await fetch(senhaValidacao.action, {
-                    method: "POST",
-                    body: new FormData(senhaValidacao)
-                });
+                    method: 'POST',
+                    body: new FormData(senhaValidacao),
+                })
 
-                const dados = await resposta.json();
+                const dados = await resposta.json()
 
                 if (!dados.sucesso) {
-                    mostrarToast([dados.mensagem]);
-                    return;
+                    mostrarToast([dados.mensagem])
+                    return
                 }
 
-                painelSenha.classList.add("escondido");
+                painelSenha.classList.add('escondido')
                 areaExclusao.hidden = false
-
             } catch (erro) {
-
-                console.error("Erro na validacao:", erro);
-                mostrarToast(["Erro ao confirmar a senha."]);
-
+                console.error('Erro na validacao:', erro)
+                mostrarToast(['Erro ao confirmar a senha.'])
             }
-
-        });
-
+        })
     }
-
 
     // abrir informacoes do aluno
 
-    const cardsAluno = document.querySelectorAll(".card-aluno");
+    const cardsAluno = document.querySelectorAll('.card-aluno')
 
-    cardsAluno.forEach(card => {
-        card.addEventListener("click", () => {
+    cardsAluno.forEach((card) => {
+        card.addEventListener('click', () => {
+            const alunoItem = card.closest('.aluno-item')
 
-            const alunoItem = card.closest(".aluno-item");
-
-            alunoItem.classList.toggle("aberto");
-
-        });
-
-    });
-
+            alunoItem.classList.toggle('aberto')
+        })
+    })
 
     // excluir usuario
 
-    const botoesExcluir = document.querySelectorAll(".btn-excluir");
+    const botoesExcluir = document.querySelectorAll('.btn-excluir')
 
-    botoesExcluir.forEach(botao => {
-        botao.addEventListener("click", async event => {
+    botoesExcluir.forEach((botao) => {
+        botao.addEventListener('click', async (event) => {
+            event.stopPropagation()
 
-            event.stopPropagation();
+            const id = botao.dataset.id
 
-            const id = botao.dataset.id;
-
-            botao.classList.add("clicando");
+            botao.classList.add('clicando')
 
             setTimeout(() => {
-                botao.classList.remove("clicando");
-            }, 130);
+                botao.classList.remove('clicando')
+            }, 130)
 
+            const formData = new FormData()
 
-            const formData = new FormData();
-
-            formData.append("id-excluir", id);
-
+            formData.append('id-excluir', id)
 
             try {
+                const resposta = await fetch('/enviar-validacao', {
+                    method: 'POST',
+                    body: formData,
+                })
 
-                const resposta = await fetch("/enviar-validacao", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const dados = await resposta.json();
-
+                const dados = await resposta.json()
 
                 if (!dados.sucesso) {
-                    mostrarToast([dados.mensagem]);
-                    return;
+                    mostrarToast([dados.mensagem])
+                    return
                 }
 
+                const alunoItem = botao.closest('.aluno-item')
 
-                const alunoItem = botao.closest(".aluno-item");
-
-                alunoItem.classList.add("removendo");
+                alunoItem.classList.add('removendo')
 
                 setTimeout(() => {
-                    alunoItem.remove();
-                }, 250);
-
-
+                    alunoItem.remove()
+                }, 250)
             } catch (erro) {
+                console.error('Erro ao excluir:', erro)
 
-                console.error("Erro ao excluir:", erro);
-
-                mostrarToast(["Erro ao excluir o usuario."]);
-
+                mostrarToast(['Erro ao excluir o usuario.'])
             }
-            mostrarToast(["Usuario excluido!"])
+            mostrarToast(['Usuario excluido!'])
+        })
+    })
 
-        });
+    //botao voltar
 
-    });
+    const btnVoltarExclusao = document.getElementById('btn-voltar-exclusao')
 
-    //botao voltar 
-
-    const btnVoltarExclusao = document.getElementById("btn-voltar-exclusao")
-    
-    btnVoltarExclusao.addEventListener("click",() => {
-        painelSenha.classList.remove("escondido");
+    btnVoltarExclusao.addEventListener('click', () => {
+        painelSenha.classList.remove('escondido')
         areaExclusao.hidden = true
     })
 
-    //fetch 
+    //fetch
 
-    async function enviarForm(form) {      
-
+    async function enviarForm(form) {
         const resposta = await fetch(form.action, {
-            
-        method: "POST",
-        body: new FormData(form)
-        
-        });
-        const dados = await resposta.json();
-        
+            method: 'POST',
+            body: new FormData(form),
+        })
+        const dados = await resposta.json()
 
-    return dados;
+        return dados
     }
-});  
+})
 
 // domcontentloaded
 // espera o html carregar antes de executar o javascript

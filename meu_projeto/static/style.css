@@ -80,7 +80,6 @@ body {
     z-index: 1;
 }
 
-
 /* ==================== LOGIN ==================== */
 
 .container-login {
@@ -250,7 +249,7 @@ a {
     display: flex;
     justify-content: center;
     padding: 15px;
-    transition: transform 0.1s ;
+    transition: transform 0.1s;
     animation: ease;
 }
 
@@ -409,7 +408,6 @@ a:active {
     background: #29253a;
 }
 
-
 /* ==================== USUÁRIO E NAVEGAÇÃO ==================== */
 
 .dash-container {
@@ -446,7 +444,6 @@ a:active {
 #pular:hover {
     color: #9185a6;
 }
-
 
 /* ==================== BOTÕES ==================== */
 
@@ -516,7 +513,6 @@ a:active {
     font-size: 35px;
 }
 
-
 /* ==================== CONTAINERS ==================== */
 
 .container-botoes {
@@ -553,7 +549,6 @@ a:active {
 .container-tabela {
     overflow-x: auto;
 }
-
 
 /* ==================== BANCO ==================== */
 
@@ -593,7 +588,6 @@ td {
 tr:hover {
     background: rgba(82, 73, 102, 0.16);
 }
-
 
 /* ==================== EDIÇÃO ==================== */
 
@@ -646,7 +640,6 @@ tr:hover {
     gap: 40px;
     margin-top: 30px;
 }
-
 
 /* ==================== TOAST ==================== */
 
@@ -711,7 +704,6 @@ tr:hover {
         transform: translateX(-30px);
     }
 }
-
 
 /* ==================== VALIDAÇÃO ==================== */
 
@@ -784,7 +776,6 @@ tr:hover {
     color: #c2bacd;
     transform: translateY(-1px);
 }
-
 
 /* ==================== EXCLUSÃO ==================== */
 
@@ -925,7 +916,6 @@ tr:hover {
     transform: translateY(-1px);
 }
 
-
 /* ==================== ERRO 404 ==================== */
 
 .error-page {
@@ -1017,7 +1007,6 @@ p.paginaError {
     border-color: #887c9d;
     transform: translateY(-2px);
 }
-
 
 /* ==================== RESPONSIVIDADE ==================== */
 
