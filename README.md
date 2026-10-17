@@ -1,368 +1,145 @@
-# 📚 Sistema de Cadastro de Alunos
+# Sistema de Cadastro de Alunos
 
-Sistema web de cadastro e gerenciamento de alunos desenvolvido com **Flask, Python, SQLite, HTML, CSS e JavaScript**.
+Aplicação web para cadastro e gerenciamento de alunos, desenvolvida com **Python, Flask, SQLite, HTML, CSS e JavaScript**. O projeto reúne autenticação, validação de dados, operações CRUD e uma interface interativa.
 
-O projeto foi desenvolvido como prática de desenvolvimento web, reunindo conceitos de **back-end, banco de dados, autenticação, validação de formulários, sessões, CRUD e manipulação do DOM**.
+**Acesse a aplicação:** [cadastro-flask.onrender.com](https://cadastro-flask.onrender.com)
 
----
+## Funcionalidades
 
-## ✨ Funcionalidades
+- **Autenticação:** criação de usuário, login, logout e proteção de páginas por sessão.
+- **Cadastro de alunos:** nome, idade, e-mail, senha, observação, linguagens, turno e estado.
+- **Validação de dados:** verificações no back-end, incluindo formato dos campos, limites de idade e e-mail duplicado.
+- **Gerenciamento de registros:** listagem, edição e exclusão individual de alunos.
+- **Confirmação para exclusão:** validação por senha antes de permitir a exclusão.
+- **Interface interativa:** mensagens Toast, exibição/ocultação de senha, feedback dos formulários e atualizações com JavaScript.
+- **Persistência:** armazenamento dos registros em banco de dados SQLite.
 
-### 🔐 Sistema de login
+## Tecnologias
 
-* Login com usuário e senha.
-* Senha armazenada no banco utilizando **hash**.
-* Autenticação através de `session` do Flask.
-* Proteção das rotas utilizando um **decorator de autenticação**.
-* Logout.
-* Credenciais iniciais configuradas através de variáveis de ambiente.
+| Tecnologia | Utilização |
+| --- | --- |
+| Python | Lógica da aplicação e validações |
+| Flask | Rotas, requisições e renderização das páginas |
+| SQLite | Armazenamento dos dados |
+| HTML5 e Jinja2 | Estrutura das páginas e templates |
+| CSS3 | Layout, responsividade, animações e glassmorphism |
+| JavaScript | Eventos, DOM, `FormData`, `fetch()` e mensagens Toast |
+| Werkzeug | Hash e verificação de senhas |
+| python-dotenv | Carregamento de variáveis de ambiente |
+| Gunicorn | Servidor WSGI para execução em produção |
 
-### 📝 Cadastro de alunos
-
-* Cadastro de nome.
-* Cadastro de idade.
-* Cadastro de e-mail.
-* Cadastro de senha.
-* Campo de observação.
-* Seleção de linguagens.
-* Seleção de turno.
-* Seleção de estado.
-* Validação dos dados antes do cadastro.
-
-### 🗄️ Banco de dados
-
-* Utilização do **SQLite**.
-* Armazenamento dos alunos de forma persistente.
-* Implementação completa das operações **CRUD**:
-
-  * **Create** — criação de registros.
-  * **Read** — consulta e visualização de registros.
-  * **Update** — atualização de registros.
-  * **Delete** — exclusão de registros.
-* Tratamento de erros de integridade, como e-mails duplicados.
-* Utilização de consultas SQL parametrizadas.
-
-### ✏️ Gerenciamento de alunos
-
-* Visualização dos alunos cadastrados.
-* Edição de registros.
-* Exclusão individual de usuários.
-* Seleção do usuário que será excluído através de um `select`.
-* Confirmação da exclusão através de senha.
-* Autorização temporária para exclusão utilizando `session`.
-* Remoção da autorização após a exclusão do usuário.
-
-### 🎨 Interface
-
-* Interface desenvolvida com HTML e CSS puro.
-* Layout responsivo.
-* Estilização com efeito **Glassmorphism**.
-* Animações e efeitos de `hover` e `focus`.
-* Tela de login personalizada.
-* Botão para mostrar/ocultar senha.
-* Sistema de mensagens utilizando **Toast**.
-* Animações de aparecimento e desaparecimento das mensagens.
-* Alteração dinâmica da interface através de JavaScript.
-
-### ⚙️ JavaScript
-
-* Manipulação do DOM.
-* Eventos de formulário.
-* Validação de campos.
-* Alteração dinâmica de elementos.
-* Manipulação de classes CSS.
-* Sistema de Toast.
-* Mostrar e ocultar senha.
-* Utilização de `FormData`.
-* Manipulação de `input`, `change`, `click` e `submit`.
-* Feedback visual durante o preenchimento e envio dos formulários.
-* Controle da exibição dos painéis de validação, edição e exclusão.
-* Post via `fetch`().
----
-
-## 🛠️ Tecnologias utilizadas
-
-* **Python**
-* **Flask**
-* **SQLite**
-* **HTML5**
-* **CSS3**
-* **JavaScript**
-* **Jinja2**
-* **Werkzeug**
-* **python-dotenv**
-* **Git / GitHub**
-
-O projeto não utiliza frameworks de front-end, ORM ou bibliotecas CSS/JS externas.
-
----
-
-## 📁 Estrutura do projeto
+## Estrutura do projeto
 
 ```text
 ProjetoFLASK/
-
-│
 ├── .gitignore
 ├── README.md
-│
 └── meu_projeto/
-    │
     ├── app.py
     ├── requirements.txt
-    │
+    ├── .env                 # arquivo local
     ├── instance/
     │   └── banco.db
-    │
     ├── static/
     │   ├── script.js
     │   ├── style.css
-    │   │
     │   └── png/
+    │       ├── favicon.png
     │       ├── hidepassword.png
     │       └── showpassword.png
-    │
     └── templates/
-        ├── login.html
-        ├── inicio.html
-        ├── index.html
+        ├── 404.html
         ├── banco.html
-        └── excluir-banco-validacao.html
+        ├── excluir-banco-validacao.html
+        ├── index.html
+        ├── inicio.html
+        ├── login.html
+        └── sign.html
 ```
 
-O arquivo `.env` é utilizado localmente para armazenar informações sensíveis e **não deve ser enviado para o GitHub**.
+## Executar localmente
 
----
+### 1. Pré-requisitos
 
-## 🔐 Segurança
+- Python instalado.
+- Git, caso queira clonar o repositório.
 
-O projeto possui algumas medidas básicas de segurança:
-
-* Senhas armazenadas utilizando hash através do **Werkzeug**.
-* Utilização de `check_password_hash()` para verificar senhas.
-* Autenticação baseada em sessão.
-* Proteção das rotas através de decorator.
-* Credenciais configuradas através de variáveis de ambiente.
-* `.env` incluído no `.gitignore`.
-* Consultas SQL utilizando parâmetros para evitar a inserção direta de valores na query.
-* Confirmação por senha antes da exclusão de usuários.
-* Autorização temporária para exclusão armazenada na sessão.
-* Remoção da autorização após a operação de exclusão.
-
-### Variáveis de ambiente
-
-As informações sensíveis são armazenadas em um arquivo `.env`:
-
-```env
-SECRET_KEY=sua_secret_key
-
-LOGIN_USER=seu_usuario
-
-LOGIN_PASSWORD=sua_senha
-
-DELETE_PASSWORD=sua_senha_de_confirmacao
-```
-
-O arquivo `.env` **não deve ser enviado para o repositório**.
-
----
-
-## 🚀 Como executar o projeto
-
-### 1. Clone o repositório
+### 2. Clonar o repositório
 
 ```bash
 git clone https://github.com/viniciuscancellara-dev/cadastro-flask.git
-```
-
-### 2. Entre na pasta do projeto
-
-```bash
 cd cadastro-flask
 ```
 
-### 3. Crie um ambiente virtual
+> Os comandos seguintes consideram que `app.py` e `requirements.txt` estão dentro da pasta `meu_projeto`.
 
-Windows:
+### 3. Criar e ativar o ambiente virtual
 
-```bash
-python -m venv venv
-```
-
-### 4. Ative o ambiente virtual
-
-PowerShell:
+Na raiz do repositório:
 
 ```powershell
-.\venv\Scripts\Activate.ps1
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
 
-### 5. Instale as dependências
+No macOS/Linux:
 
 ```bash
-pip install -r requirements.txt
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-### 6. Configure o `.env`
+### 4. Instalar as dependências
 
-Crie um arquivo `.env` na pasta do projeto e adicione as variáveis necessárias:
+```bash
+pip install -r meu_projeto/requirements.txt
+```
+
+### 5. Configurar as variáveis de ambiente
+
+Crie um arquivo `meu_projeto/.env`:
 
 ```env
-SECRET_KEY=sua_secret_key
-
-LOGIN_USER=seu_usuario
-
-LOGIN_PASSWORD=sua_senha
-
-DELETE_PASSWORD=sua_senha_de_confirmacao
+SECRET_KEY=gere_uma_chave_secreta
+DELETE_HASH=defina_uma_senha_de_confirmacao
+DEBUG_MODE=True
 ```
 
-### 7. Execute o Flask
+- `SECRET_KEY`: chave usada para assinar a sessão do Flask.
+- `DELETE_HASH`: valor inicial usado para criar a senha de confirmação de exclusão no banco, quando a configuração ainda não existe.
+- `DEBUG_MODE`: ativa o modo de depuração local quando definido como `True`. Em produção, mantenha-o desativado.
 
-```bash
+Não publique o `.env` nem coloque credenciais reais no repositório. Use valores próprios no seu ambiente.
+
+### 6. Iniciar a aplicação
+
+A aplicação carrega o `.env` a partir do diretório de execução. Entre na pasta do projeto antes de iniciar:
+
+```powershell
+cd meu_projeto
 python app.py
 ```
 
-Depois, acesse no navegador:
+Acesse [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
-```text
-http://127.0.0.1:5000
-```
+Na tela de cadastro de usuário, crie uma conta para entrar na aplicação.
 
----
+## Segurança implementada
 
-## 🧠 Conceitos praticados
+- Hash de senhas com as funções do Werkzeug.
+- Verificação de senha por hash, sem comparar senhas em texto puro.
+- Rotas protegidas por autenticação de sessão.
+- Consultas SQL parametrizadas.
+- Validação de dados no servidor.
+- Restrição de e-mail duplicado no banco.
+- Confirmação por senha antes da exclusão de registros.
+- Configurações sensíveis lidas por variáveis de ambiente.
 
-Durante o desenvolvimento deste projeto foram praticados diversos conceitos de desenvolvimento web.
+Essas medidas representam proteções básicas para um projeto de estudo; não constituem, por si só, uma auditoria de segurança ou garantia de segurança para uso em produção.
 
-### Python
+## Autor
 
-* Variáveis
-* Condicionais
-* Loops
-* Funções
-* Tratamento de exceções
-* Manipulação de strings
-* Expressões regulares
-* Programação orientada a objetos
-* Organização de código
+**Vinicius Cancellara**
 
-### Flask
-
-* Rotas
-* GET e POST
-* `request.form`
-* `redirect`
-* `render_template`
-* Jinja2
-* Sessões
-* Autenticação
-* Decorators
-
-### SQLite / SQL
-
-* Criação de tabelas
-* `INSERT`
-* `SELECT`
-* `UPDATE`
-* `DELETE`
-* `WHERE`
-* `ORDER BY`
-* `JOIN`
-* Chaves primárias
-* Restrições de integridade
-* Consultas parametrizadas
-* Utilização do SQLite através do `sqlite3`
-
-### HTML
-
-* Estrutura de páginas
-* Formulários
-* Inputs
-* Labels
-* Selects
-* Checkboxes
-* Radio buttons
-* Atributos `name`, `id`, `class` e `data-*`
-
-### CSS
-
-* Flexbox
-* Responsividade
-* Seletores
-* Pseudo-classes
-* Animações
-* Transições
-* Layouts
-* Glassmorphism
-
-### JavaScript
-
-* DOM
-* `getElementById`
-* `querySelector`
-* `querySelectorAll`
-* Eventos
-* `addEventListener`
-* `classList`
-* `FormData`
-* Validação de formulários
-* Manipulação de elementos HTML
-* Eventos `click`, `change` e `submit`
-* Controle de interfaces através do DOM
-* `fetch()`
-* `ASYNC`, `AWAIT`.
----
-
-## 🎯 Objetivo do projeto
-
-O objetivo principal deste projeto foi colocar em prática conceitos de desenvolvimento web full-stack, conectando uma interface feita com HTML, CSS e JavaScript a um back-end desenvolvido em Python com Flask e um banco de dados SQLite.
-
-O projeto também serviu como prática para compreender o fluxo:
-
-```text
-Usuário
-   ↓
-HTML / CSS / JavaScript
-   ↓
-Flask
-   ↓
-Validação
-   ↓
-SQLite
-   ↓
-Resposta para o usuário
-```
-
-Além disso, o projeto permitiu compreender na prática o funcionamento de um sistema **CRUD completo**, desde a criação até a exclusão de registros.
-
----
-
-## 🔮 Possíveis melhorias futuras
-
-Algumas funcionalidades e melhorias que podem ser adicionadas futuramente:
-
-* Sistema de usuários com diferentes níveis de permissão.
-* Pesquisa e filtros de alunos.
-* Separação do projeto em diferentes módulos Python.
-* Atualização de partes da página sem necessidade de recarregar completamente o navegador.
-* Testes automatizados.
-* Proteção contra CSRF.
-
-## 👤 Autor
-
-Desenvolvido por **Vinicius Cancellara** como projeto de estudo e prática de desenvolvimento web.
-
-## 🔗 GitHub
-
-github.com/viniciuscancellara-dev/cadastro-flask
-
----
-
-## 📌 Status
-
-**Concluído ✅**
-
-Projeto desenvolvido para fins de estudo e prática de desenvolvimento web com **Python, Flask, SQLite, HTML, CSS e JavaScript**.
-
-O projeto atualmente possui um **CRUD completo**, sistema de login, autenticação por sessão, validações, gerenciamento de alunos, edição e exclusão individual de registros com confirmação por senha.
+- [GitHub](https://github.com/viniciuscancellara-dev)
+- [Projeto em execução](https://cadastro-flask.onrender.com)
