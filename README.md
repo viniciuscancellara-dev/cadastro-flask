@@ -1,12 +1,5 @@
 # Sistema de Cadastro de Alunos
 
-![Python](https://shields.io)
-![Flask](https://shields.io)
-![SQLite](https://shields.io)
-![JavaScript](https://shields.io)
-![Render](https://shields.io)
-
-
 Aplicação web para cadastro e gerenciamento de alunos, desenvolvida com **Python, Flask, SQLite, HTML, CSS e JavaScript**. O projeto reúne autenticação, validação de dados, operações CRUD e uma interface interativa.
 
 **Acesse a aplicação:** [cadastro-flask.onrender.com](https://cadastro-flask.onrender.com)
