@@ -9,11 +9,14 @@ from functools import wraps
 load_dotenv()
 
 PASTA_BASE = os.path.dirname(os.path.abspath(__file__))
-CAMINHO_BANCO = os.path.join(PASTA_BASE, "instance", "banco.db")
+BANCO = os.getenv("DB_NAME")
+CAMINHO_BANCO = os.path.join(PASTA_BASE, "instance", BANCO)
 
 def start_db():
+    
     conexao = sqlite3.connect(CAMINHO_BANCO)
     cursor = conexao.cursor()
+    
     #usuarios cadastrados
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS usuarios (
@@ -65,6 +68,8 @@ def start_db():
 
 start_db()
 
+
+
 app = Flask(__name__)
 
 app.secret_key = os.getenv("SECRET_KEY")
@@ -88,7 +93,7 @@ def login_required(func):
     return wrapper
 
 @app.errorhandler(404)
-def Page404(erro):
+def Page404():
     if 'logado' in session:
         return render_template('404.html',
                                logado=True),404
