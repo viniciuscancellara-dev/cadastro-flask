@@ -1,5 +1,4 @@
-# Sistema de Cadastro de Alunos
-
+# Mang Stu
 Aplicação web para cadastro e gerenciamento de alunos, desenvolvida com **Python, Flask, SQLite, HTML, CSS e JavaScript**. O projeto reúne página inicial de apresentação, autenticação persistente, validação de dados, operações CRUD e uma interface interativa.
 
 **Acesse a aplicação:** [cadastro-flask.onrender.com](https://cadastro-flask.onrender.com)
