@@ -15,7 +15,9 @@ load_dotenv()
 
 PASTA_BASE = os.path.dirname(os.path.abspath(__file__))
 BANCO = os.getenv("DB_NAME")
+
 CAMINHO_BANCO = os.path.join(PASTA_BASE, "instance", BANCO)
+os.makedirs(os.path.dirname(CAMINHO_BANCO), exist_ok=True) 
 
 def start_db():
     
