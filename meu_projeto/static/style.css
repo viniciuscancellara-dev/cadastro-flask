@@ -1174,7 +1174,6 @@ p.paginaError {
 
 .btn-landing-primary {
     color: #f2f0f5;
-    background: rgba(101, 91, 126, 0.32);
     border: 2px solid #887c9d;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
@@ -1185,9 +1184,10 @@ p.paginaError {
 }
 
 .btn-landing-secondary {
-    color: #b8afc8;
+    color: #f2f0f5;
     background: transparent;
     border: 2px solid #655b7e;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
 .btn-landing-secondary:hover {
