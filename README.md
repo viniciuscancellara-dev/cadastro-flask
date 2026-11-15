@@ -1,32 +1,35 @@
 # Mang Stu
-Aplicação web para cadastro e gerenciamento de alunos, desenvolvida com **Python, Flask, SQLite, HTML, CSS e JavaScript**. O projeto reúne página inicial de apresentação, autenticação persistente, validação de dados, operações CRUD e uma interface interativa.
 
-**Acesse a aplicação:** [cadastro-flask.onrender.com](https://cadastro-flask.onrender.com)
+Aplicação web para cadastro e gerenciamento de alunos, feita com **Python, Flask, SQLite, HTML, CSS e JavaScript**. É um projeto de estudo que cresceu junto com o meu aprendizado: começou simples e foi ganhando login, validações, proteção contra abusos e uma interface mais cuidada.
+
+**Online:** [cadastro-flask.onrender.com](https://cadastro-flask.onrender.com)
 
 ## Funcionalidades
 
-- **Landing Page:** página inicial de apresentação dos recursos do sistema com navegação adaptável ao estado de autenticação do usuário.
-- **Autenticação e Sessão Persistente:** criação de usuário, login, logout, proteção de rotas e manutenção da sessão ativa por cookies permanentes com renovação automática.
+- **Landing page** de apresentação, com navegação que muda conforme o usuário está logado ou não.
+- **Autenticação:** criação de conta, login, logout, rotas protegidas e sessão persistente (cookie permanente com renovação automática).
 - **Cadastro de alunos:** nome, idade, e-mail, senha, observação, linguagens, turno e estado.
-- **Validação de dados:** verificações no back-end, incluindo formato dos campos, limites de idade e e-mail duplicado.
-- **Gerenciamento de registros:** listagem, edição e exclusão individual de alunos.
-- **Confirmação para exclusão:** validação por senha antes de permitir a exclusão.
-- **Interface interativa:** mensagens Toast, exibição/ocultação de senha, feedback dos formulários e atualizações com JavaScript.
-- **Persistência:** armazenamento dos registros em banco de dados SQLite.
+- **Validação em duas camadas:** no navegador (JavaScript) para resposta rápida e no servidor (Python) para garantir a segurança. Inclui formato dos campos, limite de idade, senha forte e e-mail duplicado.
+- **Gerenciamento:** listagem em tabela, edição pelo painel lateral e exclusão individual.
+- **Confirmação de exclusão:** é preciso digitar uma senha de confirmação antes de apagar qualquer registro.
+- **Interface interativa:** mensagens Toast, mostrar/ocultar senha, envio de formulários com `fetch()` sem recarregar a página.
+- **Página 404** personalizada.
 
 ## Tecnologias
 
-| Tecnologia | Utilização |
+| Tecnologia | Uso |
 | --- | --- |
 | Python | Lógica da aplicação e validações |
-| Flask | Rotas, requisições, sessões e renderização das páginas |
+| Flask | Rotas, sessões e renderização das páginas |
 | SQLite | Armazenamento dos dados |
-| HTML5 e Jinja2 | Estrutura das páginas, templates dinâmicos e renderização condicional |
-| CSS3 | Layout, responsividade, animações e glassmorphism |
-| JavaScript | Eventos, DOM, `FormData`, `fetch()` e mensagens Toast |
+| Jinja2 + HTML5 | Templates dinâmicos |
+| CSS3 | Layout responsivo, animações e glassmorphism |
+| JavaScript | DOM, eventos, `FormData`, `fetch()` e Toasts |
 | Werkzeug | Hash e verificação de senhas |
-| python-dotenv | Carregamento de variáveis de ambiente |
-| Gunicorn | Servidor WSGI para execução em produção |
+| Flask-WTF | Proteção CSRF |
+| Flask-Limiter | Limite de tentativas (rate limiting) |
+| python-dotenv | Variáveis de ambiente |
+| Gunicorn | Servidor WSGI para produção |
 
 ## Estrutura do projeto
 
@@ -37,16 +40,14 @@ ProjetoFLASK/
 └── meu_projeto/
     ├── app.py
     ├── requirements.txt
-    ├── .env                 # arquivo local
-    ├── instance/
+    ├── .env                  # arquivo local (não vai para o GitHub)
+    ├── .prettierrc.json
+    ├── instance/             # criada localmente; guarda o banco SQLite
     │   └── banco.db
     ├── static/
     │   ├── script.js
     │   ├── style.css
     │   └── png/
-    │       ├── favicon.png
-    │       ├── hidepassword.png
-    │       └── showpassword.png
     └── templates/
         ├── 404.html
         ├── banco.html
@@ -62,8 +63,8 @@ ProjetoFLASK/
 
 ### 1. Pré-requisitos
 
-- Python instalado.
-- Git, caso queira clonar o repositório.
+- Python 3 instalado
+- Git (para clonar o repositório)
 
 ### 2. Clonar o repositório
 
@@ -72,18 +73,16 @@ git clone https://github.com/viniciuscancellara-dev/cadastro-flask.git
 cd cadastro-flask
 ```
 
-> Os comandos seguintes consideram que `app.py` e `requirements.txt` estão dentro da pasta `meu_projeto`.
-
 ### 3. Criar e ativar o ambiente virtual
 
-Na raiz do repositório:
+Windows (PowerShell):
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-No macOS/Linux:
+macOS / Linux:
 
 ```bash
 python3 -m venv .venv
@@ -96,48 +95,82 @@ source .venv/bin/activate
 pip install -r meu_projeto/requirements.txt
 ```
 
-### 5. Configurar as variáveis de ambiente
+### 5. Criar a pasta do banco
 
-Crie um arquivo `meu_projeto/.env`:
+O banco SQLite fica em `meu_projeto/instance/`. Essa pasta não é enviada ao GitHub, então crie-a antes da primeira execução:
 
-```env
-SECRET_KEY=gere_uma_chave_secreta
-DELETE_HASH=defina_uma_senha_de_confirmacao
-DEBUG_MODE=True
+```bash
+mkdir meu_projeto/instance
 ```
 
-- `SECRET_KEY`: chave usada para assinar a sessão do Flask.
-- `DELETE_HASH`: valor inicial usado para criar a senha de confirmação de exclusão no banco, quando a configuração ainda não existe.
-- `DEBUG_MODE`: ativa o modo de depuração local quando definido como `True`. Em produção, mantenha-o desativado.
+### 6. Configurar as variáveis de ambiente
 
-Não publique o `.env` nem coloque credenciais reais no repositório. Use valores próprios no seu ambiente.
+Crie o arquivo `meu_projeto/.env`:
 
-### 6. Iniciar a aplicação
+```env
+SECRET_KEY=gere_uma_chave_secreta_longa_e_aleatoria
+DELETE_HASH=defina_a_senha_de_confirmacao_de_exclusao
+DEBUG_MODE=True
+DB_NAME=banco.db
+```
 
-A aplicação carrega o `.env` a partir do diretório de execução. Entre na pasta do projeto antes de iniciar:
+| Variável | Para que serve |
+| --- | --- |
+| `SECRET_KEY` | Assina a sessão do Flask. Use um valor longo e aleatório. |
+| `DELETE_HASH` | Senha usada para confirmar exclusões. Na primeira execução ela é transformada em hash e salva na tabela `config`. |
+| `DEBUG_MODE` | `True` ativa o modo de depuração local. Em produção, deixe `False`. |
+| `DB_NAME` | Nome do arquivo do banco dentro de `instance/`. |
 
-```powershell
+> Nunca publique o `.env` nem use no repositório valores reais de produção.
+
+### 7. Iniciar a aplicação
+
+```bash
 cd meu_projeto
 python app.py
 ```
 
-Acesse [http://127.0.0.1:5000](http://127.0.0.1:5000).
+Acesse [http://127.0.0.1:5000](http://127.0.0.1:5000), clique em **Criar Conta**, registre um usuário e faça login.
 
-Na tela inicial, clique em **Criar Conta** para registrar um usuário e acessar o painel da aplicação.
+### Produção
+
+Em produção o app roda com Gunicorn, a partir da pasta `meu_projeto`:
+
+```bash
+gunicorn app:app
+```
+
+Defina `DEBUG_MODE=False` e configure as mesmas variáveis de ambiente no serviço de hospedagem.
 
 ## Segurança implementada
 
-- Hash de senhas com as funções do Werkzeug.
-- Verificação de senha por hash, sem comparar senhas em texto puro.
-- Rotas protegidas por autenticação de sessão.
-- Cookies de sessão configurados com `HttpOnly`, `SameSite` e expiração controlada.
-- Consultas SQL parametrizadas.
-- Validação de dados no servidor.
-- Restrição de e-mail duplicado no banco.
-- Confirmação por senha antes da exclusão de registros.
-- Configurações sensíveis lidas por variáveis de ambiente.
+- Senhas com hash (Werkzeug), sem nunca guardar ou comparar texto puro.
+- Rotas protegidas por sessão (`login_required`).
+- Cookies de sessão com `HttpOnly`, `SameSite=Lax` e `Secure`.
+- Proteção CSRF em todos os formulários e requisições `POST`.
+- Limite de tentativas de login (5 falhas por minuto) e limites globais por IP.
+- Consultas SQL parametrizadas (protege contra SQL Injection).
+- Validação no servidor com listas de valores permitidos (turno, estado, linguagens).
+- Mensagem de erro igual para "usuário inexistente" e "senha errada" no login.
+- Configurações sensíveis em variáveis de ambiente.
 
-Essas medidas representam proteções básicas para um projeto de estudo; não constituem, por si só, uma auditoria de segurança ou garantia de segurança para uso em produção.
+São proteções básicas para um projeto de estudo. Não substituem uma auditoria de segurança para uso real.
+
+## Limitações conhecidas e próximos passos
+
+Este projeto está em evolução. O que ainda quero melhorar:
+
+- [ ] Separar o `app.py` em módulos (rotas, banco, validações) usando Blueprints.
+- [ ] Criar uma função única para conexão com o banco e para as validações, hoje repetidas em `/cadastrar` e `/editar`.
+- [ ] Padronizar as respostas de erro do `/editar` em JSON (algumas ainda retornam texto simples).
+- [ ] Criar a pasta `instance/` automaticamente na primeira execução.
+- [ ] Ligar cada aluno cadastrado ao usuário que o criou (hoje todo usuário logado vê todos os registros).
+- [ ] Trocar o limitador em memória por um armazenamento compartilhado (ex.: Redis) para funcionar com vários workers.
+- [ ] Adicionar testes automatizados.
+
+## O que este projeto me ensinou
+
+CRUD completo com SQLite, autenticação e sessões, segurança básica de aplicações web, comunicação front-end/back-end com `fetch()` e JSON, validação em duas camadas e deploy com Gunicorn.
 
 ## Autor
 
