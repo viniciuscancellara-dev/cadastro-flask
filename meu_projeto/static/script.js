@@ -420,8 +420,8 @@ document.addEventListener('DOMContentLoaded', () => {
         senhaValidacao.addEventListener('submit', async (event) => {
             event.preventDefault()
 
-            const senha = senhaValidacao.querySelector('[name="password"]').value
-
+            const senha = senhaValidacao.querySelector('[name="password"]').value 
+ 
             if (senha === '') {
                 mostrarToast(['Digite sua senha.'])
                 return

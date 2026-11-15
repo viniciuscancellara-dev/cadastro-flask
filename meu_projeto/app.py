@@ -2,6 +2,7 @@ import re
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect, session, url_for, jsonify
+from datetime import timedelta
 import os
 from dotenv import load_dotenv
 from functools import wraps
@@ -74,8 +75,12 @@ app = Flask(__name__)
 
 app.secret_key = os.getenv("SECRET_KEY")
 
-app.config['SESSION_COOKIE_SECURE'] = True
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=365)  
+app.config['SESSION_REFRESH_EACH_REQUEST'] = True
+
 app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = True
 
 EMAIL_REGEX = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 SENHA_REGEX = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\-_@!#$%^&*()=+])[A-Za-z\d\-_@!#$%^&*()=+]{8,}$'
@@ -102,8 +107,19 @@ def Page404():
                                logado=False),404
 
 @app.route("/", methods=["GET", "POST"])
+def landPage():
+    if request.method == "GET":   
+        return render_template("landing.html")
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
+
+    if "logado" in session:
+                return redirect("/inicio")
+    
     if request.method == "POST":
+
+        
         
         usuario_digitado = request.form.get("usuario")
         senha_digitada = request.form.get("senha")
@@ -144,7 +160,7 @@ def login():
         session["usuario"] = usuario_digitado
         session["usuario_id"] = id_banco
 
-        session.permanent = False
+        session.permanent = True
 
         return jsonify({
             "sucesso":True,

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mang Stu | Sistema de Gerenciamento de Alunos</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/x-icon" />
+        <link rel="preconnect" href="https://googleapis.com" />
+        <link rel="preconnect" href="https://gstatic.com" crossorigin />
+        <link
+            href="https://googleapis.com/css2?family=Bebas+Neue&family=Red+Hat+Display:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    </head>
+    <body class="landing">
+        <header class="landing-header">
+            <div class="landing-logo"><img src="static/png/MangStu.png" draggable="false" /></div>
+            <nav class="landing-nav">
+                {% if "logado" in session %}
+                <a href="/inicio" class="nav-link-login">Acessar Dash</a>
+                <a href="/sign" class="btn-landing-outline">Criar Conta</a>
+                {% else %}
+
+                <a href="/login" class="nav-link-login">Entrar</a>
+                <a href="/sign" class="btn-landing-outline">Criar Conta</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        <main class="landing-main">
+            <section class="hero-section">
+                <div class="hero-badge">SISTEMA WEB • PYTHON & FLASK</div>
+                <h1 class="hero-title">Gerenciamento de Alunos <br />Simples, Rápido e Seguro</h1>
+                <p class="hero-subtitle">
+                    Plataforma completa para cadastro, edição e controle de registros estudantis com autenticação por
+                    sessão, validação no servidor e banco de dados SQLite.
+                </p>
+                <div class="hero-actions">
+                    {% if "logado" in session %}
+                    <a href="/inicio" class="btn-landing-primary">Acessar Sistema</a>
+                    <a href="/cadastrar" class="btn-landing-secondary">Cadastrar Usuário</a>
+                    {% else %}
+
+                    <a href="/login" class="btn-landing-primary">Acessar Sistema</a>
+                    <a href="/sign" class="btn-landing-secondary">Cadastrar Usuário</a>
+                    {% endif %}
+                </div>
+            </section>
+
+            <section class="preview-section">
+                <div class="glass-mockup">
+                    <div class="mockup-bar">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="mockup-url">://onrender.com</span>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="mockup-stat">
+                            <span class="stat-label">AUTENTICAÇÃO</span>
+                            <span class="stat-value">Hash & Sessão</span>
+                        </div>
+                        <div class="mockup-stat">
+                            <span class="stat-label">OPERAÇÕES</span>
+                            <span class="stat-value">CRUD Completo</span>
+                        </div>
+                        <div class="mockup-stat">
+                            <span class="stat-label">EXCLUSÃO SEGURA</span>
+                            <span class="stat-value">Validação por Senha</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="features-section">
+                <h2 class="section-heading">Recursos do Sistema</h2>
+                <div class="features-grid">
+                    <article class="feature-card">
+                        <h3>Cadastro Detalhado</h3>
+                        <p>
+                            Registre alunos com nome, idade, e-mail, turno, estado, linguagens de programação e
+                            observações personalizadas.
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <h3>Segurança Aplicada</h3>
+                        <p>
+                            Senhas protegidas com hash Werkzeug, consultas SQL parametrizadas e confirmação de senha
+                            antes de excluir dados.
+                        </p>
+                    </article>
+
+                    <article class="feature-card">
+                        <h3>Interface Dinâmica</h3>
+                        <p>
+                            Notificações Toast em tempo real, visualização de senha e atualização instantânea sem
+                            recarregar a página.
+                        </p>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer class="landing-footer">
+            <div class="tech-stack">
+                <span>Python</span>
+                <span>Flask</span>
+                <span>SQLite</span>
+                <span>JavaScript</span>
+                <span>HTML5 & CSS3</span>
+            </div>
+            <p class="footer-credit">
+                Desenvolvido por
+                <a href="https://github.com/viniciuscancellara-dev" target="_blank" rel="noopener noreferrer">
+                    <img src="static/png/github.webp" alt="icone do github " draggable="false" />Vinicius Cancellara</a
+                >
+            </p>
+        </footer>
+    </body>
+</html>

@@ -19,6 +19,7 @@
             <h3 id="user">Ola, {{ session["usuario"] }}</h3>
             <div class="link">
                 <a href="{{url_for('logout')}}" id="sair">Sair</a>
+                <a href="{{url_for('landPage')}}" id="home">Home</a>
             </div>
         </div>
         <script src="{{ url_for('static', filename='script.js') }}" defer></script>

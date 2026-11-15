@@ -1,47 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&amp;display=swap" rel="stylesheet">
-    <title>Login</title>
-</head>
-<body class="login">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+        <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png" />
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&amp;display=swap"
+            rel="stylesheet"
+        />
+        <title>Login</title>
+    </head>
+    <body class="login">
+        <div class="container-login">
+            <div class="lado-esquerdo"></div>
 
-    <div class="container-login">
+            <div class="lado-direito">
+                <div class="div-form">
+                    <h1 id="title-login">Log in To my site</h1>
+                    <form action="/login" class="form-login">
+                        <input id="login-usuario" name="usuario" placeholder="Username" autocomplete="off" />
 
-        <div class="lado-esquerdo">
+                        <div class="campo-senha">
+                            <input
+                                id="login-senha"
+                                name="senha"
+                                type="password"
+                                placeholder="Password"
+                                autocomplete="off"
+                            />
+                            <button type="button" id="btn-showpass">
+                                <img id="png-showpass" src="{{ url_for('static', filename='png/showpassword.png') }}" />
+                            </button>
+                        </div>
 
-
-
-        </div>
-
-        <div class="lado-direito">
-            <div class="div-form">
-                <h1 id="title-login">Log in To my site</h1>
-                <form action="/" class="form-login">
-
-                    <input id="login-usuario" name="usuario" placeholder="Username" autocomplete="off">
-
-                    <div class="campo-senha">
-                        <input id="login-senha" name="senha" type="password" placeholder="Password" autocomplete="off">
-                        <button type="button" id="btn-showpass">
-                            <img id="png-showpass" src="{{ url_for('static', filename='png/showpassword.png') }}">
-                        </button>
-                    </div>
-
-                    <button type="submit" id="btn-login" class="login-btn">Log In</button>
-                    <div class="conteiner-a">
-                        <a href="/sign" style="color:rgba(124, 11, 119, 0.76);">Sign in</a>
-                    </div>
-                </form>
+                        <button type="submit" id="btn-login" class="login-btn">Log In</button>
+                        <div class="conteiner-a">
+                            <a href="/sign" style="color: rgba(124, 11, 119, 0.76)">Sign in</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-
-    </div>
-    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
-</body>
+        <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    </body>
 </html>

@@ -1,12 +1,13 @@
 # Sistema de Cadastro de Alunos
 
-Aplicação web para cadastro e gerenciamento de alunos, desenvolvida com **Python, Flask, SQLite, HTML, CSS e JavaScript**. O projeto reúne autenticação, validação de dados, operações CRUD e uma interface interativa.
+Aplicação web para cadastro e gerenciamento de alunos, desenvolvida com **Python, Flask, SQLite, HTML, CSS e JavaScript**. O projeto reúne página inicial de apresentação, autenticação persistente, validação de dados, operações CRUD e uma interface interativa.
 
 **Acesse a aplicação:** [cadastro-flask.onrender.com](https://cadastro-flask.onrender.com)
 
 ## Funcionalidades
 
-- **Autenticação:** criação de usuário, login, logout e proteção de páginas por sessão.
+- **Landing Page:** página inicial de apresentação dos recursos do sistema com navegação adaptável ao estado de autenticação do usuário.
+- **Autenticação e Sessão Persistente:** criação de usuário, login, logout, proteção de rotas e manutenção da sessão ativa por cookies permanentes com renovação automática.
 - **Cadastro de alunos:** nome, idade, e-mail, senha, observação, linguagens, turno e estado.
 - **Validação de dados:** verificações no back-end, incluindo formato dos campos, limites de idade e e-mail duplicado.
 - **Gerenciamento de registros:** listagem, edição e exclusão individual de alunos.
@@ -19,9 +20,9 @@ Aplicação web para cadastro e gerenciamento de alunos, desenvolvida com **Pyth
 | Tecnologia | Utilização |
 | --- | --- |
 | Python | Lógica da aplicação e validações |
-| Flask | Rotas, requisições e renderização das páginas |
+| Flask | Rotas, requisições, sessões e renderização das páginas |
 | SQLite | Armazenamento dos dados |
-| HTML5 e Jinja2 | Estrutura das páginas e templates |
+| HTML5 e Jinja2 | Estrutura das páginas, templates dinâmicos e renderização condicional |
 | CSS3 | Layout, responsividade, animações e glassmorphism |
 | JavaScript | Eventos, DOM, `FormData`, `fetch()` e mensagens Toast |
 | Werkzeug | Hash e verificação de senhas |
@@ -53,6 +54,7 @@ ProjetoFLASK/
         ├── excluir-banco-validacao.html
         ├── index.html
         ├── inicio.html
+        ├── landing.html
         ├── login.html
         └── sign.html
 ```
@@ -122,13 +124,14 @@ python app.py
 
 Acesse [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
-Na tela de cadastro de usuário, crie uma conta para entrar na aplicação.
+Na tela inicial, clique em **Criar Conta** para registrar um usuário e acessar o painel da aplicação.
 
 ## Segurança implementada
 
 - Hash de senhas com as funções do Werkzeug.
 - Verificação de senha por hash, sem comparar senhas em texto puro.
 - Rotas protegidas por autenticação de sessão.
+- Cookies de sessão configurados com `HttpOnly`, `SameSite` e expiração controlada.
 - Consultas SQL parametrizadas.
 - Validação de dados no servidor.
 - Restrição de e-mail duplicado no banco.
