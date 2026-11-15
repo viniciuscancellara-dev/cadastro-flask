@@ -1,45 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REGISTROS</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png">
-</head>
-<body class="validacao-senha">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>REGISTROS</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+        <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png" />
+    </head>
+    <body class="validacao-senha">
+        <div class="container-validacao">
+            <div class="input-validacao">
+                <form action="/enviar-validacao" method="post" class="form-validation">
+                    <label class="senha" for="password">Digite a senha de confirmacao</label>
 
-    <div class="container-validacao">
-        <div class="input-validacao">
-            <form action="/enviar-validacao" method="post" class="form-validation">
+                    <input name="password" type="password" id="password" placeholder="Digite sua senha" />
 
-                <label class="senha" for="password">Digite a senha de confirmacao</label>
+                    <button class="enviar-validacao" type="submit" id="button-password">Enviar Validacao</button>
 
-                <input name="password" type="password" id="password" placeholder="Digite sua senha">
-
-                <button class="enviar-validacao" type="submit" id="button-password">Enviar Validacao</button>
-
-                <a href="{{ url_for('mostrar_banco') }}" class="btn-voltar">Voltar</a>
-
-            </form>
-
+                    <a href="{{ url_for('mostrar_banco') }}" class="btn-voltar">Voltar</a>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <div id="area-exclusao" hidden>
-
-        <div id="lista-alunos">
-
-            {% for aluno in tabela %}
+        <div id="area-exclusao" hidden>
+            <div id="lista-alunos">
+                {% for aluno in tabela %}
 
                 <div class="aluno-item">
-
                     <div class="card-aluno">
                         <p class="nome-aluno">{{ aluno[1] }}</p>
 
-                        <div class="card-email">
-                            {{ aluno[3] }}
-                        </div>
+                        <div class="card-email">{{ aluno[3] }}</div>
                     </div>
 
                     <div class="info-extra">
@@ -50,26 +42,16 @@
                         <span>Estado: {{ aluno[8] }}</span>
                     </div>
 
-                    <button
-                        class="btn-excluir"
-                        data-id="{{ aluno[0] }}"
-                        type="button"
-                    >
-                        ❌
-                    </button>
-
+                    <button class="btn-excluir" data-id="{{ aluno[0] }}" type="button">❌</button>
                 </div>
 
-            {% endfor %}
+                {% endfor %}
 
-            <div class="container-btn-exlcusao">
-                <button id="btn-voltar-exclusao">
-                    Voltar
-                </button>
+                <div class="container-btn-exlcusao">
+                    <button id="btn-voltar-exclusao">Voltar</button>
+                </div>
             </div>
         </div>
-
-    </div>
-    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
-</body>
+        <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    </body>
 </html>

@@ -277,15 +277,43 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
     //login
-
     const formLogin = document.querySelector('.form-login')
-    const btnLogin = document.getElementById('btn-login')
 
     if (formLogin) {
-        formLogin.addEventListener('submit', async (event) => {
-            event.preventDefault()
+        const btnLogin = document.getElementById('btn-login')
+        const textoContador = document.querySelector('#contador-bloqueio')
 
-            const dados = await enviarForm(formLogin)
+        let intervaloContagem = null
+
+        function iniciarContagemRegressiva(segundos) {
+            // limpa contagem anterior se existir
+            clearInterval(intervaloContagem)
+
+            let tempoRestante = segundos
+            btnLogin.disabled = true
+            btnLogin.textContent = `Bloqueado (${tempoRestante}s)`
+            textoContador.style.display = 'block'
+            textoContador.textContent = `Muitas tentativas. Tente novamente em ${tempoRestante}s.`
+
+            intervaloContagem = setInterval(() => {
+                tempoRestante--
+
+                if (tempoRestante <= 0) {
+                    // libera o botao e esconde o aviso
+                    clearInterval(intervaloContagem)
+                    btnLogin.disabled = false
+                    btnLogin.textContent = 'Log in'
+                    textoContador.style.display = 'none'
+                } else {
+                    // atualiza o teste a cada 1s
+                    btnLogin.textContent = `Bloqueado (${tempoRestante}s)`
+                    textoContador.textContent = `Muitas tentativas. Tente novamente em ${tempoRestante}s.`
+                }
+            }, 1000)
+        }
+
+        formLogin.addEventListener('submit', async (e) => {
+            e.preventDefault()
 
             const erros = []
 
@@ -301,24 +329,38 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (erros.length > 0) {
-                event.preventDefault()
                 mostrarToast(erros)
                 return
             }
 
-            btnLogin.textContent = 'Entrando. . .'
             btnLogin.disabled = true
+            btnLogin.textContent = 'Entrando...'
 
-            if (!dados.sucesso) {
+            try {
+                const dados = await enviarForm(formLogin)
+
+                console.log('DADOS RECEBIDOS:', dados)
+                if (dados.sucesso) {
+                    // redireciona ainda com o botao  desativado pra evitar gente burra
+                    console.log('Login certo')
+                    window.location.href = dados.redirect
+                    return
+                }
+
                 mostrarToast([dados.mensagem])
-                btnLogin.textContent = 'log in'
-                btnLogin.disabled = false
-                return
-            }
 
-            if (dados.sucesso) {
-                console.log('Login certo')
-                window.location.href = dados.redirect
+                // ve se o tempo_espera veio
+                if (dados.tempo_espera) {
+                    iniciarContagemRegressiva(dados.tempo_espera)
+                } else {
+                    // destrava o botao se vieri 401
+                    btnLogin.disabled = false
+                    btnLogin.textContent = 'Log in'
+                }
+            } catch (erro) {
+                // se der errro 500 destrava tmb
+                btnLogin.disabled = false
+                btnLogin.textContent = 'Log in'
             }
         })
     }
@@ -420,8 +462,8 @@ document.addEventListener('DOMContentLoaded', () => {
         senhaValidacao.addEventListener('submit', async (event) => {
             event.preventDefault()
 
-            const senha = senhaValidacao.querySelector('[name="password"]').value 
- 
+            const senha = senhaValidacao.querySelector('[name="password"]').value
+
             if (senha === '') {
                 mostrarToast(['Digite sua senha.'])
                 return
@@ -477,6 +519,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 botao.classList.remove('clicando')
             }, 130)
 
+            const metaTag = document.querySelector('meta[name="csrf-token"]')
+            const csrfToken = metaTag ? metaTag.getAttribute('content') : ''
+
             const formData = new FormData()
 
             formData.append('id-excluir', id)
@@ -484,6 +529,9 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const resposta = await fetch('/enviar-validacao', {
                     method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                    },
                     body: formData,
                 })
 
@@ -522,10 +570,19 @@ document.addEventListener('DOMContentLoaded', () => {
     //fetch
 
     async function enviarForm(form) {
+        const metaTag = document.querySelector('meta[name="csrf-token"]')
+        const csrfToken = metaTag ? metaTag.getAttribute('content') : ''
         const resposta = await fetch(form.action, {
             method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
             body: new FormData(form),
         })
+
+        if (resposta.status === 429) {
+            mostrarToast(['Muitas tentaivas! Aguarde 1 minuto e tente novamente!'])
+        }
         const dados = await resposta.json()
 
         return dados

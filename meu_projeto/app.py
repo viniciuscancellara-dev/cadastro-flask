@@ -1,7 +1,11 @@
 import re
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask, render_template, request, redirect, session, url_for, jsonify
+from flask import Flask, render_template, request, redirect, session, jsonify
+from flask_wtf.csrf import CSRFProtect
+from flask_limiter import Limiter
+from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_limiter.util import get_remote_address
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
@@ -75,10 +79,26 @@ app = Flask(__name__)
 
 app.secret_key = os.getenv("SECRET_KEY")
 
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+
+CSRFProtect(app)
+
+#definindo o limiter    
+def pegar_ip():
+    return get_remote_address() or "127.0.0.1"
+
+limiter = Limiter(
+    key_func=pegar_ip,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
+)
+
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=365)  
 app.config['SESSION_REFRESH_EACH_REQUEST'] = True
 
-app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SECURE'] = not (os.getenv('DEBUG_MODE', 'False').lower() == 'true')
+
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SESSION_COOKIE_SECURE'] = True
 
@@ -98,13 +118,22 @@ def login_required(func):
     return wrapper
 
 @app.errorhandler(404)
-def Page404():
+def Page404(e):
     if 'logado' in session:
         return render_template('404.html',
                                logado=True),404
     else:
         return render_template('404.html',
                                logado=False),404
+    
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    return jsonify({
+        "sucesso": False,
+        "mensagem": "Muitas tentativas falhas. Aguarde para tentar novamente.",
+        "tempo_espera": 60
+    }), 429
+
 
 @app.route("/", methods=["GET", "POST"])
 def landPage():
@@ -112,6 +141,7 @@ def landPage():
         return render_template("landing.html")
 
 @app.route("/login", methods=["GET", "POST"])
+@limiter.limit("5 per minute", methods=["POST"], override_defaults=True, deduct_when=lambda response: response.status_code == 401)
 def login():
 
     if "logado" in session:
@@ -130,19 +160,13 @@ def login():
         cursor.execute("SELECT id, usuario, senha FROM login WHERE usuario = ?", (usuario_digitado,))
         resultado = cursor.fetchone()
 
-        cursor.execute("SELECT usuario FROM login")
-        print("USUARIOS NO BANCO:", cursor.fetchall())
-
-        print("USUARIO:", usuario_digitado)
-        print("RESULTADO:", resultado)
-
         if resultado is None:
             conexao.close()
 
             return jsonify({
                 "sucesso": False,
                 "mensagem": "Usuário ou senha incorretos!"
-            })
+            }), 401
 
 
         id_banco = resultado[0]
@@ -154,7 +178,7 @@ def login():
             return jsonify ({
                 "sucesso": False,
                 "mensagem": "Usuário ou senha incorretos!"
-            })
+            }), 401
 
         session["logado"] = True
         session["usuario"] = usuario_digitado
@@ -169,6 +193,7 @@ def login():
         })
 
     return render_template("login.html")
+
 
 @app.route("/sign", methods=["GET", "POST"])
 def sign():

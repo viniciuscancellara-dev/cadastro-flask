@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
         <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png" />
         <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
@@ -30,10 +31,13 @@
                                 placeholder="Password"
                                 autocomplete="off"
                             />
+
                             <button type="button" id="btn-showpass">
                                 <img id="png-showpass" src="{{ url_for('static', filename='png/showpassword.png') }}" />
                             </button>
                         </div>
+                        ;
+                        <p id="contador-bloqueio"></p>
 
                         <button type="submit" id="btn-login" class="login-btn">Log In</button>
                         <div class="conteiner-a">
