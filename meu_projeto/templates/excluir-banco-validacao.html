@@ -4,54 +4,88 @@
         <meta charset="UTF-8" />
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>REGISTROS</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+        <title>Excluir registros — Mang Stu</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     </head>
-    <body class="validacao-senha">
-        <div class="container-validacao">
-            <div class="input-validacao">
-                <form action="/enviar-validacao" method="post" class="form-validation">
-                    <label class="senha" for="password">Digite a senha de confirmacao</label>
+    <body class="ms-page ms-delete-page validacao-senha">
+        <header class="ms-topbar">
+            <a class="ms-brand" href="{{ url_for('landPage') }}"
+                ><img src="{{ url_for('static', filename='png/MangStu.png') }}" alt="" width="34" height="34" /><span
+                    >MANG <strong>STU</strong></span
+                ></a
+            >
+            <a class="ms-top-link" href="{{ url_for('mostrar_banco') }}">← Voltar aos registros</a>
+        </header>
+        <main class="ms-delete-main">
+            <section class="ms-delete-intro">
+                <p class="ms-eyebrow">AÇÃO RESTRITA / CONFIRMAÇÃO</p>
+                <h1>Exclusão de<br /><em>registros.</em></h1>
+                <p class="ms-page-lead">
+                    Para continuar, confirme sua senha de administrador. A exclusão de registros é uma ação permanente.
+                </p>
+            </section>
 
-                    <input name="password" type="password" id="password" placeholder="Digite sua senha" />
-
-                    <button class="enviar-validacao" type="submit" id="button-password">Enviar Validacao</button>
-
-                    <a href="{{ url_for('mostrar_banco') }}" class="btn-voltar">Voltar</a>
-                </form>
-            </div>
-        </div>
-
-        <div id="area-exclusao" hidden>
-            <div id="lista-alunos">
-                {% for aluno in tabela %}
-
-                <div class="aluno-item">
-                    <div class="card-aluno">
-                        <p class="nome-aluno">{{ aluno[1] }}</p>
-
-                        <div class="card-email">{{ aluno[3] }}</div>
-                    </div>
-
-                    <div class="info-extra">
-                        <span>Idade: {{ aluno[2] }}</span>
-                        <span>Observacao: {{ aluno[5] }}</span>
-                        <span>Linguagens: {{ aluno[6] }}</span>
-                        <span>Turno: {{ aluno[7] }}</span>
-                        <span>Estado: {{ aluno[8] }}</span>
-                    </div>
-
-                    <button class="btn-excluir" data-id="{{ aluno[0] }}" type="button">❌</button>
+            <section class="container-validacao ms-validation-panel">
+                <div class="input-validacao">
+                    <form action="/enviar-validacao" method="post" class="form-validation ms-form">
+                        <label class="senha" for="password">Senha de confirmação</label>
+                        <input
+                            name="password"
+                            type="password"
+                            id="password"
+                            placeholder="Digite sua senha"
+                            autocomplete="current-password"
+                        />
+                        <button class="enviar-validacao ms-primary-btn" type="submit" id="button-password">
+                            Confirmar acesso <span aria-hidden="true">↗</span>
+                        </button>
+                        <a href="{{ url_for('mostrar_banco') }}" class="btn-voltar ms-secondary-btn"
+                            >Cancelar e voltar</a
+                        >
+                    </form>
                 </div>
+            </section>
 
-                {% endfor %}
-
-                <div class="container-btn-exlcusao">
-                    <button id="btn-voltar-exclusao">Voltar</button>
+            <section id="area-exclusao" hidden class="ms-delete-list">
+                <div class="ms-list-heading">
+                    <p class="ms-eyebrow">REGISTROS / REMOÇÃO</p>
+                    <h2>Escolha o registro.</h2>
                 </div>
-            </div>
-        </div>
+                <div id="lista-alunos">
+                    {% for aluno in tabela %}
+                    <article class="aluno-item ms-delete-item">
+                        <div class="card-aluno">
+                            <p class="nome-aluno">{{ aluno[1] }}</p>
+                            <div class="card-email">{{ aluno[3] }}</div>
+                        </div>
+                        <div class="info-extra">
+                            <span>Idade: {{ aluno[2] }}</span><span>Observação: {{ aluno[5] }}</span
+                            ><span>Linguagens: {{ aluno[6] }}</span><span>Turno: {{ aluno[7] }}</span
+                            ><span>Estado: {{ aluno[8] }}</span>
+                        </div>
+                        <button
+                            class="btn-excluir"
+                            data-id="{{ aluno[0] }}"
+                            type="button"
+                            aria-label="Excluir {{ aluno[1] }}"
+                        >
+                            Excluir <span aria-hidden="true">×</span>
+                        </button>
+                    </article>
+                    {% endfor %}
+                    <div class="container-btn-exlcusao">
+                        <button id="btn-voltar-exclusao" class="ms-secondary-btn" type="button">Voltar</button>
+                    </div>
+                </div>
+            </section>
+        </main>
         <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     </body>
 </html>

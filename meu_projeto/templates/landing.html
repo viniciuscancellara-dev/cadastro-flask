@@ -1,122 +1,205 @@
 <!doctype html>
-<html lang="pt-br">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Mang Stu | Sistema de Gerenciamento de Alunos</title>
-        <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/x-icon" />
-        <link rel="preconnect" href="https://googleapis.com" />
-        <link rel="preconnect" href="https://gstatic.com" crossorigin />
+        <meta
+            name="description"
+            content="Mang Stu é um sistema web para cadastro, consulta, edição e gerenciamento de registros de alunos."
+        />
+        <title>Mang Stu — Gestão de alunos</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://googleapis.com/css2?family=Bebas+Neue&family=Red+Hat+Display:wght@400;500;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
             rel="stylesheet"
         />
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     </head>
+
     <body class="landing">
         <header class="landing-header">
-            <div class="landing-logo"><img src="static/png/MangStu.png" draggable="false" /></div>
-            <nav class="landing-nav">
-                {% if "logado" in session %}
-                <a href="/inicio" class="nav-link-login">Acessar Dash</a>
-                <a href="/sign" class="btn-landing-outline">Criar Conta</a>
-                {% else %}
+            <a class="landing-brand" href="{{ url_for('landPage') }}" aria-label="Mang Stu — página inicial">
+                <img
+                    src="{{ url_for('static', filename='png/MangStu.png') }}"
+                    alt=""
+                    width="42"
+                    height="42"
+                    draggable="false"
+                />
+                <span>MANG <strong>STU</strong></span>
+            </a>
 
-                <a href="/login" class="nav-link-login">Entrar</a>
-                <a href="/sign" class="btn-landing-outline">Criar Conta</a>
+            <nav class="landing-nav" aria-label="Navegação principal">
+                <a class="nav-link-login" href="#recursos">Recursos</a>
+                {% if "logado" in session %}
+                <a class="nav-link-login" href="{{ url_for('inicio') }}">Painel</a>
+                <a href="{{ url_for('cadastrar') }}" class="btn-landing-outline"
+                    >Novo cadastro <span aria-hidden="true">↗</span></a
+                >
+                {% else %}
+                <a class="nav-link-login" href="{{ url_for('login') }}">Entrar</a>
+                <a href="{{ url_for('sign') }}" class="btn-landing-outline"
+                    >Criar conta <span aria-hidden="true">↗</span></a
+                >
                 {% endif %}
             </nav>
         </header>
 
         <main class="landing-main">
-            <section class="hero-section">
-                <div class="hero-badge">SISTEMA WEB • PYTHON & FLASK</div>
-                <h1 class="hero-title">Gerenciamento de Alunos <br />Simples, Rápido e Seguro</h1>
-                <p class="hero-subtitle">
-                    Plataforma completa para cadastro, edição e controle de registros estudantis com autenticação por
-                    sessão, validação no servidor e banco de dados SQLite.
+            <section class="hero-section" aria-labelledby="hero-title">
+                <div class="hero-copy">
+                    <p class="hero-kicker"><span class="status-mark"></span> SISTEMA DE GESTÃO · FLASK</p>
+                    <h1 class="hero-title" id="hero-title">Seus registros.<br /><span>Em ordem.</span></h1>
+                    <p class="hero-subtitle">
+                        Cadastre, consulte e mantenha informações de alunos em um só lugar. Uma ferramenta direta para
+                        organizar o que importa.
+                    </p>
+                    <div class="hero-actions">
+                        {% if "logado" in session %}
+                        <a href="{{ url_for('inicio') }}" class="btn-landing-primary"
+                            >Acessar painel <span aria-hidden="true">↗</span></a
+                        >
+                        <a href="{{ url_for('cadastrar') }}" class="btn-landing-secondary">Cadastrar aluno</a>
+                        {% else %}
+                        <a href="{{ url_for('login') }}" class="btn-landing-primary"
+                            >Acessar sistema <span aria-hidden="true">↗</span></a
+                        >
+                        <a href="#recursos" class="btn-landing-secondary"
+                            >Conhecer recursos <span aria-hidden="true">↓</span></a
+                        >
+                        {% endif %}
+                    </div>
+                    <p class="hero-footnote"><span>01</span> CONTROLE DE REGISTROS, SEM COMPLICAÇÃO.</p>
+                </div>
+
+                <div class="preview-section" aria-label="Prévia ilustrativa da área de gerenciamento de alunos">
+                    <div class="product-preview">
+                        <div class="preview-topbar">
+                            <div class="preview-brand">
+                                <span class="preview-brand-mark">M</span>
+                                <span>Mang Stu</span>
+                            </div>
+                            <span class="preview-window-label">ÁREA DE GERENCIAMENTO</span>
+                            <span class="preview-window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                        </div>
+                        <div class="preview-body">
+                            <aside class="preview-sidebar" aria-hidden="true">
+                                <span class="sidebar-symbol active">▦</span>
+                                <span class="sidebar-symbol">＋</span>
+                                <span class="sidebar-symbol">⚙</span>
+                            </aside>
+                            <div class="preview-workspace">
+                                <div class="preview-heading">
+                                    <div>
+                                        <span class="preview-overline">VISÃO GERAL / REGISTROS</span>
+                                        <h2>Alunos</h2>
+                                    </div>
+                                    <span class="preview-add">＋ Novo</span>
+                                </div>
+                                <div class="preview-table">
+                                    <div class="preview-table-head">
+                                        <span>ALUNO</span><span>IDADE</span><span>TURNO</span><span>ESTADO</span>
+                                    </div>
+                                    <div class="preview-table-row">
+                                        <span class="preview-person"><i>01</i> Nome do aluno</span><span>—</span
+                                        ><span>—</span><span>—</span>
+                                    </div>
+                                    <div class="preview-table-row">
+                                        <span class="preview-person"><i>02</i> Nome do aluno</span><span>—</span
+                                        ><span>—</span><span>—</span>
+                                    </div>
+                                    <div class="preview-table-row">
+                                        <span class="preview-person"><i>03</i> Nome do aluno</span><span>—</span
+                                        ><span>—</span><span>—</span>
+                                    </div>
+                                </div>
+                                <div class="preview-caption">
+                                    <span><b></b> ESTRUTURA DE DADOS DO SISTEMA</span>
+                                    <span>CONSULTA · EDIÇÃO · EXCLUSÃO</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="preview-note"><span>FIG. 01</span> REPRESENTAÇÃO DA ESTRUTURA DE REGISTROS</p>
+                </div>
+            </section>
+
+            <section class="features-section" id="recursos" aria-labelledby="features-title">
+                <div class="section-intro">
+                    <p class="section-kicker">O QUE VOCÊ PODE FAZER <span>— 02</span></p>
+                    <h2 class="section-heading" id="features-title">Organização em cada etapa.</h2>
+                    <p class="section-description">
+                        As ferramentas essenciais para manter os registros consistentes e acessíveis.
+                    </p>
+                </div>
+
+                <div class="feature-list">
+                    <article class="feature-row">
+                        <span class="feature-number">01</span>
+                        <div class="feature-title-wrap">
+                            <h3>Gestão de alunos</h3>
+                            <span>CADASTRO E REGISTROS</span>
+                        </div>
+                        <p>
+                            Cadastre alunos com informações de contato, idade, turno, estado, linguagens e observações.
+                            Consulte e edite os dados quando precisar.
+                        </p>
+                        <span class="feature-arrow" aria-hidden="true">↗</span>
+                    </article>
+                    <article class="feature-row">
+                        <span class="feature-number">02</span>
+                        <div class="feature-title-wrap">
+                            <h3>Acesso protegido</h3>
+                            <span>AUTENTICAÇÃO</span>
+                        </div>
+                        <p>
+                            O acesso ao sistema utiliza autenticação por sessão e armazenamento de senhas com hash, sem
+                            guardar senhas em texto puro.
+                        </p>
+                        <span class="feature-arrow" aria-hidden="true">↗</span>
+                    </article>
+                    <article class="feature-row">
+                        <span class="feature-number">03</span>
+                        <div class="feature-title-wrap">
+                            <h3>Controle de dados</h3>
+                            <span>OPERAÇÕES E VALIDAÇÃO</span>
+                        </div>
+                        <p>
+                            Validação dos dados no servidor, consultas parametrizadas e confirmação adicional antes da
+                            exclusão de registros.
+                        </p>
+                        <span class="feature-arrow" aria-hidden="true">↗</span>
+                    </article>
+                </div>
+            </section>
+
+            <section class="stack-section" aria-labelledby="stack-title">
+                <div>
+                    <p class="section-kicker">BASE TÉCNICA <span>— 03</span></p>
+                    <h2 id="stack-title">Tecnologia a serviço<br />da organização.</h2>
+                </div>
+                <p class="stack-description">
+                    Uma aplicação web construída com ferramentas conhecidas e uma estrutura objetiva, com persistência
+                    em banco de dados e interface acessível pelo navegador.
                 </p>
-                <div class="hero-actions">
-                    {% if "logado" in session %}
-                    <a href="/inicio" class="btn-landing-primary">Acessar Sistema</a>
-                    <a href="/cadastrar" class="btn-landing-secondary">Cadastrar Usuário</a>
-                    {% else %}
-
-                    <a href="/login" class="btn-landing-primary">Acessar Sistema</a>
-                    <a href="/sign" class="btn-landing-secondary">Cadastrar Usuário</a>
-                    {% endif %}
-                </div>
-            </section>
-
-            <section class="preview-section">
-                <div class="glass-mockup">
-                    <div class="mockup-bar">
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                        <span class="mockup-url">://mangstu.com</span>
-                    </div>
-                    <div class="mockup-content">
-                        <div class="mockup-stat">
-                            <span class="stat-label">AUTENTICAÇÃO</span>
-                            <span class="stat-value">Hash & Sessão</span>
-                        </div>
-                        <div class="mockup-stat">
-                            <span class="stat-label">OPERAÇÕES</span>
-                            <span class="stat-value">CRUD Completo</span>
-                        </div>
-                        <div class="mockup-stat">
-                            <span class="stat-label">EXCLUSÃO SEGURA</span>
-                            <span class="stat-value">Validação por Senha</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="features-section">
-                <h2 class="section-heading">Recursos do Sistema</h2>
-                <div class="features-grid">
-                    <article class="feature-card">
-                        <h3>Cadastro Detalhado</h3>
-                        <p>
-                            Registre alunos com nome, idade, e-mail, turno, estado, linguagens de programação e
-                            observações personalizadas.
-                        </p>
-                    </article>
-
-                    <article class="feature-card">
-                        <h3>Segurança Aplicada</h3>
-                        <p>
-                            Senhas protegidas com hash Werkzeug, consultas SQL parametrizadas e confirmação de senha
-                            antes de excluir dados.
-                        </p>
-                    </article>
-
-                    <article class="feature-card">
-                        <h3>Interface Dinâmica</h3>
-                        <p>
-                            Notificações Toast em tempo real, visualização de senha e atualização instantânea sem
-                            recarregar a página.
-                        </p>
-                    </article>
+                <div class="tech-stack" aria-label="Tecnologias utilizadas">
+                    <span>PYTHON</span><span>FLASK</span><span>SQLITE</span><span>JAVASCRIPT</span
+                    ><span>HTML / CSS</span>
                 </div>
             </section>
         </main>
 
         <footer class="landing-footer">
-            <div class="tech-stack">
-                <span>Python</span>
-                <span>Flask</span>
-                <span>SQLite</span>
-                <span>JavaScript</span>
-                <span>HTML5 & CSS3</span>
-            </div>
-            <p class="footer-credit">
-                Desenvolvido por
+            <a class="footer-brand" href="{{ url_for('landPage') }}">MANG <strong>STU</strong></a>
+            <p>Uma forma mais clara de cuidar dos seus registros.</p>
+            <div class="footer-credit">
+                <span>DESENVOLVIDO POR</span>
                 <a href="https://github.com/viniciuscancellara-dev" target="_blank" rel="noopener noreferrer">
-                    <img src="static/png/github.webp" alt="github " draggable="false" />Vinicius Cancellara</a
-                >
-            </p>
+                    Vinicius Cancellara <span aria-hidden="true">↗</span>
+                </a>
+            </div>
         </footer>
     </body>
 </html>

@@ -4,145 +4,222 @@
         <meta charset="UTF-8" />
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>REGISTROS</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+        <title>Registros — Mang Stu</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     </head>
-    <body class="banco">
-        {% if tabela %}
+    <body class="ms-page ms-records-page banco">
+        <header class="ms-topbar">
+            <a class="ms-brand" href="{{ url_for('landPage') }}"
+                ><img src="{{ url_for('static', filename='png/MangStu.png') }}" alt="" width="34" height="34" /><span
+                    >MANG <strong>STU</strong></span
+                ></a
+            >
+            <nav class="ms-top-actions" aria-label="Navegação">
+                <a class="ms-top-link" href="{{ url_for('inicio') }}">Painel</a
+                ><a class="ms-top-link" href="{{ url_for('landPage') }}">Página pública</a>
+            </nav>
+        </header>
 
-        <div class="container-tabela">
-            <div class="tabela">
-                <table>
-                    <tr>
-                        <th>Id</th>
-                        <th>Nome</th>
-                        <th>Idade</th>
-                        <th>Email</th>
-                        <th>Senha</th>
-                        <th>Observacao</th>
-                        <th>Linguagem</th>
-                        <th>Turno</th>
-                        <th>Estado</th>
-                    </tr>
-
-                    {% for aluno in tabela %}
-                    <tr
-                        data-id="{{ aluno[0] }}"
-                        data-nome="{{ aluno[1] }}"
-                        data-idade="{{ aluno[2] }}"
-                        data-email="{{ aluno[3] }}"
-                        data-observacao="{{ aluno[5] }}"
-                        data-linguagens="{{ aluno[6] }}"
-                        data-turno="{{ aluno[7] }}"
-                        data-estado="{{ aluno[8] }}"
+        <main class="ms-records-main">
+            <div class="ms-records-heading">
+                <div>
+                    <p class="ms-eyebrow">DADOS / BASE DE ALUNOS</p>
+                    <h1>Registros de<br /><em>alunos.</em></h1>
+                    <p class="ms-page-lead">Consulte os registros armazenados no sistema.</p>
+                </div>
+                <div class="ms-records-actions">
+                    <button type="button" id="botao-editar" class="ms-secondary-btn">Editar registro</button>
+                    <a href="{{ url_for('cadastrar') }}" class="ms-primary-btn"
+                        >Adicionar aluno <span aria-hidden="true">↗</span></a
                     >
-                        <td>{{ aluno[0] }}</td>
-                        <td>{{ aluno[1] }}</td>
-                        <td>{{ aluno[2] }}</td>
-                        <td>{{ aluno[3] }}</td>
-                        <td>**************</td>
-                        <td>{{ aluno[5] }}</td>
-                        <td>{{ aluno[6] }}</td>
-                        <td>{{ aluno[7] }}</td>
-                        <td>{{ aluno[8] }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
+                    <a href="{{ url_for('validacao') }}" id="button" class="ms-danger-link">Excluir registros</a>
+                </div>
             </div>
-        </div>
 
-        {% else %}
-        <h1>Nenhum registro encontrado.</h1>
-        {% endif %}
-        <div class="container-editar">
-            <button type="button" id="botao-editar">Editar</button>
-
-            <a href="{{ url_for('inicio') }}" id="botao-voltar">Voltar</a>
-
-            <a href="{{ url_for('cadastrar') }}" id="botao-voltar">Adicionar</a>
-
-            <a href="{{url_for('validacao') }}" id="button">Excluir</a>
-        </div>
-
-        <div class="painel-editar">
-            <h2 class="titulo-editar">EDITAR CADASTRO</h2>
-
-            <form id="form-editar" action="/editar" method="POST">
-                <label for="selecionar-usuario" class="aluno">Usuario:</label>
-                <select id="selecionar-usuario" class="selecao" name="id" required>
-                    <option value="" selected disabled>Escolha um usuario cadastrado</option>
-                    {% for aluno in tabela %}
-                    <option value="{{ aluno[0] }}">{{ aluno[1] }} ({{ aluno[3] }})</option>
-                    {% endfor %}
-                </select>
-
-                <label for="edit-nome" class="aluno">Aluno:</label>
-                <input id="edit-nome" type="text" name="nome" placeholder="Digite o nome do aluno:" required />
-
-                <label for="edit-idade" class="aluno">Idade:</label>
-                <input id="edit-idade" type="number" name="idade" placeholder="Digite a idade do aluno:" required />
-
-                <label for="edit-email" class="aluno">Email:</label>
-                <input id="edit-email" type="email" name="email" placeholder="Digite o email do aluno:" required />
-
-                <div class="campo-observacao">
-                    <label for="edit-observacao" class="aluno">Observação:</label>
-                    <textarea
-                        id="edit-observacao"
-                        name="observacao"
-                        placeholder="Digite a observação do aluno (opcional):"
-                    ></textarea>
+            {% if tabela %}
+            <section class="ms-table-section" aria-label="Tabela de alunos">
+                <div class="ms-table-meta">
+                    <span class="ms-mono">REGISTROS ENCONTRADOS</span
+                    ><span class="ms-mono">{{ tabela|length }} ITEM(NS)</span>
                 </div>
-
-                <h2>LINGUAGENS CONHECIDAS:</h2>
-                <h3>| Selecione pelo menos uma: |</h3>
-
-                <input type="checkbox" class="check" id="edit-python" name="linguagem" value="python" />
-                <label for="edit-python" class="linguagem">Python</label>
-
-                <input type="checkbox" class="check" id="edit-java" name="linguagem" value="java" />
-                <label for="edit-java" class="linguagem">Java</label>
-
-                <input type="checkbox" class="check" id="edit-js" name="linguagem" value="js" />
-                <label for="edit-js" class="linguagem">Java.Script</label>
-
-                <input type="checkbox" class="check" id="edit-html" name="linguagem" value="html" />
-                <label for="edit-html" class="linguagem">HTML</label>
-
-                <input type="checkbox" class="check" id="edit-css" name="linguagem" value="css" />
-                <label for="edit-css" class="linguagem">CSS</label>
-
-                <h2>TURNO:</h2>
-
-                <select id="turno" class="selecao" name="turno">
-                    <option value="" disabled selected>Selecione um Turno</option>
-                    <option value="manha">Manha</option>
-                    <option value="tarde">Tarde</option>
-                    <option value="noite">Noite</option>
-                </select>
-
-                <h2>ESTADO:</h2>
-
-                <select id="edit-estado" class="selecao" name="estado" required>
-                    <option value="" selected disabled>Selecione um estado</option>
-                    <option value="sp">São Paulo</option>
-                    <option value="rj">Rio de Janeiro</option>
-                    <option value="mg">Minas Gerais</option>
-                    <option value="df">Brasília</option>
-                    <option value="ba">Salvador</option>
-                    <option value="ce">Fortaleza</option>
-                    <option value="pr">Curitiba</option>
-                    <option value="pe">Recife</option>
-                </select>
-
-                <div class="botoes-editar">
-                    <button type="submit" id="botao-salvar-edicao">Salvar</button>
-                    <button type="button" id="botao-cancelar-edicao">Cancelar</button>
+                <div class="container-tabela ms-table-scroll">
+                    <div class="tabela">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Nome</th>
+                                    <th>Idade</th>
+                                    <th>Email</th>
+                                    <th>Senha</th>
+                                    <th>Observação</th>
+                                    <th>Linguagem</th>
+                                    <th>Turno</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for aluno in tabela %}
+                                <tr
+                                    data-id="{{ aluno[0] }}"
+                                    data-nome="{{ aluno[1] }}"
+                                    data-idade="{{ aluno[2] }}"
+                                    data-email="{{ aluno[3] }}"
+                                    data-observacao="{{ aluno[5] }}"
+                                    data-linguagens="{{ aluno[6] }}"
+                                    data-turno="{{ aluno[7] }}"
+                                    data-estado="{{ aluno[8] }}"
+                                >
+                                    <td class="ms-id-cell">{{ aluno[0] }}</td>
+                                    <td class="ms-name-cell">{{ aluno[1] }}</td>
+                                    <td>{{ aluno[2] }}</td>
+                                    <td>{{ aluno[3] }}</td>
+                                    <td>••••••••</td>
+                                    <td>{{ aluno[5] }}</td>
+                                    <td>{{ aluno[6] }}</td>
+                                    <td>{{ aluno[7] }}</td>
+                                    <td>{{ aluno[8] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </form>
-        </div>
+            </section>
+            {% else %}
+            <section class="ms-empty-state">
+                <span class="ms-mono">SEM REGISTROS</span>
+                <h2>Nenhum aluno cadastrado.</h2>
+                <p>Quando um cadastro for criado, ele aparecerá aqui.</p>
+                <a href="{{ url_for('cadastrar') }}" class="ms-primary-btn">Adicionar primeiro aluno ↗</a>
+            </section>
+            {% endif %}
 
+            <section class="painel-editar ms-edit-panel" aria-label="Editar cadastro">
+                <div class="ms-form-section-head">
+                    <span class="ms-mono">EDIÇÃO</span>
+                    <h2 class="titulo-editar">Editar cadastro</h2>
+                </div>
+                <form id="form-editar" action="/editar" method="POST" class="ms-data-form">
+                    <div class="ms-fields-grid">
+                        <div class="ms-field ms-field-wide">
+                            <label for="selecionar-usuario" class="aluno">Selecionar aluno</label
+                            ><select id="selecionar-usuario" class="selecao" name="id" required>
+                                <option value="" selected disabled>Escolha um aluno cadastrado</option>
+                                {% for aluno in tabela %}
+                                <option value="{{ aluno[0] }}">{{ aluno[1] }} ({{ aluno[3] }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="ms-field">
+                            <label for="edit-nome" class="aluno">Nome</label
+                            ><input id="edit-nome" type="text" name="nome" placeholder="Nome do aluno" required />
+                        </div>
+                        <div class="ms-field">
+                            <label for="edit-idade" class="aluno">Idade</label
+                            ><input id="edit-idade" type="number" name="idade" placeholder="Idade" required />
+                        </div>
+                        <div class="ms-field ms-field-wide">
+                            <label for="edit-email" class="aluno">E-mail</label
+                            ><input
+                                id="edit-email"
+                                type="email"
+                                name="email"
+                                placeholder="email@exemplo.com"
+                                required
+                            />
+                        </div>
+                        <div class="ms-field ms-field-wide campo-observacao">
+                            <label for="edit-observacao" class="aluno">Observação</label
+                            ><textarea
+                                id="edit-observacao"
+                                name="observacao"
+                                placeholder="Informações adicionais"
+                            ></textarea>
+                        </div>
+                    </div>
+                    <fieldset class="ms-choice-fieldset">
+                        <legend>Linguagens conhecidas</legend>
+                        <div class="ms-check-grid">
+                            <label
+                                ><input
+                                    type="checkbox"
+                                    class="check"
+                                    id="edit-python"
+                                    name="linguagem"
+                                    value="python"
+                                /><span>Python</span></label
+                            >
+                            <label
+                                ><input
+                                    type="checkbox"
+                                    class="check"
+                                    id="edit-java"
+                                    name="linguagem"
+                                    value="java"
+                                /><span>Java</span></label
+                            >
+                            <label
+                                ><input type="checkbox" class="check" id="edit-js" name="linguagem" value="js" /><span
+                                    >JavaScript</span
+                                ></label
+                            >
+                            <label
+                                ><input
+                                    type="checkbox"
+                                    class="check"
+                                    id="edit-html"
+                                    name="linguagem"
+                                    value="html"
+                                /><span>HTML</span></label
+                            >
+                            <label
+                                ><input type="checkbox" class="check" id="edit-css" name="linguagem" value="css" /><span
+                                    >CSS</span
+                                ></label
+                            >
+                        </div>
+                    </fieldset>
+                    <div class="ms-fields-grid ms-fields-bottom">
+                        <div class="ms-field">
+                            <label for="turno">Turno</label
+                            ><select id="turno" class="selecao" name="turno">
+                                <option value="" disabled selected>Selecione um turno</option>
+                                <option value="manha">Manhã</option>
+                                <option value="tarde">Tarde</option>
+                                <option value="noite">Noite</option>
+                            </select>
+                        </div>
+                        <div class="ms-field">
+                            <label for="edit-estado">Estado</label
+                            ><select id="edit-estado" class="selecao" name="estado" required>
+                                <option value="" selected disabled>Selecione um estado</option>
+                                <option value="sp">São Paulo</option>
+                                <option value="rj">Rio de Janeiro</option>
+                                <option value="mg">Minas Gerais</option>
+                                <option value="df">Brasília</option>
+                                <option value="ba">Salvador</option>
+                                <option value="ce">Fortaleza</option>
+                                <option value="pr">Curitiba</option>
+                                <option value="pe">Recife</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="botoes-editar ms-edit-actions">
+                        <button type="submit" id="botao-salvar-edicao" class="ms-primary-btn">
+                            Salvar alterações ↗</button
+                        ><button type="button" id="botao-cancelar-edicao" class="ms-secondary-btn">Cancelar</button>
+                    </div>
+                </form>
+            </section>
+        </main>
         <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     </body>
 </html>

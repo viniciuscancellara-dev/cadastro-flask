@@ -1,50 +1,81 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8" />
-        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+        <title>Criar conta — Mang Stu</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png" />
-        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&amp;display=swap"
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
             rel="stylesheet"
         />
-        <title>Login</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     </head>
-    <body class="login">
-        <div class="container-login">
-            <div class="lado-esquerdo"></div>
+    <body class="ms-page ms-auth-page login">
+        <header class="ms-topbar">
+            <a class="ms-brand" href="{{ url_for('landPage') }}">
+                <img src="{{ url_for('static', filename='png/MangStu.png') }}" alt="" width="34" height="34" />
+                <span>MANG <strong>STU</strong></span>
+            </a>
+            <a class="ms-top-link" href="{{ url_for('landPage') }}">← Página inicial</a>
+        </header>
 
-            <div class="lado-direito">
-                <div class="div-form">
-                    <h1 id="title-login">Sign in To my site</h1>
-                    <form action="/sign" method="post" id="form-sign">
-                        <input id="sign-usuario" name="user" placeholder="Username" autocomplete="off" />
+        <main class="ms-auth-layout ms-auth-register">
+            <section class="ms-auth-aside" aria-label="Apresentação do Mang Stu">
+                <p class="ms-eyebrow"><span class="ms-dot"></span> NOVO AMBIENTE</p>
+                <p class="ms-auth-statement">Seu espaço para<br /><em>organizar melhor.</em></p>
+                <div class="ms-aside-bottom">
+                    <span class="ms-mono">MANG STU / ACCOUNT</span>
+                    <span class="ms-aside-rule"></span>
+                    <span class="ms-muted">Crie suas credenciais e comece a usar.</span>
+                </div>
+            </section>
 
-                        <div class="campo-senha">
+            <section class="ms-auth-content">
+                <div class="ms-auth-form-wrap">
+                    <p class="ms-eyebrow">02 / NOVA CONTA</p>
+                    <h1 id="title-login">Crie seu<br />acesso.</h1>
+                    <p class="ms-form-intro">Defina um usuário e uma senha para acessar o sistema.</p>
+
+                    <form action="/sign" method="post" id="form-sign" class="ms-form">
+                        <label for="sign-usuario">Nome de usuário</label>
+                        <input
+                            id="sign-usuario"
+                            name="user"
+                            placeholder="Escolha um nome de usuário"
+                            autocomplete="username"
+                        />
+
+                        <label for="sign-senha">Senha</label>
+                        <div class="campo-senha ms-password-field">
                             <input
                                 id="sign-senha"
                                 name="userPassword"
                                 type="password"
-                                placeholder="Password"
-                                autocomplete="off"
+                                placeholder="Crie uma senha"
+                                autocomplete="new-password"
                             />
-                            <button type="button" id="btn-showpass">
-                                <img id="png-showpass" src="{{ url_for('static', filename='png/showpassword.png') }}" />
+                            <button type="button" id="btn-showpass" aria-label="Mostrar ou ocultar senha">
+                                <img
+                                    id="png-showpass"
+                                    src="{{ url_for('static', filename='png/showpassword.png') }}"
+                                    alt=""
+                                />
                             </button>
                         </div>
 
-                        <button type="submit" id="btn-sign">Sign In</button>
-
-                        <div class="conteiner-a">
-                            <a href="/" style="color: rgba(124, 11, 119, 0.76)">Log in</a>
-                        </div>
+                        <button type="submit" id="btn-sign" class="ms-primary-btn">
+                            Criar conta <span aria-hidden="true">↗</span>
+                        </button>
+                        <p class="ms-auth-switch">Já possui uma conta? <a href="{{ url_for('login') }}">Entrar</a></p>
                     </form>
                 </div>
-            </div>
-        </div>
+                <p class="ms-auth-foot ms-mono">CADASTRO DE ACESSO · MANG STU</p>
+            </section>
+        </main>
         <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     </body>
 </html>

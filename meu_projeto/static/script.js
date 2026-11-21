@@ -470,8 +470,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
+                const metaTag = document.querySelector('meta[name="csrf-token"]')
+                const csrfToken = metaTag ? metaTag.getAttribute('content') : ''
                 const resposta = await fetch(senhaValidacao.action, {
                     method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                    },
                     body: new FormData(senhaValidacao),
                 })
 

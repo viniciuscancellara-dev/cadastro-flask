@@ -1,20 +1,38 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Página não encontrada</title>
-        <link rel="stylesheet" href="{{ url_for('static',filename='style.css')}}" />
+        <title>404 — Página não encontrada | Mang Stu</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     </head>
-    <body class="error-page">
-        <h1 class="paginaError">404</h1>
-        <h2 class="paginaError">Página não encontrada</h2>
-        <p class="paginaError">A pagina que voce tentou acessar nao existe!</p>
-        {% if logado %}
-        <a href="{{ url_for('inicio') }}" id="btn-voltar-404">Voltar</a>
-        {% else %}
-        <a href="{{ url_for('login') }}" id="btn-voltar-404">Voltar</a>
-        {% endif %}
+    <body class="ms-page ms-error-page error-page">
+        <header class="ms-topbar">
+            <a class="ms-brand" href="{{ url_for('landPage') }}"
+                ><img src="{{ url_for('static', filename='png/MangStu.png') }}" alt="" width="34" height="34" /><span
+                    >MANG <strong>STU</strong></span
+                ></a
+            >
+            <span class="ms-mono">ERRO / 404</span>
+        </header>
+        <main class="ms-error-main">
+            <p class="ms-eyebrow"><span class="ms-dot"></span> DESTINO NÃO ENCONTRADO</p>
+            <h1 class="paginaError">404</h1>
+            <h2 class="paginaError">Esta página não existe<br />ou foi movida.</h2>
+            <p class="paginaError">O endereço acessado não corresponde a uma página disponível no Mang Stu.</p>
+            {% if logado %}
+            <a href="{{ url_for('inicio') }}" id="btn-voltar-404" class="ms-primary-btn">Voltar ao painel ↗</a>
+            {% else %}
+            <a href="{{ url_for('login') }}" id="btn-voltar-404" class="ms-primary-btn">Ir para o acesso ↗</a>
+            {% endif %}
+        </main>
+        <footer class="ms-error-footer ms-mono">MANG STU / SISTEMA DE GESTÃO</footer>
     </body>
 </html>

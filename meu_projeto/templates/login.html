@@ -1,52 +1,84 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="csrf-token" content="{{ csrf_token() }}" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+        <title>Entrar — Mang Stu</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png" />
-        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&amp;display=swap"
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
             rel="stylesheet"
         />
-        <title>Login</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     </head>
-    <body class="login">
-        <div class="container-login">
-            <div class="lado-esquerdo"></div>
+    <body class="ms-page ms-auth-page login">
+        <header class="ms-topbar">
+            <a class="ms-brand" href="{{ url_for('landPage') }}">
+                <img src="{{ url_for('static', filename='png/MangStu.png') }}" alt="" width="34" height="34" />
+                <span>MANG <strong>STU</strong></span>
+            </a>
+            <a class="ms-top-link" href="{{ url_for('landPage') }}">← Página inicial</a>
+        </header>
 
-            <div class="lado-direito">
-                <div class="div-form">
-                    <h1 id="title-login">Log in To my site</h1>
-                    <form action="/login" class="form-login">
-                        <input id="login-usuario" name="usuario" placeholder="Username" autocomplete="off" />
+        <main class="ms-auth-layout">
+            <section class="ms-auth-aside" aria-label="Apresentação do Mang Stu">
+                <p class="ms-eyebrow"><span class="ms-dot"></span> AMBIENTE DE ACESSO</p>
+                <p class="ms-auth-statement">Organização começa com<br /><em>acesso simples.</em></p>
+                <div class="ms-aside-bottom">
+                    <span class="ms-mono">MANG STU / AUTH</span>
+                    <span class="ms-aside-rule"></span>
+                    <span class="ms-muted">Gestão de alunos, sem complicação.</span>
+                </div>
+            </section>
 
-                        <div class="campo-senha">
+            <section class="ms-auth-content">
+                <div class="ms-auth-form-wrap">
+                    <p class="ms-eyebrow">01 / IDENTIFICAÇÃO</p>
+                    <h1 id="title-login">Bem-vindo<br />de volta.</h1>
+                    <p class="ms-form-intro">Entre com suas credenciais para acessar seu ambiente de gerenciamento.</p>
+
+                    <form action="/login" class="form-login ms-form">
+                        <label for="login-usuario">Usuário</label>
+                        <input
+                            id="login-usuario"
+                            name="usuario"
+                            placeholder="Seu nome de usuário"
+                            autocomplete="username"
+                        />
+
+                        <label for="login-senha">Senha</label>
+                        <div class="campo-senha ms-password-field">
                             <input
                                 id="login-senha"
                                 name="senha"
                                 type="password"
-                                placeholder="Password"
-                                autocomplete="off"
+                                placeholder="Sua senha"
+                                autocomplete="current-password"
                             />
-
-                            <button type="button" id="btn-showpass">
-                                <img id="png-showpass" src="{{ url_for('static', filename='png/showpassword.png') }}" />
+                            <button type="button" id="btn-showpass" aria-label="Mostrar ou ocultar senha">
+                                <img
+                                    id="png-showpass"
+                                    src="{{ url_for('static', filename='png/showpassword.png') }}"
+                                    alt=""
+                                />
                             </button>
                         </div>
-                        ;
-                        <p id="contador-bloqueio"></p>
 
-                        <button type="submit" id="btn-login" class="login-btn">Log In</button>
-                        <div class="conteiner-a">
-                            <a href="/sign" style="color: rgba(124, 11, 119, 0.76)">Sign in</a>
-                        </div>
+                        <p id="contador-bloqueio" aria-live="polite"></p>
+                        <button type="submit" id="btn-login" class="login-btn ms-primary-btn">
+                            Entrar <span aria-hidden="true">↗</span>
+                        </button>
+                        <p class="ms-auth-switch">
+                            Ainda não tem uma conta? <a href="{{ url_for('sign') }}">Criar conta</a>
+                        </p>
                     </form>
                 </div>
-            </div>
-        </div>
+                <p class="ms-auth-foot ms-mono">ACESSO PROTEGIDO · MANG STU</p>
+            </section>
+        </main>
         <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     </body>
 </html>

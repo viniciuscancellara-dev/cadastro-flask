@@ -3,25 +3,58 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>INICIO</title>
+        <title>Painel — Mang Stu</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     </head>
-    <body class="inicio">
-        <h1 id="titulo">PAGINA INICIAL</h1>
+    <body class="ms-page ms-dashboard-page inicio">
+        <header class="ms-topbar">
+            <a class="ms-brand" href="{{ url_for('landPage') }}">
+                <img src="{{ url_for('static', filename='png/MangStu.png') }}" alt="" width="34" height="34" />
+                <span>MANG <strong>STU</strong></span>
+            </a>
+            <nav class="ms-top-actions" aria-label="Navegação da conta">
+                <span class="ms-user-chip"><span class="ms-dot"></span>{{ session["usuario"] }}</span>
+                <a class="ms-top-link" href="{{ url_for('landPage') }}">Página pública</a>
+                <a class="ms-top-link ms-logout" href="{{ url_for('logout') }}" id="sair">Sair ↗</a>
+            </nav>
+        </header>
 
-        <div class="container-botoes">
-            <a href="{{ url_for('mostrar_banco') }}" id="mostrar-banco">Banco</a>
-
-            <a href="{{ url_for('cadastrar') }}" id="botao-voltar">Adicionar</a>
-        </div>
-        <div class="dash-container">
-            <h3 id="user">Ola, {{ session["usuario"] }}</h3>
-            <div class="link">
-                <a href="{{url_for('logout')}}" id="sair">Sair</a>
-                <a href="{{url_for('landPage')}}" id="home">Home</a>
+        <main class="ms-dashboard-main">
+            <div class="ms-page-heading">
+                <p class="ms-eyebrow">PAINEL / VISÃO GERAL</p>
+                <h1 id="titulo">Seu espaço de<br /><em>gerenciamento.</em></h1>
+                <p class="ms-page-lead">Acesse os registros de alunos ou adicione um novo cadastro.</p>
             </div>
-        </div>
+
+            <section class="ms-dashboard-actions" aria-label="Ações principais">
+                <a href="{{ url_for('mostrar_banco') }}" id="mostrar-banco" class="ms-action-row">
+                    <span class="ms-action-number">01</span>
+                    <span class="ms-action-copy"
+                        ><strong>Banco de alunos</strong><small>Consultar e editar os registros existentes</small></span
+                    >
+                    <span class="ms-action-arrow" aria-hidden="true">↗</span>
+                </a>
+                <a href="{{ url_for('cadastrar') }}" id="botao-voltar" class="ms-action-row">
+                    <span class="ms-action-number">02</span>
+                    <span class="ms-action-copy"
+                        ><strong>Adicionar aluno</strong><small>Criar um novo registro no sistema</small></span
+                    >
+                    <span class="ms-action-arrow" aria-hidden="true">↗</span>
+                </a>
+            </section>
+
+            <footer class="ms-dashboard-footer">
+                <span class="ms-mono">MANG STU / WORKSPACE</span>
+                <span>Olá, {{ session["usuario"] }}.</span>
+            </footer>
+        </main>
         <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     </body>
 </html>

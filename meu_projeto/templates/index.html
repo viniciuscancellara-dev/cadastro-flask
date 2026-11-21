@@ -4,95 +4,155 @@
         <meta charset="UTF-8" />
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+        <title>Novo cadastro — Mang Stu</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='png/favicon.png') }}" type="image/png" />
-        <title>CADASTRO</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     </head>
-    <body class="cadastro">
-        <h1 id="titulo">SISTEMA DE CADASTRO</h1>
+    <body class="ms-page ms-form-page cadastro">
+        <header class="ms-topbar">
+            <a class="ms-brand" href="{{ url_for('landPage') }}">
+                <img src="{{ url_for('static', filename='png/MangStu.png') }}" alt="" width="34" height="34" />
+                <span>MANG <strong>STU</strong></span>
+            </a>
+            <nav class="ms-top-actions" aria-label="Navegação">
+                <a class="ms-top-link" href="{{ url_for('inicio') }}" id="pular">Painel</a>
+                <a class="ms-top-link" href="{{ url_for('logout') }}" id="sair">Sair ↗</a>
+            </nav>
+        </header>
 
-        <form action="/cadastrar" class="form-cadastro">
-            <h2 id="cadastro">CADASTRAR</h2>
-
-            <label for="nome" class="aluno">Aluno:</label>
-            <input id="nome" type="text" name="nome" placeholder="Digite o nome do aluno:" />
-
-            <label for="idade" class="aluno">Idade:</label>
-            <input id="idade" type="number" name="idade" placeholder="Digite a idade do aluno:" />
-
-            <label for="email" class="aluno">Email:</label>
-            <input id="email" type="email" name="email" placeholder="Digite o email do aluno:" />
-
-            <label for="senha" class="aluno">Senha:</label>
-            <input id="senha" type="password" name="senha" placeholder="Digite a senha do aluno:" />
-
-            <div class="campo-observacao">
-                <label for="observacao" class="aluno">Observação:</label>
-                <textarea
-                    id="observacao"
-                    name="observacao"
-                    placeholder="Digite a observação do aluno (opcional):"
-                ></textarea>
+        <main class="ms-form-main">
+            <div class="ms-form-heading">
+                <p class="ms-eyebrow">CADASTRO / NOVO REGISTRO</p>
+                <h1 id="titulo">Adicionar um<br /><em>aluno.</em></h1>
+                <p class="ms-page-lead">Preencha as informações abaixo para incluir um aluno no banco de dados.</p>
             </div>
 
-            <h2>LINGUAGENS:</h2>
+            <form action="/cadastrar" class="form-cadastro ms-data-form">
+                <section class="ms-form-section">
+                    <div class="ms-form-section-head">
+                        <span class="ms-mono">01</span>
+                        <h2>Informações pessoais</h2>
+                    </div>
+                    <div class="ms-fields-grid">
+                        <div class="ms-field">
+                            <label for="nome" class="aluno">Nome completo</label
+                            ><input id="nome" type="text" name="nome" placeholder="Nome do aluno" autocomplete="name" />
+                        </div>
+                        <div class="ms-field">
+                            <label for="idade" class="aluno">Idade</label
+                            ><input id="idade" type="number" name="idade" placeholder="Idade" min="1" max="120" />
+                        </div>
+                        <div class="ms-field">
+                            <label for="email" class="aluno">E-mail</label
+                            ><input
+                                id="email"
+                                type="email"
+                                name="email"
+                                placeholder="email@exemplo.com"
+                                autocomplete="email"
+                            />
+                        </div>
+                        <div class="ms-field">
+                            <label for="senha" class="aluno">Senha do aluno</label
+                            ><input
+                                id="senha"
+                                type="password"
+                                name="senha"
+                                placeholder="Defina uma senha"
+                                autocomplete="new-password"
+                            />
+                        </div>
+                        <div class="ms-field ms-field-wide campo-observacao">
+                            <label for="observacao" class="aluno">Observação <span>(opcional)</span></label
+                            ><textarea
+                                id="observacao"
+                                name="observacao"
+                                placeholder="Informações adicionais sobre o aluno"
+                            ></textarea>
+                        </div>
+                    </div>
+                </section>
 
-            <fieldset style="width: fit-content">
-                <legend style="font-size: 35px; color: orange">| Selecione pelo menos uma: |</legend>
+                <section class="ms-form-section">
+                    <div class="ms-form-section-head">
+                        <span class="ms-mono">02</span>
+                        <h2>Informações acadêmicas</h2>
+                    </div>
+                    <fieldset class="ms-choice-fieldset">
+                        <legend>Linguagens conhecidas <span>Selecione pelo menos uma</span></legend>
+                        <div class="ms-check-grid">
+                            <label
+                                ><input
+                                    type="checkbox"
+                                    class="check"
+                                    id="python"
+                                    name="linguagem"
+                                    value="python"
+                                /><span>Python</span></label
+                            >
+                            <label
+                                ><input type="checkbox" class="check" id="java" name="linguagem" value="java" /><span
+                                    >Java</span
+                                ></label
+                            >
+                            <label
+                                ><input type="checkbox" class="check" id="js" name="linguagem" value="js" /><span
+                                    >JavaScript</span
+                                ></label
+                            >
+                            <label
+                                ><input type="checkbox" class="check" id="html" name="linguagem" value="html" /><span
+                                    >HTML</span
+                                ></label
+                            >
+                            <label
+                                ><input type="checkbox" class="check" id="css" name="linguagem" value="css" /><span
+                                    >CSS</span
+                                ></label
+                            >
+                        </div>
+                    </fieldset>
+                    <div class="ms-fields-grid ms-fields-bottom">
+                        <div class="ms-field">
+                            <label for="turno">Turno</label
+                            ><select id="turno" class="selecao" name="turno">
+                                <option value="" disabled selected>Selecione um turno</option>
+                                <option value="manha">Manhã</option>
+                                <option value="tarde">Tarde</option>
+                                <option value="noite">Noite</option>
+                            </select>
+                        </div>
+                        <div class="ms-field">
+                            <label for="estado">Estado</label
+                            ><select id="estado" class="selecao" name="estado">
+                                <option value="" selected disabled>Selecione um estado</option>
+                                <option value="sp">São Paulo</option>
+                                <option value="rj">Rio de Janeiro</option>
+                                <option value="mg">Minas Gerais</option>
+                                <option value="df">Brasília</option>
+                                <option value="ba">Salvador</option>
+                                <option value="ce">Fortaleza</option>
+                                <option value="pr">Curitiba</option>
+                                <option value="pe">Recife</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
 
-                <input type="checkbox" class="check" id="python" name="linguagem" value="python" />
-                <label for="python" class="linguagem">Python</label>
-                <br />
-                <input type="checkbox" class="check" id="java" name="linguagem" value="java" />
-                <label for="java" class="linguagem">Java</label>
-                <br />
-                <input type="checkbox" class="check" id="js" name="linguagem" value="js" />
-                <label for="js" class="linguagem">JS</label>
-                <br />
-                <input type="checkbox" class="check" id="html" name="linguagem" value="html" />
-                <label for="html" class="linguagem">HTML</label>
-                <br />
-                <input type="checkbox" class="check" id="css" name="linguagem" value="css" />
-                <label for="css" class="linguagem">CSS</label>
-
-                <h2>TURNO:</h2>
-
-                <select id="turno" class="selecao" name="turno">
-                    <option value="" disabled selected>Selecione um Turno</option>
-                    <option value="manha">Manha</option>
-                    <option value="tarde">Tarde</option>
-                    <option value="noite">Noite</option>
-                </select>
-            </fieldset>
-            <h2>ESTADO:</h2>
-
-            <select id="estado" class="selecao" name="estado">
-                <option value="" selected disabled>Selecione um estado</option>
-                <option value="sp">São Paulo</option>
-                <option value="rj">Rio de Janeiro</option>
-                <option value="mg">Minas Gerais</option>
-                <option value="df">Brasília</option>
-                <option value="ba">Salvador</option>
-                <option value="ce">Fortaleza</option>
-                <option value="pr">Curitiba</option>
-                <option value="pe">Recife</option>
-            </select>
-
-            <button class="enviar_cadastro" type="submit">Enviar Cadastro</button>
-        </form>
-
-        <div class="dash-container">
-            <h3 id="user">Ola, {{ session["usuario"] }}.</h3>
-            <div class="link">
-                <a href="{{url_for('logout')}}" id="sair">Sair</a>
-                <a href="{{url_for('inicio')}}" id="pular">Pular</a>
-                <a href="{{url_for('landPage')}}" id="home">Home</a>
-            </div>
-        </div>
-
+                <div class="ms-form-submit">
+                    <p class="ms-mono">CAMPOS OBRIGATÓRIOS DEVEM SER PREENCHIDOS</p>
+                    <button class="enviar_cadastro ms-primary-btn" type="submit">
+                        Enviar cadastro <span aria-hidden="true">↗</span>
+                    </button>
+                </div>
+            </form>
+        </main>
         <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     </body>
 </html>
-<!-- todo button sem um type dentro de um form vira "type=submit" -->
